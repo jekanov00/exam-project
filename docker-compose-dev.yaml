@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile-dev
+    environment:
+      NODE_ENV: development
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+    volumes:
+      - ./client:/client
+    ports:
+      - '3000:3000'
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile-dev
+    environment:
+      NODE_ENV: development
+      STATIC_DATA_PATH: /server/public
+    depends_on:
+      - postgres_host
+      - mongodb_host
+    volumes:
+      - ./server:/server
+    ports:
+      - '5000:5000'
+
+  mongodb_host:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+
+  postgres_host:
+    image: postgres:12
+    environment:
+      - POSTGRES_PASSWORD=qwerty
+      - POSTGRES_USER=app_server
+      - POSTGRES_DB=db
+    ports:
+      - '5432:5432'

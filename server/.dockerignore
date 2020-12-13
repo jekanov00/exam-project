@@ -1,0 +1,9 @@
+/.idea/
+/node_modules/
+/sequelize-*.json
+/.git/
+/.gitignore
+/Dockerfile*
+!.sequelizerc
+!.env
+.*

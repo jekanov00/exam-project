@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: ./client
+    networks:
+      - proxy-net
+    ports:
+      - '80:80'
+    depends_on:
+      - backend
+    volumes_from:
+      - server-prod:ro
+
+  backend:
+    build:
+      context: ./server
+    environment:
+      NODE_ENV: production
+    networks:
+      - proxy-net
+      - backend-net   
+    depends_on:
+      - postgres-db
+      - mongo-db
+    volumes:
+      - /var/www/html/images:/var/www/html/images
+
+  postgres-db:
+    image: postgres:12
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=todo-prod
+    networks:
+      - backend-net
+
+  mongo-db:
+    image: mongo:latest
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./data/db:/data/db
+    command: mongod --smallfiles --logpath=/dev/null
+    networks:
+      - backend-net
+
+networks:
+  proxy-net:
+    driver: default
+  backend-net:
+    driver: default
+
+volumes:
+  server-prod:
+  nginx-server-prod:
