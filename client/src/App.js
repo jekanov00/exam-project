@@ -32,7 +32,7 @@ function App() {
         })
       );
     }
-  }, []);
+  });
 
   return (
     <Router history={browserHistory}>
@@ -51,49 +51,18 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path={['/login', '/signup']} component={AuthPage} />
-          {/*<Route exact path="/login" component={LoginPage} />
-        <Route exact path="/signup" component={RegistrationPage} />*/}
-          <PrivateRoute
-            roles={['customer']}
-            exact
-            path="/payment"
-            component={Payment}
-          />
-          <PrivateRoute
-            roles={['customer']}
-            exact
-            path="/startContest"
-            component={StartContestPage}
-          />
-          <PrivateRoute
-            roles={['customer']}
-            exact
-            path="/startContest/nameContest"
-          >
-            <ContestCreationPage
-              contestType={CONSTANTS.NAME_CONTEST}
-              title="Company Name"
-            />
+          {/* <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/signup" component={RegistrationPage} /> */}
+          <PrivateRoute roles={['customer']} exact path="/payment" component={Payment} />
+          <PrivateRoute roles={['customer']} exact path="/startContest" component={StartContestPage} />
+          <PrivateRoute roles={['customer']} exact path="/startContest/nameContest">
+            <ContestCreationPage contestType={CONSTANTS.NAME_CONTEST} title="Company Name" />
           </PrivateRoute>
-          <PrivateRoute
-            roles={['customer']}
-            exact
-            path="/startContest/taglineContest"
-          >
-            <ContestCreationPage
-              contestType={CONSTANTS.TAGLINE_CONTEST}
-              title="TAGLINE"
-            />
+          <PrivateRoute roles={['customer']} exact path="/startContest/taglineContest">
+            <ContestCreationPage contestType={CONSTANTS.TAGLINE_CONTEST} title="TAGLINE" />
           </PrivateRoute>
-          <PrivateRoute
-            roles={['customer']}
-            exact
-            path="/startContest/logoContest"
-          >
-            <ContestCreationPage
-              contestType={CONSTANTS.LOGO_CONTEST}
-              title="LOGO"
-            />
+          <PrivateRoute roles={['customer']} exact path="/startContest/logoContest">
+            <ContestCreationPage contestType={CONSTANTS.LOGO_CONTEST} title="LOGO" />
           </PrivateRoute>
           <PrivateRoute exact path="/dashboard" component={Dashboard} />
           <PrivateRoute exact path="/contest/:id" component={ContestPage} />
