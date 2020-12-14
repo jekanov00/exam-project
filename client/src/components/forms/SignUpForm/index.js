@@ -1,4 +1,4 @@
-import React, { useCallback, Fragment } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -40,7 +40,7 @@ function SignUpForm(props) {
   const { onSubmit } = props;
 
   const handleSubmit = useCallback(
-    (values, formikBag) => {
+    values => {
       onSubmit(values);
     },
     [onSubmit]
@@ -102,17 +102,12 @@ function SignUpForm(props) {
               </div>
               <ErrorMessage name="role" />
             </div>
-            {/* <div className={styles.termsOfService}>
-              <Field
-                name="agreeOfTerms"
-                id="termsOfService"
-                component={AgreeTermOfServiceInput}
-                type="checkbox"
-              />
-            </div> */}
             <button type="submit" className={styles.submitContainer}>
               Sign Up
             </button>
+            <div className={styles.termsOfService}>
+              By clicking this button, you agree to our <a href="https://google.com">Terms of Service</a>.
+            </div>
           </Form>
         )}
       </Formik>
