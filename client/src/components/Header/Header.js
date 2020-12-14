@@ -236,7 +236,7 @@ function Header() {
                 />
                 <ul>
                   <li>
-                    <a target="_blank" href="http://www.google.com">
+                    <a target="_blank" rel="noreferrer" href="http://www.google.com">
                       ULTIMATE NAMING GUIDE
                     </a>
                   </li>

@@ -68,8 +68,8 @@ const DialogBox = (props) => {
               )
             }
             className={classNames({
-              ["far fa-heart"]: !isFavorite,
-              ["fas fa-heart"]: isFavorite,
+              "far fa-heart": !isFavorite,
+              "fas fa-heart": isFavorite,
             })}
           />
           <i
@@ -83,16 +83,16 @@ const DialogBox = (props) => {
               )
             }
             className={classNames({
-              ["fas fa-user-lock"]: !isBlocked,
-              ["fas fa-unlock"]: isBlocked,
+              "fas fa-user-lock": !isBlocked,
+              "fas fa-unlock": isBlocked,
             })}
           />
           <i
             onClick={(event) => catalogOperation(event, _id)}
             className={classNames({
-              ["far fa-plus-square"]:
+              "far fa-plus-square":
                 chatMode !== CONSTANTS.CATALOG_PREVIEW_CHAT_MODE,
-              ["fas fa-minus-circle"]:
+              "fas fa-minus-circle":
                 chatMode === CONSTANTS.CATALOG_PREVIEW_CHAT_MODE,
             })}
           />

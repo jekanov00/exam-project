@@ -8,7 +8,7 @@ export const ROLES = {
   CREATOR: 'creator',
 };
 
-export default {
+const constants =  {
   CUSTOMER: 'customer',
   CREATOR: 'creator',
   CONTEST_STATUS_ACTIVE: 'active',
@@ -85,3 +85,5 @@ export default {
     },
   ],
 };
+
+export default constants;

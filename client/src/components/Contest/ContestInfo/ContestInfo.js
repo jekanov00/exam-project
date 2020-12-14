@@ -83,6 +83,7 @@ const ContestInfo = props => {
             <span className={styles.label}>Additional File</span>
             <a
               target="_blank"
+              rel="noreferrer"
               className={styles.file}
               href={`${CONSTANTS.publicURL}${fileName}`}
               download={originalFileName}

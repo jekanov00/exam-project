@@ -40,7 +40,7 @@ function AuthPage() {
           </Link>
           <div className={styles.linkLoginContainer}>
             <Link to={isLogin ? '/signup' : '/login'} className={styles.linkLogin}>
-              {isLogin ? 'SIGN UP' : 'LOGIN'}
+              {isLogin ? 'SIGNUP' : 'LOGIN'}
             </Link>
           </div>
         </div>

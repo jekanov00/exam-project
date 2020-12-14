@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { authActionLogin, clearAuth } from '../../actions/actionCreator';
-import { Redirect } from 'react-router-dom';
+import { clearAuth } from '../../actions/actionCreator';
 import styles from './LoginForm.module.sass';
 import { Field, reduxForm } from 'redux-form';
 import FormInput from '../FormInput/FormInput';
@@ -24,13 +23,7 @@ class LoginForm extends React.Component {
     const { handleSubmit, submitting, authClear } = this.props;
     return (
       <div className={styles.loginForm}>
-        {error && (
-          <Error
-            data={error.data}
-            status={error.status}
-            clearError={authClear}
-          />
-        )}
+        {error && <Error data={error.data} status={error.status} clearError={authClear} />}
         <h2>LOGIN TO YOUR ACCOUNT</h2>
         <form onSubmit={handleSubmit(this.clicked)}>
           <Field
@@ -57,14 +50,8 @@ class LoginForm extends React.Component {
             type="password"
             label="password"
           />
-          <button
-            type="submit"
-            disabled={submitting}
-            className={styles.submitContainer}
-          >
-            <span className={styles.inscription}>
-              {isFetching ? 'Submitting...' : 'LOGIN'}
-            </span>
+          <button type="submit" disabled={submitting} className={styles.submitContainer}>
+            <span className={styles.inscription}>{isFetching ? 'Submitting...' : 'LOGIN'}</span>
           </button>
         </form>
       </div>
