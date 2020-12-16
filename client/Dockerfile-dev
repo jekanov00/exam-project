@@ -1,0 +1,14 @@
+ 
+FROM node:14.15.0-stretch
+
+RUN mkdir /client
+
+WORKDIR /client
+
+COPY . .
+
+RUN npm i
+
+EXPOSE 3000
+
+CMD npm start
