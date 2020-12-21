@@ -8,13 +8,8 @@ class AuthApi {
     this.#_token = null;
     this.url = '/auth';
 
-     this.#_client.interceptors.request.use(
-       this.interceptRequest,
-       err => Promise.reject(err));
-    // this.#_client.interceptors.response.use(
-    //   this.interceptResponse,
-    //   this.interceptResponseError
-    // );
+    this.#_client.interceptors.request.use(this.interceptRequest, (err) => Promise.reject(err));
+    this.#_client.interceptors.response.use(this.interceptResponse, this.interceptResponseError);
   }
 
   /**
@@ -24,7 +19,7 @@ class AuthApi {
    * @param {string} data.password
    * @returns {Promise}
    */
-  login = data => {
+  login = (data) => {
     return this.#_client.post(`${this.url}/login`, data);
   };
 
@@ -40,7 +35,7 @@ class AuthApi {
    * @param {string} data.role
    * @returns {Promise}
    */
-  signUp = data => {
+  signUp = (data) => {
     return this.#_client.post(`${this.url}/signup`, data);
   };
 
@@ -50,7 +45,7 @@ class AuthApi {
    * @param {string} data.refreshToken
    * @returns {Promise}
    */
-  refresh = data => {
+  refresh = (data) => {
     return this.#_client.post(`${this.url}/refresh`, data);
   };
 
@@ -59,21 +54,20 @@ class AuthApi {
     localStorage.removeItem(REFRESH_TOKEN_KEY);
   };
 
-  interceptRequest = config => {
+  interceptRequest = (config) => {
     if (this.#_token) {
       config.headers['Authorization'] = `Bearer ${this.#_token}`;
     }
-    alert();
     return config;
   };
 
-  interceptResponse = response => {
+  interceptResponse = (response) => {
     const {
       config: { url },
       data,
     } = response;
 
-    if (url.indexOf(this.url) === 0) {
+    if (url.indexOf(this.url) === 25) {
       const {
         data: {
           tokenPair: { accessToken, refreshToken },
@@ -85,7 +79,7 @@ class AuthApi {
     return response;
   };
 
-  interceptResponseError = async error => {
+  interceptResponseError = async (error) => {
     const { response, config } = error;
     const { url } = config;
     const { status } = response;
@@ -94,11 +88,7 @@ class AuthApi {
       throw error;
     }
 
-    if (
-      status === 401 &&
-      url !== `${this.url}/refresh` &&
-      localStorage.getItem(REFRESH_TOKEN_KEY)
-    ) {
+    if (status === 401 && url !== `${this.url}/refresh` && localStorage.getItem(REFRESH_TOKEN_KEY)) {
       try {
         await this.refresh({
           refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),

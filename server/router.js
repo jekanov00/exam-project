@@ -28,52 +28,23 @@ router.post(
 
 router.post('/getCustomersContests', contestController.getCustomersContests);
 
-router.get(
-  '/getContestById',
-  basicMiddlewares.canGetContest,
-  contestController.getContestById,
-);
+router.get('/getContestById', basicMiddlewares.canGetContest, contestController.getContestById);
 
-router.post(
-  '/getAllContests',
-  basicMiddlewares.onlyForCreative,
-  contestController.getContests,
-);
+router.post('/getAllContests', basicMiddlewares.onlyForCreative, contestController.getContests);
 
 router.get('/downloadFile/:fileName', contestController.downloadFile);
 
-router.post(
-  '/updateContest',
-  upload.updateContestFile,
-  contestController.updateContest,
-);
+router.post('/updateContest', upload.updateContestFile, contestController.updateContest);
 
-router.post(
-  '/setNewOffer',
-  upload.uploadLogoFiles,
-  basicMiddlewares.canSendOffer,
-  contestController.setNewOffer,
-);
+router.post('/setNewOffer', upload.uploadLogoFiles, basicMiddlewares.canSendOffer, contestController.setNewOffer);
 
-router.post(
-  '/setOfferStatus',
-  basicMiddlewares.onlyForCustomerWhoCreateContest,
-  contestController.setOfferStatus,
-);
+router.post('/setOfferStatus', basicMiddlewares.onlyForCustomerWhoCreateContest, contestController.setOfferStatus);
 
-router.post(
-  '/changeMark',
-  basicMiddlewares.onlyForCustomer,
-  userController.changeMark,
-);
+router.post('/changeMark', basicMiddlewares.onlyForCustomer, userController.changeMark);
 
 router.post('/updateUser', upload.uploadAvatar, userController.updateUser);
 
-router.post(
-  '/cashout',
-  basicMiddlewares.onlyForCreative,
-  userController.cashout,
-);
+router.post('/cashout', basicMiddlewares.onlyForCreative, userController.cashout);
 
 router.post('/newMessage', chatController.addMessage);
 
