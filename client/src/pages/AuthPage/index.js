@@ -24,7 +24,7 @@ function AuthPage() {
     values => {
       dispatch(isLogin ? loginRequest(values) : signUpRequest(values));
     },
-    [isLogin]
+    [dispatch, isLogin]
   );
 
   if (user) {

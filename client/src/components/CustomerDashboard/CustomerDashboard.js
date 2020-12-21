@@ -1,19 +1,15 @@
-import React from "react";
-import { connect } from "react-redux";
-import {
-  getContestsForCustomer,
-  clearContestList,
-  setNewCustomerFilter,
-} from "../../actions/actionCreator";
-import CONSTANTS from "../../constants";
-import ContestsContainer from "../../components/ContestsContainer/ContestsContainer";
-import ContestBox from "../ContestBox/ContestBox";
-import styles from "./CustomerDashboard.module.sass";
-import classNames from "classnames";
-import TryAgain from "../../components/TryAgain/TryAgain";
+import React from 'react';
+import { connect } from 'react-redux';
+import { getContestsForCustomer, clearContestList, setNewCustomerFilter } from '../../actions/actionCreator';
+import CONSTANTS from '../../constants';
+import ContestsContainer from '../../components/ContestsContainer/ContestsContainer';
+import ContestBox from '../ContestBox/ContestBox';
+import styles from './CustomerDashboard.module.sass';
+import classNames from 'classnames';
+import TryAgain from '../../components/TryAgain/TryAgain';
 
 class CustomerDashboard extends React.Component {
-  loadMore = (startFrom) => {
+  loadMore = startFrom => {
     this.props.getContests({
       limit: 8,
       offset: startFrom,
@@ -38,21 +34,15 @@ class CustomerDashboard extends React.Component {
     }
   }
 
-  goToExtended = (contest_id) => {
-    this.props.history.push("/contest/" + contest_id);
+  goToExtended = contest_id => {
+    this.props.history.push('/contest/' + contest_id);
   };
 
   setContestList = () => {
     const array = [];
     const { contests } = this.props;
     for (let i = 0; i < contests.length; i++) {
-      array.push(
-        <ContestBox
-          data={contests[i]}
-          key={contests[i].id}
-          goToExtended={this.goToExtended}
-        />
-      );
+      array.push(<ContestBox data={contests[i]} key={contests[i].id} goToExtended={this.goToExtended} />);
     }
     return array;
   };
@@ -73,40 +63,28 @@ class CustomerDashboard extends React.Component {
       <div className={styles.mainContainer}>
         <div className={styles.filterContainer}>
           <div
-            onClick={() =>
-              this.props.newFilter(CONSTANTS.CONTEST_STATUS_ACTIVE)
-            }
+            onClick={() => this.props.newFilter(CONSTANTS.CONTEST_STATUS_ACTIVE)}
             className={classNames({
-              [styles.activeFilter]:
-                CONSTANTS.CONTEST_STATUS_ACTIVE === customerFilter,
-              [styles.filter]:
-                CONSTANTS.CONTEST_STATUS_ACTIVE !== customerFilter,
+              [styles.activeFilter]: CONSTANTS.CONTEST_STATUS_ACTIVE === customerFilter,
+              [styles.filter]: CONSTANTS.CONTEST_STATUS_ACTIVE !== customerFilter,
             })}
           >
             Active Contests
           </div>
           <div
-            onClick={() =>
-              this.props.newFilter(CONSTANTS.CONTEST_STATUS_FINISHED)
-            }
+            onClick={() => this.props.newFilter(CONSTANTS.CONTEST_STATUS_FINISHED)}
             className={classNames({
-              [styles.activeFilter]:
-                CONSTANTS.CONTEST_STATUS_FINISHED === customerFilter,
-              [styles.filter]:
-                CONSTANTS.CONTEST_STATUS_FINISHED !== customerFilter,
+              [styles.activeFilter]: CONSTANTS.CONTEST_STATUS_FINISHED === customerFilter,
+              [styles.filter]: CONSTANTS.CONTEST_STATUS_FINISHED !== customerFilter,
             })}
           >
             Completed contests
           </div>
           <div
-            onClick={() =>
-              this.props.newFilter(CONSTANTS.CONTEST_STATUS_PENDING)
-            }
+            onClick={() => this.props.newFilter(CONSTANTS.CONTEST_STATUS_PENDING)}
             className={classNames({
-              [styles.activeFilter]:
-                CONSTANTS.CONTEST_STATUS_PENDING === customerFilter,
-              [styles.filter]:
-                CONSTANTS.CONTEST_STATUS_PENDING !== customerFilter,
+              [styles.activeFilter]: CONSTANTS.CONTEST_STATUS_PENDING === customerFilter,
+              [styles.filter]: CONSTANTS.CONTEST_STATUS_PENDING !== customerFilter,
             })}
           >
             Inactive contests
@@ -116,12 +94,7 @@ class CustomerDashboard extends React.Component {
           {error ? (
             <TryAgain getData={this.tryToGetContest()} />
           ) : (
-            <ContestsContainer
-              isFetching={this.props.isFetching}
-              loadMore={this.loadMore}
-              history={this.props.history}
-              haveMore={haveMore}
-            >
+            <ContestsContainer isFetching={this.props.isFetching} loadMore={this.loadMore} history={this.props.history} haveMore={haveMore}>
               {this.setContestList()}
             </ContestsContainer>
           )}
@@ -131,15 +104,15 @@ class CustomerDashboard extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return state.contestsList;
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    getContests: (data) => dispatch(getContestsForCustomer(data)),
+    getContests: data => dispatch(getContestsForCustomer(data)),
     clearContestsList: () => dispatch(clearContestList()),
-    newFilter: (filter) => dispatch(setNewCustomerFilter(filter)),
+    newFilter: filter => dispatch(setNewCustomerFilter(filter)),
   };
 };
 

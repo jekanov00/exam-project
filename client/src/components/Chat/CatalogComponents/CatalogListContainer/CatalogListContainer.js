@@ -1,11 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import {
-  getCatalogList,
-  removeChatFromCatalog,
-} from "../../../../actions/actionCreator";
-import CatalogList from "../CatalogList/CatalogList";
-import DialogList from "../../DialogComponents/DialogList/DialogList";
+import React from 'react';
+import { connect } from 'react-redux';
+import { getCatalogList, removeChatFromCatalog } from '../../../../actions/actionCreator';
+import CatalogList from '../CatalogList/CatalogList';
+import DialogList from '../../DialogComponents/DialogList/DialogList';
 
 class CatalogListContainer extends React.Component {
   componentDidMount() {
@@ -34,15 +31,11 @@ class CatalogListContainer extends React.Component {
 
   render() {
     const { catalogList, isShowChatsInCatalog } = this.props.chatStore;
-    const { id } = this.props.userStore.data;
+    const { id } = this.props.user;
     return (
       <>
         {isShowChatsInCatalog ? (
-          <DialogList
-            userId={id}
-            preview={this.getDialogsPreview()}
-            removeChat={this.removeChatFromCatalog}
-          />
+          <DialogList userId={id} preview={this.getDialogsPreview()} removeChat={this.removeChatFromCatalog} />
         ) : (
           <CatalogList catalogList={catalogList} />
         )}
@@ -51,19 +44,19 @@ class CatalogListContainer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { chatStore, userStore } = state;
-  return { chatStore, userStore };
+const mapStateToProps = state => {
+  const {
+    chatStore,
+    auth: { user },
+  } = state;
+  return { chatStore, user };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    getCatalogList: (data) => dispatch(getCatalogList(data)),
-    removeChatFromCatalog: (data) => dispatch(removeChatFromCatalog(data)),
+    getCatalogList: data => dispatch(getCatalogList(data)),
+    removeChatFromCatalog: data => dispatch(removeChatFromCatalog(data)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CatalogListContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(CatalogListContainer);

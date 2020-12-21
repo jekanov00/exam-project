@@ -32,10 +32,7 @@ function* rootSaga() {
   // AUTH
   yield takeLatest(AUTH_ACTION_TYPES.LOGIN_REQUEST, AuthSagas.loginSaga);
   yield takeLatest(AUTH_ACTION_TYPES.SIGNUP_REQUEST, AuthSagas.signUpSaga);
-  yield takeLatest(
-    AUTH_ACTION_TYPES.REFRESH_AUTH_REQUEST,
-    AuthSagas.refreshAuthSaga
-  );
+  yield takeLatest(AUTH_ACTION_TYPES.REFRESH_AUTH_REQUEST, AuthSagas.refreshAuthSaga);
   yield takeLatest(AUTH_ACTION_TYPES.LOGOUT_REQUEST, AuthSagas.logoutSaga);
   // legacy
   yield takeEvery(ACTION.GET_DATA_FOR_CONTEST_ACTION, dataForContestSaga);
@@ -44,10 +41,7 @@ function* rootSaga() {
   yield takeLeading(ACTION.GET_CONTESTS_FOR_CUSTOMER, customerContestsSaga);
   yield takeLatest(ACTION.GET_CONTEST_BY_ID_ACTION, getContestByIdSaga);
   yield takeEvery(ACTION.GET_CONTESTS_FOR_CREATIVE, activeContestsSaga);
-  yield takeLatest(
-    ACTION.DOWNLOAD_CONTEST_FILE_ACTION,
-    downloadContestFileSaga
-  );
+  yield takeLatest(ACTION.DOWNLOAD_CONTEST_FILE_ACTION, downloadContestFileSaga);
   yield takeLatest(ACTION.UPDATE_CONTEST_ACTION, updateContestSaga);
   yield takeEvery(ACTION.SET_OFFER_ACTION, addOfferSaga);
   yield takeLatest(ACTION.SET_OFFER_STATUS_ACTION, setOfferStatusSaga);
@@ -61,10 +55,7 @@ function* rootSaga() {
   yield takeLatest(ACTION.ADD_CHAT_TO_CATALOG_ASYNC, addChatToCatalog);
   yield takeLatest(ACTION.CREATE_CATALOG_REQUEST, createCatalog);
   yield takeLatest(ACTION.DELETE_CATALOG_REQUEST, deleteCatalog);
-  yield takeLatest(
-    ACTION.REMOVE_CHAT_FROM_CATALOG_REQUEST,
-    removeChatFromCatalogSaga
-  );
+  yield takeLatest(ACTION.REMOVE_CHAT_FROM_CATALOG_REQUEST, removeChatFromCatalogSaga);
   yield takeLatest(ACTION.CHANGE_CATALOG_NAME_REQUEST, changeCatalogName);
 }
 

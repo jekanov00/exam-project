@@ -40,6 +40,9 @@ class ContestForm extends React.Component {
         this.props.getData({ characteristic1: "brandStyle" });
         break;
       }
+      default: {
+        throw new Error();
+      }
     }
   };
 
@@ -143,6 +146,9 @@ class ContestForm extends React.Component {
             />
           </>
         );
+      }
+      default: {
+        throw new Error();
       }
     }
   };

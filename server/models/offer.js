@@ -1,5 +1,5 @@
-'use strict';
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Offer extends Model {
     static associate({ User, Contest, Rating }) {
@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Offer',
-    }
+    },
   );
   return Offer;
 };

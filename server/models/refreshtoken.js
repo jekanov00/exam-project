@@ -1,5 +1,4 @@
-'use strict';
-const { Model, Sequelize } = require('sequelize');
+const { Model } = require('sequelize');
 const isAfter = require('date-fns/isAfter');
 
 module.exports = (sequelize, DataTypes) => {
@@ -7,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     isUnexpired() {
       return isAfter(new Date(this.get('expiredIn')), new Date());
     }
+
     static associate({ User }) {
       RefreshToken.belongsTo(User, {
         foreignKey: 'userId',
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'RefreshToken',
-    }
+    },
   );
 
   return RefreshToken;

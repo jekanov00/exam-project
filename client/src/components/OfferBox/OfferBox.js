@@ -3,12 +3,7 @@ import styles from './OfferBox.module.sass';
 import CONSTANTS from '../../constants';
 import { connect } from 'react-redux';
 import Rating from 'react-rating';
-import {
-  changeMark,
-  clearChangeMarkError,
-  goToExpandedDialog,
-  changeShowImage,
-} from '../../actions/actionCreator';
+import { changeMark, clearChangeMarkError, goToExpandedDialog, changeShowImage } from '../../actions/actionCreator';
 import { withRouter } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
@@ -16,13 +11,11 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './confirmStyle.css';
 
-const OfferBox = props => {
+const OfferBox = (props) => {
   const findConversationInfo = () => {
     const { messagesPreview, id } = props;
     const participants = [id, props.data.User.id];
-    participants.sort(
-      (participant1, participant2) => participant1 - participant2
-    );
+    participants.sort((participant1, participant2) => participant1 - participant2);
     for (let i = 0; i < messagesPreview.length; i++) {
       if (isEqual(participants, messagesPreview[i].participants)) {
         return {
@@ -43,8 +36,7 @@ const OfferBox = props => {
       buttons: [
         {
           label: 'Yes',
-          onClick: () =>
-            props.setOfferStatus(props.data.User.id, props.data.id, 'resolve'),
+          onClick: () => props.setOfferStatus(props.data.User.id, props.data.id, 'resolve'),
         },
         {
           label: 'No',
@@ -60,8 +52,7 @@ const OfferBox = props => {
       buttons: [
         {
           label: 'Yes',
-          onClick: () =>
-            props.setOfferStatus(props.data.User.id, props.data.id, 'reject'),
+          onClick: () => props.setOfferStatus(props.data.User.id, props.data.id, 'reject'),
         },
         {
           label: 'No',
@@ -70,7 +61,7 @@ const OfferBox = props => {
     });
   };
 
-  const changeMark = value => {
+  const changeMark = (value) => {
     props.clearError();
     props.changeMark({
       mark: value,
@@ -83,17 +74,9 @@ const OfferBox = props => {
   const offerStatus = () => {
     const { status } = props.data;
     if (status === CONSTANTS.OFFER_STATUS_REJECTED) {
-      return (
-        <i
-          className={classNames('fas fa-times-circle reject', styles.reject)}
-        />
-      );
+      return <i className={classNames('fas fa-times-circle reject', styles.reject)} />;
     } else if (status === CONSTANTS.OFFER_STATUS_WON) {
-      return (
-        <i
-          className={classNames('fas fa-check-circle resolve', styles.resolve)}
-        />
-      );
+      return <i className={classNames('fas fa-check-circle resolve', styles.resolve)} />;
     }
     return null;
   };
@@ -113,14 +96,7 @@ const OfferBox = props => {
       <div className={styles.mainInfoContainer}>
         <div className={styles.userInfo}>
           <div className={styles.creativeInfoContainer}>
-            <img
-              src={
-                avatar === 'anon.png'
-                  ? CONSTANTS.ANONYM_IMAGE_PATH
-                  : `${CONSTANTS.publicURL}${avatar}`
-              }
-              alt="user"
-            />
+            <img src={avatar === null ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`} alt="user" />
             <div className={styles.nameAndEmail}>
               <span>{firstName + ' ' + lastName}</span>
               <span>{email}</span>
@@ -131,24 +107,9 @@ const OfferBox = props => {
             <Rating
               initialRating={rating}
               fractions={2}
-              fullSymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt="star"
-                />
-              }
-              placeholderSymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt="star"
-                />
-              }
-              emptySymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`}
-                  alt="star-outline"
-                />
-              }
+              fullSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
+              placeholderSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
+              emptySymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`} alt="star-outline" />}
               readonly={true}
             />
           </div>
@@ -172,32 +133,15 @@ const OfferBox = props => {
           {data.User.id !== id && (
             <Rating
               fractions={2}
-              fullSymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt="star"
-                />
-              }
-              placeholderSymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt="star"
-                />
-              }
-              emptySymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`}
-                  alt="star"
-                />
-              }
+              fullSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
+              placeholderSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
+              emptySymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`} alt="star" />}
               onClick={changeMark}
               placeholderRating={data.mark}
             />
           )}
         </div>
-        {role !== CONSTANTS.CREATOR && (
-          <i onClick={goChat} className="fas fa-comments" />
-        )}
+        {role !== CONSTANTS.CREATOR && <i onClick={goChat} className="fas fa-comments" />}
       </div>
       {props.needButtons(data.status) && (
         <div className={styles.btnsContainer}>
@@ -213,22 +157,20 @@ const OfferBox = props => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    changeMark: data => dispatch(changeMark(data)),
+    changeMark: (data) => dispatch(changeMark(data)),
     clearError: () => dispatch(clearChangeMarkError()),
-    goToExpandedDialog: data => dispatch(goToExpandedDialog(data)),
-    changeShowImage: data => dispatch(changeShowImage(data)),
+    goToExpandedDialog: (data) => dispatch(goToExpandedDialog(data)),
+    changeShowImage: (data) => dispatch(changeShowImage(data)),
   };
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { changeMarkError, isShowModal } = state.contestByIdStore;
-  const { id, role } = state.userStore.data;
+  const { id, role } = state.auth.user;
   const { messagesPreview } = state.chatStore;
   return { changeMarkError, id, role, messagesPreview, isShowModal };
 };
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(OfferBox)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(OfferBox));

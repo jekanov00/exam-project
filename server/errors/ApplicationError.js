@@ -1,6 +1,6 @@
 class ApplicationError extends Error {
   constructor(message, status) {
-    super();
+    super(message, status);
     Error.captureStackTrace(this, this.constructor);
     this.name = this.constructor.name;
     this.message = message || "Something went wrong. Please try again";

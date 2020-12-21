@@ -1,15 +1,15 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import SelectInput from "../../../SelectInput/SelectInput";
-import { addChatToCatalog } from "../../../../actions/actionCreator";
-import styles from "./AddToCatalog.module.sass";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
+import SelectInput from '../../../SelectInput/SelectInput';
+import { addChatToCatalog } from '../../../../actions/actionCreator';
+import styles from './AddToCatalog.module.sass';
 
-const AddToCatalog = (props) => {
+const AddToCatalog = props => {
   const getCatalogsNames = () => {
     const { catalogList } = props;
     const namesArray = [];
-    catalogList.forEach((catalog) => {
+    catalogList.forEach(catalog => {
       namesArray.push(catalog.catalogName);
     });
     return namesArray;
@@ -18,13 +18,13 @@ const AddToCatalog = (props) => {
   const getValueArray = () => {
     const { catalogList } = props;
     const valueArray = [];
-    catalogList.forEach((catalog) => {
+    catalogList.forEach(catalog => {
       valueArray.push(catalog._id);
     });
     return valueArray;
   };
 
-  const click = (values) => {
+  const click = values => {
     const { addChatId } = props;
     props.addChatToCatalog({ chatId: addChatId, catalogId: values.catalogId });
   };
@@ -50,21 +50,19 @@ const AddToCatalog = (props) => {
           <button type="submit">Add</button>
         </form>
       ) : (
-        <div className={styles.notFound}>
-          You have not created any directories.
-        </div>
+        <div className={styles.notFound}>You have not created any directories.</div>
       )}
     </>
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return state.chatStore;
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    addChatToCatalog: (data) => dispatch(addChatToCatalog(data)),
+    addChatToCatalog: data => dispatch(addChatToCatalog(data)),
   };
 };
 
@@ -73,6 +71,6 @@ export default connect(
   mapDispatchToProps
 )(
   reduxForm({
-    form: "addChatToCatalog",
+    form: 'addChatToCatalog',
   })(AddToCatalog)
 );

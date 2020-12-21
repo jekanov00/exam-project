@@ -1,12 +1,12 @@
-const bd = require('./../models/index');
-const NotFound = require('./../errors/UserNotFoundError');
-const RightsError = require('./../errors/RightsError');
-const ServerError = require('./../errors/ServerError');
-const CONSTANTS = require('./../constants');
+/* eslint-disable consistent-return */
+const bd = require('../models/index');
+const RightsError = require('../errors/RightsError');
+const ServerError = require('../errors/ServerError');
+const CONSTANTS = require('../constants');
 
 module.exports.parseBody = (req, res, next) => {
   req.body.contests = JSON.parse(req.body.contests);
-  for (let i = 0; i < req.body.contests.length; i++) {
+  for (let i = 0; i < req.body.contests.length; i + 1) {
     if (req.body.contests[i].haveFile) {
       const file = req.files.splice(0, 1);
       req.body.contests[i].fileName = file[0].filename;
@@ -36,7 +36,7 @@ module.exports.canGetContest = async (req, res, next) => {
         },
       });
     }
-    !!result ? next() : next(new RightsError());
+    result ? next() : next(new RightsError());
   } catch (e) {
     next(new ServerError(e));
   }
@@ -53,9 +53,8 @@ module.exports.onlyForCreative = (req, res, next) => {
 module.exports.onlyForCustomer = (req, res, next) => {
   if (req.tokenData.role === CONSTANTS.CREATOR) {
     return next(new RightsError('this page only for customers'));
-  } else {
-    next();
   }
+  return next();
 };
 
 module.exports.canSendOffer = async (req, res, next) => {

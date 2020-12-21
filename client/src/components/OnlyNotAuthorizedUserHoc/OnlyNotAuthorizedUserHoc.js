@@ -3,14 +3,14 @@ import { onlyForNotAuthorize } from '../../actions/actionCreator';
 import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 
-const OnlyNotAuthorizedUserHoc = Component => {
-  const mapStateToProps = state => {
+const OnlyNotAuthorizedUserHoc = (Component) => {
+  const mapStateToProps = (state) => {
     return state.auth;
   };
 
-  const mapDispatchToProps = dispatch => {
+  const mapDispatchToProps = (dispatch) => {
     return {
-      checkAuth: data => dispatch(onlyForNotAuthorize(data)),
+      checkAuth: (data) => dispatch(onlyForNotAuthorize(data)),
     };
   };
 
@@ -22,7 +22,7 @@ const OnlyNotAuthorizedUserHoc = Component => {
     render() {
       if (this.props.isFetching) {
         return <Spinner />;
-      } else if (!this.props.data) {
+      } else if (!this.props.user) {
         return <Component history={this.props.history} />;
       }
       return null;

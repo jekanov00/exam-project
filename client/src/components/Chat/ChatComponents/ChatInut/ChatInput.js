@@ -1,21 +1,21 @@
-import React from "react";
-import { connect } from "react-redux";
-import { sendMessageAction } from "../../../../actions/actionCreator";
-import { Field, reduxForm } from "redux-form";
-import styles from "./ChatInput.module.sass";
-import CONSTANTS from "../../../../constants";
-import FormInput from "../../../FormInput/FormInput";
+import React from 'react';
+import { connect } from 'react-redux';
+import { sendMessageAction } from '../../../../actions/actionCreator';
+import { Field, reduxForm } from 'redux-form';
+import styles from './ChatInput.module.sass';
+import CONSTANTS from '../../../../constants';
+import FormInput from '../../../FormInput/FormInput';
 
-const validate = (values) => {
+const validate = values => {
   const errors = {};
   if (!values.message || !values.message.trim().length) {
-    errors.message = "Cannot be empty";
+    errors.message = 'Cannot be empty';
   }
   return errors;
 };
 
-const ChatInput = (props) => {
-  const clickButton = (values) => {
+const ChatInput = props => {
+  const clickButton = values => {
     const { reset } = props;
     props.sendMessage({
       messageBody: values.message,
@@ -42,10 +42,7 @@ const ChatInput = (props) => {
         />
         {valid && (
           <button type="submit">
-            <img
-              src={`${CONSTANTS.STATIC_IMAGES_PATH}send.png`}
-              alt="send Message"
-            />
+            <img src={`${CONSTANTS.STATIC_IMAGES_PATH}send.png`} alt="send Message" />
           </button>
         )}
       </form>
@@ -53,15 +50,15 @@ const ChatInput = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { interlocutor } = state.chatStore;
-  const { data } = state.userStore;
-  return { interlocutor, data };
+  const { user } = state.auth;
+  return { interlocutor, user };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    sendMessage: (data) => dispatch(sendMessageAction(data)),
+    sendMessage: data => dispatch(sendMessageAction(data)),
   };
 };
 
@@ -70,7 +67,7 @@ export default connect(
   mapDispatchToProps
 )(
   reduxForm({
-    form: "messageForm",
+    form: 'messageForm',
     validate,
   })(ChatInput)
 );

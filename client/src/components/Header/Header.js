@@ -11,29 +11,16 @@ function Header() {
 
   const dispatch = useDispatch();
 
-  const logoutAction = useCallback(() => void dispatch(logoutRequest()), [
-    dispatch,
-    logoutRequest,
-  ]);
+  const logoutAction = useCallback(() => void dispatch(logoutRequest()), [dispatch]);
 
   const renderLoginButtons = () => {
     if (user) {
       return (
         <>
           <div className={styles.userInfo}>
-            <img
-              src={
-                user.avatar === 'anon.png'
-                  ? CONSTANTS.ANONYM_IMAGE_PATH
-                  : `${CONSTANTS.publicURL}${user.avatar}`
-              }
-              alt="user"
-            />
+            <img src={user.avatar === null ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${user.avatar}`} alt="user" />
             <span>{`Hi, ${user.displayName}`}</span>
-            <img
-              src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-              alt="menu"
-            />
+            <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt="menu" />
             <ul>
               <li>
                 <Link to="/dashboard" style={{ textDecoration: 'none' }}>
@@ -46,18 +33,12 @@ function Header() {
                 </Link>
               </li>
               <li>
-                <Link
-                  to="http:/www.google.com"
-                  style={{ textDecoration: 'none' }}
-                >
+                <Link to="https://www.google.com" style={{ textDecoration: 'none' }}>
                   <span>Messages</span>
                 </Link>
               </li>
               <li>
-                <Link
-                  to="http:/www.google.com"
-                  style={{ textDecoration: 'none' }}
-                >
+                <Link to="https://www.google.com" style={{ textDecoration: 'none' }}>
                   <span>Affiliate Dashboard</span>
                 </Link>
               </li>
@@ -66,11 +47,7 @@ function Header() {
               </li>
             </ul>
           </div>
-          <img
-            src={`${CONSTANTS.STATIC_IMAGES_PATH}email.png`}
-            className={styles.emailIcon}
-            alt="email"
-          />
+          <img src={`${CONSTANTS.STATIC_IMAGES_PATH}email.png`} className={styles.emailIcon} alt="email" />
         </>
       );
     } else {
@@ -93,10 +70,7 @@ function Header() {
   return (
     <div className={styles.headerContainer}>
       <div className={styles.fixedHeader}>
-        <span className={styles.info}>
-          Squadhelp recognized as one of the Most Innovative Companies by Inc
-          Magazine.
-        </span>
+        <span className={styles.info}>Squadhelp recognized as one of the Most Innovative Companies by Inc Magazine.</span>
         <a href="http://www.google.com">Read Announcement</a>
       </div>
       <div className={styles.loginSignnUpHeaders}>
@@ -104,25 +78,16 @@ function Header() {
           <img src={`${CONSTANTS.STATIC_IMAGES_PATH}phone.png`} alt="phone" />
           <span>(877)&nbsp;355-3585</span>
         </div>
-        <div className={styles.userButtonsContainer}>
-          {renderLoginButtons()}
-        </div>
+        <div className={styles.userButtonsContainer}>{renderLoginButtons()}</div>
       </div>
       <div className={styles.navContainer}>
-        <img
-          src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`}
-          className={styles.logo}
-          alt="blue_logo"
-        />
+        <Link to="/" style={{ textDecoration: 'none' }}><img src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`} className={styles.logo} alt="blue_logo" /></Link>
         <div className={styles.leftNav}>
           <div className={styles.nav}>
             <ul>
               <li>
                 <span>NAME IDEAS</span>
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-                  alt="menu"
-                />
+                <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt="menu" />
                 <ul>
                   <li>
                     <a href="http://www.google.com">Beauty</a>
@@ -152,10 +117,7 @@ function Header() {
               </li>
               <li>
                 <span>CONTESTS</span>
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-                  alt="menu"
-                />
+                <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt="menu" />
                 <ul>
                   <li>
                     <a href="http://www.google.com">HOW IT WORKS</a>
@@ -182,10 +144,7 @@ function Header() {
               </li>
               <li>
                 <span>Our Work</span>
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-                  alt="menu"
-                />
+                <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt="menu" />
                 <ul>
                   <li>
                     <a href="http://www.google.com">NAMES</a>
@@ -203,10 +162,7 @@ function Header() {
               </li>
               <li>
                 <span>Names For Sale</span>
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-                  alt="menu"
-                />
+                <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt="menu" />
                 <ul>
                   <li>
                     <a href="http://www.google.com">POPULAR NAMES</a>
@@ -230,10 +186,7 @@ function Header() {
               </li>
               <li>
                 <span>Blog</span>
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-                  alt="menu"
-                />
+                <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt="menu" />
                 <ul>
                   <li>
                     <a target="_blank" rel="noreferrer" href="http://www.google.com">
@@ -241,9 +194,7 @@ function Header() {
                     </a>
                   </li>
                   <li>
-                    <a href="http://www.google.com">
-                      POETIC DEVICES IN BUSINESS NAMING
-                    </a>
+                    <a href="http://www.google.com">POETIC DEVICES IN BUSINESS NAMING</a>
                   </li>
                   <li>
                     <a href="http://www.google.com">CROWDED BAR THEORY</a>

@@ -14,12 +14,11 @@ module.exports = async (req, res, next) => {
       if (type === 'Bearer') {
         const tokenPayload = await JwtService.verify(credentials, tokenSecret);
         req.tokenPayload = tokenPayload;
-        next();
-        return;
+        return next();
       }
     }
-    next(createHttpError(401));
+    return next(createHttpError(401));
   } catch (err) {
-    next(createHttpError(401));
+    return next(createHttpError(401));
   }
 };
