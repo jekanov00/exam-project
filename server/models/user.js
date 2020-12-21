@@ -68,7 +68,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       avatar: {
         type: DataTypes.STRING,
-        defaultValue: 'anon.png',
       },
       role: {
         type: DataTypes.STRING,

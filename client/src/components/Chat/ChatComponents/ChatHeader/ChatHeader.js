@@ -47,7 +47,7 @@ const ChatHeader = (props) => {
         <div>
           <img
             src={
-              avatar === "anon.png"
+              avatar === null
                 ? CONSTANTS.ANONYM_IMAGE_PATH
                 : `${CONSTANTS.publicURL}${avatar}`
             }
