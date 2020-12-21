@@ -5,7 +5,7 @@ import Spinner from "../Spinner/Spinner";
 
 const PrivateHoc = (Component, props) => {
   const mapStateToProps = (state) => {
-    return state.userStore;
+    return state.auth.user;
   };
 
   const mapDispatchToProps = (dispatch) => {
@@ -16,7 +16,7 @@ const PrivateHoc = (Component, props) => {
 
   class Hoc extends React.Component {
     componentDidMount() {
-      if (!this.props.data) {
+      if (!this.props.user) {
         this.props.getUser(this.props.history.replace);
       }
     }

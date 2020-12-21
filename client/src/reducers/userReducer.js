@@ -1,19 +1,19 @@
-import ACTION from "../actions/actionTypes";
+import ACTION from '../actions/actionTypes';
 
 const initialState = {
   isFetching: true,
   error: null,
-  data: null,
+  user: null,
 };
 
-export default function userReducer (state = initialState, action) {
+export default function userReducer(state = initialState, action) {
   switch (action.type) {
     case ACTION.GET_USER_REQUEST: {
       return {
         ...state,
         isFetching: true,
         error: null,
-        data: null,
+        user: null,
       };
     }
     case ACTION.GET_USER_SUCCESS: {
@@ -21,7 +21,7 @@ export default function userReducer (state = initialState, action) {
         ...state,
         isFetching: false,
         error: null,
-        data: action.data,
+        user: action.user,
       };
     }
     case ACTION.GET_USER_ERROR: {
@@ -29,20 +29,20 @@ export default function userReducer (state = initialState, action) {
         ...state,
         isFetching: false,
         error: action.error,
-        data: null,
+        user: null,
       };
     }
     case ACTION.CLEAR_USER_STORE: {
       return {
         ...state,
-        data: null,
+        user: null,
         error: null,
       };
     }
     case ACTION.UPDATE_USER_DATA_SUCCESS: {
       return {
         ...state,
-        data: { ...state.data, ...action.data },
+        user: { ...state.user, ...action.user },
         error: null,
       };
     }
