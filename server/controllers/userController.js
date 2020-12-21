@@ -3,14 +3,7 @@ const bcrypt = require('bcrypt');
 const moment = require('moment');
 const uuid = require('uuid/v1');
 const CONSTANTS = require('../constants');
-const {
-  sequelize,
-  Contest,
-  Sequelize,
-  CreditCard,
-  Offer,
-  Rating,
-} = require('../models');
+const { sequelize, Contest, Sequelize, CreditCard, Offer, Rating } = require('../models');
 const NotFound = require('../errors/UserNotFoundError');
 const ServerError = require('../errors/ServerError');
 const UtilFunctions = require('../utils/functions');
@@ -21,6 +14,7 @@ const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
 const BadRequestError = require('../errors/BadRequestError');
+const { decodeToken } = require('../services/tokenService');
 
 module.exports.login = async (req, res, next) => {
   try {
@@ -79,19 +73,17 @@ module.exports.registration = async (req, res, next) => {
 };
 
 function getQuery(offerId, userId, mark, isFirst, transaction) {
-  const getCreateQuery = () => ratingQueries.createRating(
-    {
-      offerId,
-      mark,
-      userId,
-    },
-    transaction,
-  );
-  const getUpdateQuery = () => ratingQueries.updateRating(
-    { mark },
-    { offerId, userId },
-    transaction,
-  );
+  const getCreateQuery = () =>
+    ratingQueries.createRating(
+      {
+        offerId,
+        mark,
+        userId,
+      },
+      transaction,
+    );
+  const getUpdateQuery = () =>
+    ratingQueries.updateRating({ mark }, { offerId, userId }, transaction);
   return isFirst ? getCreateQuery : getUpdateQuery;
 }
 
@@ -99,10 +91,8 @@ module.exports.changeMark = async (req, res, next) => {
   let sum = 0;
   let avg = 0;
   let transaction;
-  const {
-    isFirst, offerId, mark, creatorId,
-  } = req.body;
-  const { userId } = req.tokenData;
+  const { isFirst, offerId, mark, creatorId } = req.body;
+  const { userId } = decodeToken(req);
   try {
     transaction = await sequelize.transaction({
       isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED,
@@ -119,7 +109,7 @@ module.exports.changeMark = async (req, res, next) => {
       ],
       transaction,
     });
-    for (let i = 0; i < offersArray.length; i++) {
+    for (let i = 0; i < offersArray.length; i + 1) {
       sum += offersArray[i].dataValues.mark;
     }
     avg = sum / offersArray.length;
@@ -138,11 +128,10 @@ module.exports.payment = async (req, res, next) => {
   const transaction = await sequelize.transaction();
   try {
     const {
-      body: {
-        cvc, expiry, price, number,
-      },
+      body: { cvc, expiry, price, number },
     } = req;
-    const squadhelpCreditCardNumber = process.env.SQUADHELP_CREDIT_CARD_NUMBER ?? '4564654564564564';
+    const squadhelpCreditCardNumber =
+      process.env.SQUADHELP_CREDIT_CARD_NUMBER ?? '4564654564564564';
 
     const clientCreditCard = await CreditCard.findOne({
       where: {
@@ -175,13 +164,15 @@ module.exports.payment = async (req, res, next) => {
     );
 
     const orderId = uuid();
+    const tokenData = decodeToken(req);
     req.body.contests.forEach((contest, index) => {
-      const prize = index === req.body.contests.length - 1
-        ? Math.ceil(req.body.price / req.body.contests.length)
-        : Math.floor(req.body.price / req.body.contests.length);
+      const prize =
+        index === req.body.contests.length - 1
+          ? Math.ceil(req.body.price / req.body.contests.length)
+          : Math.floor(req.body.price / req.body.contests.length);
       contest = Object.assign(contest, {
         status: index === 0 ? 'active' : 'pending',
-        userId: req.tokenData.userId,
+        userId: tokenData.userId,
         priority: index + 1,
         orderId,
         createdAt: moment().format('YYYY-MM-DD HH:mm'),
@@ -202,10 +193,8 @@ module.exports.updateUser = async (req, res, next) => {
     if (req.file) {
       req.body.avatar = req.file.filename;
     }
-    const updatedUser = await userQueries.updateUser(
-      req.body,
-      req.tokenData.userId,
-    );
+    const tokenData = decodeToken(req);
+    const updatedUser = await userQueries.updateUser(req.body, tokenData.userId);
     res.send({
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
@@ -225,36 +214,29 @@ module.exports.cashout = async (req, res, next) => {
   let transaction;
   try {
     transaction = await sequelize.transaction();
+    const tokenData = decodeToken(req);
     const updatedUser = await userQueries.updateUser(
       { balance: sequelize.literal(`balance - ${req.body.sum}`) },
-      req.tokenData.userId,
+      tokenData.userId,
       transaction,
     );
     await bankQueries.updateBankBalance(
       {
         balance: sequelize.literal(`CASE 
-                WHEN "cardNumber"='${req.body.number.replace(
-    / /g,
-    '',
-  )}' AND "expiry"='${req.body.expiry}' AND "cvc"='${
-  req.body.cvc
-}'
+                WHEN "cardNumber"='${req.body.number.replace(/ /g, '')}' AND "expiry"='${
+          req.body.expiry
+        }' AND "cvc"='${req.body.cvc}'
                     THEN "balance"+${req.body.sum}
-                WHEN "cardNumber"='${
-  CONSTANTS.SQUADHELP_BANK_NUMBER
-}' AND "expiry"='${
-  CONSTANTS.SQUADHELP_BANK_EXPIRY
-}' AND "cvc"='${CONSTANTS.SQUADHELP_BANK_CVC}'
+                WHEN "cardNumber"='${CONSTANTS.SQUADHELP_BANK_NUMBER}' AND "expiry"='${
+          CONSTANTS.SQUADHELP_BANK_EXPIRY
+        }' AND "cvc"='${CONSTANTS.SQUADHELP_BANK_CVC}'
                     THEN "balance"-${req.body.sum}
                  END
                 `),
       },
       {
         cardNumber: {
-          [sequelize.Op.in]: [
-            CONSTANTS.SQUADHELP_BANK_NUMBER,
-            req.body.number.replace(/ /g, ''),
-          ],
+          [sequelize.Op.in]: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')],
         },
       },
       transaction,

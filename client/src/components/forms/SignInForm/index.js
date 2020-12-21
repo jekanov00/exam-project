@@ -5,8 +5,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styles from './SignInForm.module.sass';
 
 const initialValues = {
-  email: '',
-  password: '',
+  email: 'customer@gmail.com',
+  password: 'Test1234',
 };
 
 const validationSchema = Yup.object({

@@ -1,8 +1,9 @@
 /* eslint-disable consistent-return */
-const bd = require('../models/index');
+const db = require('../models/index');
 const RightsError = require('../errors/RightsError');
 const ServerError = require('../errors/ServerError');
 const CONSTANTS = require('../constants');
+const { decodeToken } = require('../services/tokenService');
 
 module.exports.parseBody = (req, res, next) => {
   req.body.contests = JSON.parse(req.body.contests);
@@ -18,17 +19,18 @@ module.exports.parseBody = (req, res, next) => {
 
 module.exports.canGetContest = async (req, res, next) => {
   let result = null;
+  const tokenData = decodeToken(req);
   try {
-    if (req.tokenData.role === CONSTANTS.CUSTOMER) {
-      result = await bd.Contests.findOne({
-        where: { id: req.headers.contestid, userId: req.tokenData.userId },
+    if (tokenData.userRole === CONSTANTS.CUSTOMER) {
+      result = await db.Contests.findOne({
+        where: { id: req.headers.contestid, userId: tokenData.userId },
       });
-    } else if (req.tokenData.role === CONSTANTS.CREATOR) {
-      result = await bd.Contests.findOne({
+    } else if (tokenData.userRole === CONSTANTS.CREATOR) {
+      result = await db.Contests.findOne({
         where: {
           id: req.headers.contestid,
           status: {
-            [bd.Sequelize.Op.or]: [
+            [db.Sequelize.Op.or]: [
               CONSTANTS.CONTEST_STATUS_ACTIVE,
               CONSTANTS.CONTEST_STATUS_FINISHED,
             ],
@@ -43,7 +45,8 @@ module.exports.canGetContest = async (req, res, next) => {
 };
 
 module.exports.onlyForCreative = (req, res, next) => {
-  if (req.tokenData.role === CONSTANTS.CUSTOMER) {
+  const tokenData = decodeToken(req);
+  if (tokenData.userRole === CONSTANTS.CUSTOMER) {
     next(new RightsError());
   } else {
     next();
@@ -51,26 +54,26 @@ module.exports.onlyForCreative = (req, res, next) => {
 };
 
 module.exports.onlyForCustomer = (req, res, next) => {
-  if (req.tokenData.role === CONSTANTS.CREATOR) {
+  const tokenData = decodeToken(req);
+  if (tokenData.userRole === CONSTANTS.CREATOR) {
     return next(new RightsError('this page only for customers'));
   }
   return next();
 };
 
 module.exports.canSendOffer = async (req, res, next) => {
-  if (req.tokenData.role === CONSTANTS.CUSTOMER) {
+  const tokenData = decodeToken(req);
+  if (tokenData.userRole === CONSTANTS.CUSTOMER) {
     return next(new RightsError());
   }
   try {
-    const result = await bd.Contests.findOne({
+    const result = await db.Contests.findOne({
       where: {
         id: req.body.contestId,
       },
       attributes: ['status'],
     });
-    if (
-      result.get({ plain: true }).status === CONSTANTS.CONTEST_STATUS_ACTIVE
-    ) {
+    if (result.get({ plain: true }).status === CONSTANTS.CONTEST_STATUS_ACTIVE) {
       next();
     } else {
       return next(new RightsError());
@@ -82,9 +85,10 @@ module.exports.canSendOffer = async (req, res, next) => {
 
 module.exports.onlyForCustomerWhoCreateContest = async (req, res, next) => {
   try {
-    const result = await bd.Contests.findOne({
+    const tokenData = decodeToken(req);
+    const result = await db.Contests.findOne({
       where: {
-        userId: req.tokenData.userId,
+        userId: tokenData.userId,
         id: req.body.contestId,
         status: CONSTANTS.CONTEST_STATUS_ACTIVE,
       },
@@ -100,11 +104,12 @@ module.exports.onlyForCustomerWhoCreateContest = async (req, res, next) => {
 
 module.exports.canUpdateContest = async (req, res, next) => {
   try {
-    const result = bd.Contests.findOne({
+    const tokenData = decodeToken(req);
+    const result = db.Contests.findOne({
       where: {
-        userId: req.tokenData.userId,
+        userId: tokenData.userId,
         id: req.body.contestId,
-        status: { [bd.Sequelize.Op.not]: CONSTANTS.CONTEST_STATUS_FINISHED },
+        status: { [db.Sequelize.Op.not]: CONSTANTS.CONTEST_STATUS_FINISHED },
       },
     });
     if (!result) {
