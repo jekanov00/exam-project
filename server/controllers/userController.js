@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
-const CONSTANTS = require('./../constants');
+const bcrypt = require('bcrypt');
+const moment = require('moment');
+const uuid = require('uuid/v1');
+const CONSTANTS = require('../constants');
 const {
   sequelize,
   Contest,
@@ -12,11 +15,8 @@ const NotFound = require('../errors/UserNotFoundError');
 const ServerError = require('../errors/ServerError');
 const UtilFunctions = require('../utils/functions');
 const NotEnoughMoney = require('../errors/NotEnoughMoney');
-const bcrypt = require('bcrypt');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
-const moment = require('moment');
-const uuid = require('uuid/v1');
-const controller = require('./../socketInit');
+const controller = require('../socketInit');
 const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
@@ -39,9 +39,9 @@ module.exports.login = async (req, res, next) => {
         rating: foundUser.rating,
       },
       CONSTANTS.JWT_SECRET,
-      { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME }
+      { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME },
     );
-    await userQueries.updateUser({ accessToken: accessToken }, foundUser.id);
+    await userQueries.updateUser({ accessToken }, foundUser.id);
     res.send({ token: accessToken });
   } catch (err) {
     next(err);
@@ -50,7 +50,7 @@ module.exports.login = async (req, res, next) => {
 module.exports.registration = async (req, res, next) => {
   try {
     const newUser = await userQueries.userCreation(
-      Object.assign(req.body, { password: req.hashPass })
+      Object.assign(req.body, { password: req.hashPass }),
     );
     const accessToken = jwt.sign(
       {
@@ -65,9 +65,9 @@ module.exports.registration = async (req, res, next) => {
         rating: newUser.rating,
       },
       CONSTANTS.JWT_SECRET,
-      { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME }
+      { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME },
     );
-    await userQueries.updateUser({ accessToken: accessToken }, newUser.id);
+    await userQueries.updateUser({ accessToken }, newUser.id);
     res.send({ token: accessToken });
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
@@ -79,21 +79,19 @@ module.exports.registration = async (req, res, next) => {
 };
 
 function getQuery(offerId, userId, mark, isFirst, transaction) {
-  const getCreateQuery = () =>
-    ratingQueries.createRating(
-      {
-        offerId: offerId,
-        mark: mark,
-        userId: userId,
-      },
-      transaction
-    );
-  const getUpdateQuery = () =>
-    ratingQueries.updateRating(
-      { mark: mark },
-      { offerId: offerId, userId: userId },
-      transaction
-    );
+  const getCreateQuery = () => ratingQueries.createRating(
+    {
+      offerId,
+      mark,
+      userId,
+    },
+    transaction,
+  );
+  const getUpdateQuery = () => ratingQueries.updateRating(
+    { mark },
+    { offerId, userId },
+    transaction,
+  );
   return isFirst ? getCreateQuery : getUpdateQuery;
 }
 
@@ -101,8 +99,10 @@ module.exports.changeMark = async (req, res, next) => {
   let sum = 0;
   let avg = 0;
   let transaction;
-  const { isFirst, offerId, mark, creatorId } = req.body;
-  const userId = req.tokenData.userId;
+  const {
+    isFirst, offerId, mark, creatorId,
+  } = req.body;
+  const { userId } = req.tokenData;
   try {
     transaction = await sequelize.transaction({
       isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED,
@@ -138,9 +138,11 @@ module.exports.payment = async (req, res, next) => {
   const transaction = await sequelize.transaction();
   try {
     const {
-      body: { cvc, expiry, price, number },
+      body: {
+        cvc, expiry, price, number,
+      },
     } = req;
-    const squadhelpCreditCardNumber = process.env.SQUADHELP_CREDIT_CARD_NUMBER;
+    const squadhelpCreditCardNumber = process.env.SQUADHELP_CREDIT_CARD_NUMBER ?? '4564654564564564';
 
     const clientCreditCard = await CreditCard.findOne({
       where: {
@@ -162,29 +164,28 @@ module.exports.payment = async (req, res, next) => {
       {
         balance: Sequelize.literal(`"Banks"."balance" - ${price}`),
       },
-      { transaction }
+      { transaction },
     );
 
     await squadhelpCreditCard.update(
       {
         balance: Sequelize.literal(`"Banks"."balance" + ${price}`),
       },
-      { transaction }
+      { transaction },
     );
 
     const orderId = uuid();
     req.body.contests.forEach((contest, index) => {
-      const prize =
-        index === req.body.contests.length - 1
-          ? Math.ceil(req.body.price / req.body.contests.length)
-          : Math.floor(req.body.price / req.body.contests.length);
+      const prize = index === req.body.contests.length - 1
+        ? Math.ceil(req.body.price / req.body.contests.length)
+        : Math.floor(req.body.price / req.body.contests.length);
       contest = Object.assign(contest, {
         status: index === 0 ? 'active' : 'pending',
         userId: req.tokenData.userId,
         priority: index + 1,
-        orderId: orderId,
+        orderId,
         createdAt: moment().format('YYYY-MM-DD HH:mm'),
-        prize: prize,
+        prize,
       });
     });
     await Contest.bulkCreate(req.body.contests, transaction);
@@ -203,7 +204,7 @@ module.exports.updateUser = async (req, res, next) => {
     }
     const updatedUser = await userQueries.updateUser(
       req.body,
-      req.tokenData.userId
+      req.tokenData.userId,
     );
     res.send({
       firstName: updatedUser.firstName,
@@ -225,25 +226,25 @@ module.exports.cashout = async (req, res, next) => {
   try {
     transaction = await sequelize.transaction();
     const updatedUser = await userQueries.updateUser(
-      { balance: sequelize.literal('balance - ' + req.body.sum) },
+      { balance: sequelize.literal(`balance - ${req.body.sum}`) },
       req.tokenData.userId,
-      transaction
+      transaction,
     );
     await bankQueries.updateBankBalance(
       {
         balance: sequelize.literal(`CASE 
                 WHEN "cardNumber"='${req.body.number.replace(
-                  / /g,
-                  ''
-                )}' AND "expiry"='${req.body.expiry}' AND "cvc"='${
-          req.body.cvc
-        }'
+    / /g,
+    '',
+  )}' AND "expiry"='${req.body.expiry}' AND "cvc"='${
+  req.body.cvc
+}'
                     THEN "balance"+${req.body.sum}
                 WHEN "cardNumber"='${
-                  CONSTANTS.SQUADHELP_BANK_NUMBER
-                }' AND "expiry"='${
-          CONSTANTS.SQUADHELP_BANK_EXPIRY
-        }' AND "cvc"='${CONSTANTS.SQUADHELP_BANK_CVC}'
+  CONSTANTS.SQUADHELP_BANK_NUMBER
+}' AND "expiry"='${
+  CONSTANTS.SQUADHELP_BANK_EXPIRY
+}' AND "cvc"='${CONSTANTS.SQUADHELP_BANK_CVC}'
                     THEN "balance"-${req.body.sum}
                  END
                 `),
@@ -256,7 +257,7 @@ module.exports.cashout = async (req, res, next) => {
           ],
         },
       },
-      transaction
+      transaction,
     );
     transaction.commit();
     res.send({ balance: updatedUser.balance });

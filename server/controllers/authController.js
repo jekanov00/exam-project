@@ -14,14 +14,13 @@ exports.login = async (req, res, next) => {
 
     if (userInstance && (await userInstance.comparePassword(password))) {
       const data = await AuthService.createSession(userInstance);
-      res.status(201).send({
+      return res.status(201).send({
         data,
       });
-      return;
     }
-    next(createHttpError(403, 'Incorrect password or email'));
+    return next(createHttpError(403, 'Incorrect password or email'));
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -31,14 +30,13 @@ exports.signUp = async (req, res, next) => {
     const userInstance = await User.create(body);
     if (userInstance) {
       const data = await AuthService.createSession(userInstance);
-      res.status(201).send({
+      return res.status(201).send({
         data,
       });
-      return;
     }
-    next(createHttpError(401));
+    return next(createHttpError(401));
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -54,13 +52,12 @@ exports.refresh = async (req, res, next) => {
     });
     if (refreshTokenInstance && refreshTokenInstance.isUnexpired()) {
       const data = await AuthService.refreshSession(refreshTokenInstance);
-      res.send({
+      return res.send({
         data,
       });
-      return;
     }
-    next(createHttpError(401));
+    return next(createHttpError(401));
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
