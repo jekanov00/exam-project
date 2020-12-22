@@ -22,11 +22,11 @@ module.exports.canGetContest = async (req, res, next) => {
   const tokenData = decodeToken(req);
   try {
     if (tokenData.userRole === CONSTANTS.CUSTOMER) {
-      result = await db.Contests.findOne({
+      result = await db.Contest.findOne({
         where: { id: req.headers.contestid, userId: tokenData.userId },
       });
     } else if (tokenData.userRole === CONSTANTS.CREATOR) {
-      result = await db.Contests.findOne({
+      result = await db.Contest.findOne({
         where: {
           id: req.headers.contestid,
           status: {
@@ -67,7 +67,7 @@ module.exports.canSendOffer = async (req, res, next) => {
     return next(new RightsError());
   }
   try {
-    const result = await db.Contests.findOne({
+    const result = await db.Contest.findOne({
       where: {
         id: req.body.contestId,
       },
@@ -86,7 +86,7 @@ module.exports.canSendOffer = async (req, res, next) => {
 module.exports.onlyForCustomerWhoCreateContest = async (req, res, next) => {
   try {
     const tokenData = decodeToken(req);
-    const result = await db.Contests.findOne({
+    const result = await db.Contest.findOne({
       where: {
         userId: tokenData.userId,
         id: req.body.contestId,
@@ -105,7 +105,7 @@ module.exports.onlyForCustomerWhoCreateContest = async (req, res, next) => {
 module.exports.canUpdateContest = async (req, res, next) => {
   try {
     const tokenData = decodeToken(req);
-    const result = db.Contests.findOne({
+    const result = db.Contest.findOne({
       where: {
         userId: tokenData.userId,
         id: req.body.contestId,

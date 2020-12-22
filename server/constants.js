@@ -28,4 +28,6 @@ module.exports = {
   NEW_MESSAGE: 'newMessage',
   CHANGE_BLOCK_STATUS: 'CHANGE_BLOCK_STATUS',
   DEVICES_PER_USER_LIMIT: 3,
+  CUSTOMER: 'customer',
+  CREATOR: 'creator',
 };
