@@ -5,8 +5,8 @@ import { updateUserData, changeEditModeOnUserProfile } from '../../actions/actio
 import CONSTANTS from '../../constants';
 import styles from './UserInfo.module.sass';
 
-const UserInfo = props => {
-  const updateUserData = values => {
+const UserInfo = (props) => {
+  const updateUserData = (values) => {
     const formData = new FormData();
     formData.append('file', values.file);
     formData.append('firstName', values.firstName);
@@ -23,7 +23,11 @@ const UserInfo = props => {
         <UpdateUserInfoForm onSubmit={updateUserData} />
       ) : (
         <div className={styles.infoContainer}>
-          <img src={avatar === null ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`} className={styles.avatar} alt="user" />
+          <img
+            src={avatar === null ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`}
+            className={styles.avatar}
+            alt="user"
+          />
           <div className={styles.infoContainer}>
             <div className={styles.infoBlock}>
               <span className={styles.label}>First Name</span>
@@ -61,16 +65,16 @@ const UserInfo = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { user } = state.auth;
   const { isEdit } = state.userProfile;
   return { user, isEdit };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    updateUser: data => dispatch(updateUserData(data)),
-    changeEditMode: data => dispatch(changeEditModeOnUserProfile(data)),
+    updateUser: (data) => dispatch(updateUserData(data)),
+    changeEditMode: (data) => dispatch(changeEditModeOnUserProfile(data)),
   };
 };
 
