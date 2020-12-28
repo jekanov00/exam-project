@@ -1,5 +1,5 @@
 import React from "react";
-import CONTANTS from "../../constants";
+import CONSTANTS from "../../constants";
 import { connect } from "react-redux";
 import { setOffer, clearAddOfferError } from "../../actions/actionCreator";
 import styles from "./OfferForm.module.sass";
@@ -14,7 +14,7 @@ let contestType;
 
 const OfferForm = (props) => {
   const renderOfferInput = () => {
-    if (props.contestType === CONTANTS.LOGO_CONTEST) {
+    if (props.contestType === CONSTANTS.LOGO_CONTEST) {
       return (
         <Field
           name="offerData"
@@ -98,7 +98,7 @@ export default connect(
   reduxForm({
     form: "offerForm",
     validate: customValidator(
-      contestType === CONTANTS.LOGO_CONTEST
+      contestType === CONSTANTS.LOGO_CONTEST
         ? Schems.LogoOfferSchema
         : Schems.TextOfferSchema
     ),

@@ -77,7 +77,7 @@ const PayForm = props => {
           <span>Card Number</span>
           <Field
             isInputMask={true}
-            mask="9999 9999 9999 9999 999"
+            mask="9999 9999 9999 9999"
             name="number"
             classes={{
               container: styles.inputContainer,
@@ -114,7 +114,7 @@ const PayForm = props => {
             <span>* Security Code</span>
             <Field
               isInputMask={true}
-              mask="9999"
+              mask="999"
               name="cvc"
               classes={{
                 container: styles.inputContainer,

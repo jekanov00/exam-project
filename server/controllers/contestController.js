@@ -13,7 +13,11 @@ module.exports.dataForContest = async (req, res, next) => {
   try {
     const whereOption = {
       type: {
-        [Sequelize.Op.or]: _.compact([req.body.characteristic1, req.body.characteristic2, 'industry']),
+        [Sequelize.Op.or]: _.compact([
+          req.body.characteristic1,
+          req.body.characteristic2,
+          'industry',
+        ]),
       },
     };
     const characteristics = await Select.findAll({
@@ -111,6 +115,11 @@ module.exports.updateContest = async (req, res, next) => {
 
 module.exports.setNewOffer = async (req, res, next) => {
   const tokenData = decodeToken(req);
+  const userInstance = await User.findOne({
+    where: {
+      id: tokenData.userId,
+    },
+  });
   const obj = {};
   if (req.body.contestType === CONSTANTS.LOGO_CONTEST) {
     obj.fileName = req.file.filename;
@@ -125,18 +134,22 @@ module.exports.setNewOffer = async (req, res, next) => {
     delete result.contestId;
     delete result.userId;
     controller.getNotificationController().emitEntryCreated(req.body.customerId);
-    const user = { ...tokenData, id: tokenData.userId };
+    const user = { ...userInstance.dataValues, id: tokenData.userId };
+    delete user.password;
     return res.send({ ...result, User: user });
   } catch (e) {
-    return next(new ServerError());
+    return next(new ServerError(e));
   }
 };
 
 const rejectOffer = async (offerId, creatorId, contestId) => {
-  const rejectedOffer = await contestQueries.updateOffer({ status: CONSTANTS.OFFER_STATUS_REJECTED }, { id: offerId });
+  const rejectedOffer = await contestQueries.updateOffer(
+    { status: CONSTANTS.OFFER_STATUS_REJECTED },
+    { id: offerId },
+  );
   controller
     .getNotificationController()
-    .emitChangeOfferStatus(creatorId, 'Someone of yours offers was rejected', contestId);
+    .emitChangeOfferStatus(creatorId, 'Some of yours offers was rejected', contestId);
   return rejectedOffer;
 };
 
@@ -144,19 +157,23 @@ const resolveOffer = async (contestId, creatorId, orderId, offerId, priority, tr
   const finishedContest = await contestQueries.updateContestStatus(
     {
       status: sequelize.literal(`   CASE
-            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${CONSTANTS.CONTEST_STATUS_FINISHED}'
-            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${CONSTANTS.CONTEST_STATUS_ACTIVE}'
+            WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${
+        CONSTANTS.CONTEST_STATUS_FINISHED
+      }'
+            WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${
+        CONSTANTS.CONTEST_STATUS_ACTIVE
+      }'
             ELSE '${CONSTANTS.CONTEST_STATUS_PENDING}'
             END
     `),
     },
     { orderId },
-    transaction
+    transaction,
   );
   await userQueries.updateUser(
     { balance: sequelize.literal(`balance + ${finishedContest.prize}`) },
     creatorId,
-    transaction
+    transaction,
   );
   const updatedOffers = await contestQueries.updateOfferStatus(
     {
@@ -169,7 +186,7 @@ const resolveOffer = async (contestId, creatorId, orderId, offerId, priority, tr
     {
       contestId,
     },
-    transaction
+    transaction,
   );
   transaction.commit();
   const arrayRoomsId = [];
@@ -180,8 +197,10 @@ const resolveOffer = async (contestId, creatorId, orderId, offerId, priority, tr
   });
   controller
     .getNotificationController()
-    .emitChangeOfferStatus(arrayRoomsId, 'Someone of yours offers was rejected', contestId);
-  controller.getNotificationController().emitChangeOfferStatus(creatorId, 'Someone of your offers WIN', contestId);
+    .emitChangeOfferStatus(arrayRoomsId, 'Some of yours offers was rejected', contestId);
+  controller
+    .getNotificationController()
+    .emitChangeOfferStatus(creatorId, 'Some of your offers WIN', contestId);
   return updatedOffers[0].dataValues;
 };
 
@@ -203,7 +222,7 @@ module.exports.setOfferStatus = async (req, res, next) => {
         req.body.orderId,
         req.body.offerId,
         req.body.priority,
-        transaction
+        transaction,
       );
       res.send(winningOffer);
     } catch (err) {
@@ -248,7 +267,7 @@ module.exports.getContests = (req, res, next) => {
     req.body.typeIndex,
     req.body.contestId,
     req.body.industry,
-    req.body.awardSort
+    req.body.awardSort,
   );
   Contest.findAll({
     where: predicates.where,

@@ -9,7 +9,7 @@ const storageContestFiles = multer.diskStorage({
     cb(null, filePath);
   },
   filename(req, file, cb) {
-    cb(null, Date.now() + file.originalname);
+    cb(null, file.originalname);
   },
 });
 
@@ -28,9 +28,9 @@ const uploadLogoFiles = multer({ storage: storageContestFiles }).single(
 module.exports.uploadAvatar = (req, res, next) => {
   uploadAvatars(req, res, (err) => {
     if (err instanceof multer.MulterError) {
-      next(new ServerError());
+      next(new ServerError(err));
     } else if (err) {
-      next(new ServerError());
+      next(new ServerError(err));
     }
     return next();
   });
@@ -39,9 +39,9 @@ module.exports.uploadAvatar = (req, res, next) => {
 module.exports.uploadContestFiles = (req, res, next) => {
   uploadContestFiles(req, res, (err) => {
     if (err instanceof multer.MulterError) {
-      next(new ServerError());
+      next(new ServerError(err));
     } else if (err) {
-      next(new ServerError());
+      next(new ServerError(err));
     }
     return next();
   });
@@ -50,9 +50,9 @@ module.exports.uploadContestFiles = (req, res, next) => {
 module.exports.updateContestFile = (req, res, next) => {
   updateContestFile(req, res, (err) => {
     if (err instanceof multer.MulterError) {
-      next(new ServerError());
+      next(new ServerError(err));
     } else if (err) {
-      next(new ServerError());
+      next(new ServerError(err));
     }
     return next();
   });
@@ -61,9 +61,9 @@ module.exports.updateContestFile = (req, res, next) => {
 module.exports.uploadLogoFiles = (req, res, next) => {
   uploadLogoFiles(req, res, (err) => {
     if (err instanceof multer.MulterError) {
-      next(new ServerError());
+      next(new ServerError(err));
     } else if (err) {
-      next(new ServerError());
+      next(new ServerError(err));
     }
     return next();
   });

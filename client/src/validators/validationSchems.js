@@ -127,7 +127,7 @@ const validationSchems = {
       .required("required"),
     name: yup
       .string()
-      .min(1, "required atleast one symbol")
+      .min(1, "required at least one symbol")
       .required("required"),
     cvc: yup
       .string()

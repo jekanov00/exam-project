@@ -3,7 +3,12 @@ import styles from './OfferBox.module.sass';
 import CONSTANTS from '../../constants';
 import { connect } from 'react-redux';
 import Rating from 'react-rating';
-import { changeMark, clearChangeMarkError, goToExpandedDialog, changeShowImage } from '../../actions/actionCreator';
+import {
+  changeMark,
+  clearChangeMarkError,
+  goToExpandedDialog,
+  changeShowImage,
+} from '../../actions/actionCreator';
 import { withRouter } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import classNames from 'classnames';
@@ -31,8 +36,8 @@ const OfferBox = (props) => {
 
   const resolveOffer = () => {
     confirmAlert({
-      title: 'confirm',
-      message: 'Are u sure?',
+      title: 'Confirm',
+      message: 'Are you sure?',
       buttons: [
         {
           label: 'Yes',
@@ -47,8 +52,8 @@ const OfferBox = (props) => {
 
   const rejectOffer = () => {
     confirmAlert({
-      title: 'confirm',
-      message: 'Are u sure?',
+      title: 'Confirm',
+      message: 'Are you sure?',
       buttons: [
         {
           label: 'Yes',
@@ -89,14 +94,21 @@ const OfferBox = (props) => {
   };
 
   const { data, role, id, contestType } = props;
-  const { avatar, firstName, lastName, email, rating } = props.data.User;
+  const { avatar, firstName, lastName, email, rating } = data.User;
   return (
     <div className={styles.offerContainer}>
       {offerStatus()}
       <div className={styles.mainInfoContainer}>
         <div className={styles.userInfo}>
           <div className={styles.creativeInfoContainer}>
-            <img src={avatar === null ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`} alt="user" />
+            <img
+              src={
+                avatar === (null && undefined)
+                  ? CONSTANTS.ANONYM_IMAGE_PATH
+                  : `${CONSTANTS.publicURL}${avatar}`
+              }
+              alt="user"
+            />
             <div className={styles.nameAndEmail}>
               <span>{firstName + ' ' + lastName}</span>
               <span>{email}</span>
@@ -109,7 +121,9 @@ const OfferBox = (props) => {
               fractions={2}
               fullSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
               placeholderSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
-              emptySymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`} alt="star-outline" />}
+              emptySymbol={
+                <img src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`} alt="star-outline" />
+              }
               readonly={true}
             />
           </div>
@@ -135,7 +149,9 @@ const OfferBox = (props) => {
               fractions={2}
               fullSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
               placeholderSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
-              emptySymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`} alt="star" />}
+              emptySymbol={
+                <img src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`} alt="star" />
+              }
               onClick={changeMark}
               placeholderRating={data.mark}
             />

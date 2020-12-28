@@ -148,7 +148,7 @@ export const createCatalog = (data) => {
 export const updateUserData = (data) => {
   return {
     type: ACTION.UPDATE_USER_DATA,
-    data: data,
+    data,
   };
 };
 

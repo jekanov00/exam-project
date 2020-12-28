@@ -7,13 +7,13 @@ const controller = require('../socketInit');
 const { decodeToken } = require('../services/tokenService');
 
 module.exports.addMessage = async (req, res, next) => {
-  const tokenUserId = decodeToken(req);
-  const userInstance = User.findOne({
+  const tokenUserId = decodeToken(req).userId;
+  const userInstance = await User.findOne({
     where: {
       id: tokenUserId,
     },
   });
-  const participants = [userInstance.userId, req.body.recipient];
+  const participants = [userInstance.id, req.body.recipient];
   participants.sort((participant1, participant2) => participant1 - participant2);
   try {
     const newConversation = await Conversation.findOneAndUpdate(
@@ -30,18 +30,18 @@ module.exports.addMessage = async (req, res, next) => {
     );
     const conversationId = newConversation._id;
     const message = new Message({
-      sender: userInstance.userId,
+      sender: userInstance.id,
       body: req.body.messageBody,
       conversation: conversationId,
     });
     await message.save();
     message._doc.participants = participants;
     const interlocutorId = participants.filter(
-      (participant) => participant !== tokenData.userId,
+      (participant) => participant !== tokenUserId,
     )[0];
     const preview = {
       _id: newConversation._id,
-      sender: userInstance.userId,
+      sender: userInstance.id,
       text: req.body.messageBody,
       createAt: message.createdAt,
       participants,
@@ -52,14 +52,14 @@ module.exports.addMessage = async (req, res, next) => {
       message,
       preview: {
         _id: newConversation._id,
-        sender: userInstance.userId,
+        sender: userInstance.id,
         text: req.body.messageBody,
         createAt: message.createdAt,
         participants,
         blackList: newConversation.blackList,
         favoriteList: newConversation.favoriteList,
         interlocutor: {
-          id: userInstance.userId,
+          id: userInstance.id,
           firstName: userInstance.firstName,
           lastName: userInstance.lastName,
           displayName: userInstance.displayName,

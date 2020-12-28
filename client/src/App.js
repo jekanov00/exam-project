@@ -29,7 +29,7 @@ function App() {
       dispatch(
         refreshAuthRequest({
           refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),
-        })
+        }),
       );
     }
   });
@@ -54,7 +54,12 @@ function App() {
           {/* <Route exact path="/login" component={LoginPage} />
         <Route exact path="/signup" component={RegistrationPage} /> */}
           <PrivateRoute roles={['customer']} exact path="/payment" component={Payment} />
-          <PrivateRoute roles={['customer']} exact path="/startContest" component={StartContestPage} />
+          <PrivateRoute
+            roles={['customer']}
+            exact
+            path="/startContest"
+            component={StartContestPage}
+          />
           <PrivateRoute roles={['customer']} exact path="/startContest/nameContest">
             <ContestCreationPage contestType={CONSTANTS.NAME_CONTEST} title="Company Name" />
           </PrivateRoute>

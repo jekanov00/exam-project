@@ -33,6 +33,10 @@ class ContestPage extends React.Component {
     this.getData();
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    
+  }
+
   getData = () => {
     const { params } = this.props.match;
     this.props.getData({ contestId: params.id });
@@ -49,17 +53,25 @@ class ContestPage extends React.Component {
           setOfferStatus={this.setOfferStatus}
           contestType={this.props.contestByIdStore.contestData.contestType}
           date={new Date()}
-        />
+        />,
       );
     }
-    return array.length !== 0 ? array : <div className={styles.notFound}>There is no suggestion at this moment</div>;
+    return array.length !== 0 ? (
+      array
+    ) : (
+      <div className={styles.notFound}>There is no suggestion at this moment</div>
+    );
   };
 
-  needButtons = offerStatus => {
+  needButtons = (offerStatus) => {
     const contestCreatorId = this.props.contestByIdStore.contestData.User.id;
     const userId = this.props.user.id;
     const contestStatus = this.props.contestByIdStore.contestData.status;
-    return contestCreatorId === userId && contestStatus === CONSTANTS.CONTEST_STATUS_ACTIVE && offerStatus === CONSTANTS.OFFER_STATUS_PENDING;
+    return (
+      contestCreatorId === userId &&
+      contestStatus === CONSTANTS.CONTEST_STATUS_ACTIVE &&
+      offerStatus === CONSTANTS.OFFER_STATUS_PENDING
+    );
   };
 
   setOfferStatus = (creatorId, offerId, command) => {
@@ -76,7 +88,7 @@ class ContestPage extends React.Component {
     this.props.setOfferStatus(obj);
   };
 
-  findConversationInfo = interlocutorId => {
+  findConversationInfo = (interlocutorId) => {
     const { messagesPreview } = this.props.chatStore;
     const { id } = this.props.user;
     const participants = [id, interlocutorId];
@@ -104,13 +116,31 @@ class ContestPage extends React.Component {
 
   render() {
     const { role } = this.props.user;
-    const { contestByIdStore, changeShowImage, changeContestViewMode, getData, clearSetOfferStatusError } = this.props;
-    const { isShowOnFull, imagePath, error, isFetching, isBrief, contestData, offers, setOfferStatusError } = contestByIdStore;
+    const {
+      contestByIdStore,
+      changeShowImage,
+      changeContestViewMode,
+      getData,
+      clearSetOfferStatusError,
+    } = this.props;
+    const {
+      isShowOnFull,
+      imagePath,
+      error,
+      isFetching,
+      isBrief,
+      contestData,
+      offers,
+      setOfferStatusError,
+    } = contestByIdStore;
     return (
       <div>
         {/*<Chat/>*/}
         {isShowOnFull && (
-          <LightBox mainSrc={`${CONSTANTS.publicURL}${imagePath}`} onCloseRequest={() => changeShowImage({ isShowOnFull: false, imagePath: null })} />
+          <LightBox
+            mainSrc={`${CONSTANTS.publicURL}${imagePath}`}
+            onCloseRequest={() => changeShowImage({ isShowOnFull: false, imagePath: null })}
+          />
         )}
         <Header />
         {error ? (
@@ -129,16 +159,14 @@ class ContestPage extends React.Component {
                   onClick={() => changeContestViewMode(true)}
                   className={classNames(styles.btn, {
                     [styles.activeBtn]: isBrief,
-                  })}
-                >
+                  })}>
                   Brief
                 </span>
                 <span
                   onClick={() => changeContestViewMode(false)}
                   className={classNames(styles.btn, {
                     [styles.activeBtn]: !isBrief,
-                  })}
-                >
+                  })}>
                   Offer
                 </span>
               </div>
@@ -146,11 +174,20 @@ class ContestPage extends React.Component {
                 <Brief contestData={contestData} role={role} goChat={this.goChat} />
               ) : (
                 <div className={styles.offersContainer}>
-                  {role === CONSTANTS.CREATOR && contestData.status === CONSTANTS.CONTEST_STATUS_ACTIVE && (
-                    <OfferForm contestType={contestData.contestType} contestId={contestData.id} customerId={contestData.User.id} />
-                  )}
+                  {role === CONSTANTS.CREATOR &&
+                    contestData.status === CONSTANTS.CONTEST_STATUS_ACTIVE && (
+                      <OfferForm
+                        contestType={contestData.contestType}
+                        contestId={contestData.id}
+                        customerId={contestData.User.id}
+                      />
+                    )}
                   {setOfferStatusError && (
-                    <Error data={setOfferStatusError.data} status={setOfferStatusError.status} clearError={clearSetOfferStatusError} />
+                    <Error
+                      data={setOfferStatusError.data}
+                      status={setOfferStatusError.status}
+                      clearError={clearSetOfferStatusError}
+                    />
                   )}
                   <div className={styles.offers}>{this.setOffersList()}</div>
                 </div>
@@ -164,7 +201,7 @@ class ContestPage extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
     contestByIdStore,
     auth: { user },
@@ -173,15 +210,15 @@ const mapStateToProps = state => {
   return { contestByIdStore, user, chatStore };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getData: data => dispatch(getContestById(data)),
-    setOfferStatus: data => dispatch(setOfferStatus(data)),
+    getData: (data) => dispatch(getContestById(data)),
+    setOfferStatus: (data) => dispatch(setOfferStatus(data)),
     clearSetOfferStatusError: () => dispatch(clearSetOfferStatusError()),
-    goToExpandedDialog: data => dispatch(goToExpandedDialog(data)),
-    changeEditContest: data => dispatch(changeEditContest(data)),
-    changeContestViewMode: data => dispatch(changeContestViewMode(data)),
-    changeShowImage: data => dispatch(changeShowImage(data)),
+    goToExpandedDialog: (data) => dispatch(goToExpandedDialog(data)),
+    changeEditContest: (data) => dispatch(changeEditContest(data)),
+    changeContestViewMode: (data) => dispatch(changeContestViewMode(data)),
+    changeShowImage: (data) => dispatch(changeShowImage(data)),
   };
 };
 

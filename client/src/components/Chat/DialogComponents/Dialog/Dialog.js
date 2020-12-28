@@ -22,7 +22,7 @@ class Dialog extends React.Component {
     this.messagesEnd.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  componentWillReceiveProps(nextProps, nextContext) {
+  UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.interlocutor.id !== this.props.interlocutor.id)
       this.props.getDialog({ interlocutorId: nextProps.interlocutor.id });
   }
@@ -72,9 +72,9 @@ class Dialog extends React.Component {
     const userIndex = participants.indexOf(userId);
     let message;
     if (chatData && blackList[userIndex]) {
-      message = "You block him";
+      message = "You blocked him";
     } else if (chatData && blackList.includes(true)) {
-      message = "He block you";
+      message = "He blocked you";
     }
     return <span className={styles.messageBlock}>{message}</span>;
   };
