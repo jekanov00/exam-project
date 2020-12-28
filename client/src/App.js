@@ -9,6 +9,7 @@ import NotFound from './components/NotFound/NotFound';
 import Home from './pages/Home/Home';
 import ContestPage from './pages/ContestPage/ContestPage';
 import UserProfile from './pages/UserProfile/UserProfile';
+import HowItWorks from './pages/HowItWorks';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import ContestCreationPage from './pages/ContestCreation/ContestCreationPage';
@@ -53,6 +54,7 @@ function App() {
           <Route path={['/login', '/signup']} component={AuthPage} />
           {/* <Route exact path="/login" component={LoginPage} />
         <Route exact path="/signup" component={RegistrationPage} /> */}
+          <Route path={'/howitworks'} exact component={HowItWorks} />
           <PrivateRoute roles={['customer']} exact path="/payment" component={Payment} />
           <PrivateRoute
             roles={['customer']}

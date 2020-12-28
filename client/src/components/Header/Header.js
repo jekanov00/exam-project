@@ -68,7 +68,7 @@ function Header() {
     return null;
   }
   return (
-    <div className={styles.headerContainer}>
+    <div id={'header'} className={styles.headerContainer}>
       <div className={styles.fixedHeader}>
         <span className={styles.info}>Squadhelp recognized as one of the Most Innovative Companies by Inc Magazine.</span>
         <a href="http://www.google.com">Read Announcement</a>
@@ -120,7 +120,7 @@ function Header() {
                 <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt="menu" />
                 <ul>
                   <li>
-                    <a href="http://www.google.com">HOW IT WORKS</a>
+                    <Link to={'/howitworks'}>HOW IT WORKS</Link>
                   </li>
                   <li>
                     <a href="http://www.google.com">PRICING</a>
