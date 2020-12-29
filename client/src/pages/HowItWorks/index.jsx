@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import styles from './howitworks.module.sass';
+import CONSTANTS from '../../constants';
 
 function HowItWorks() {
   const [scrollPosition, setScrollPosition] = useState(window.scrollY);
@@ -40,7 +41,24 @@ function HowItWorks() {
       <Header />
       <section className={styles.description}>
         <div className={styles.container}>
-          <div className={styles.video}>video</div>
+          <div className={styles.video}>
+            <video
+              src={`${CONSTANTS.STATIC_IMAGES_PATH}howitworks.bin`}
+              crossOrigin={'anonymous'}
+              poster={`${CONSTANTS.STATIC_IMAGES_PATH}howitworks_thumbnail.webp`}
+              aria-label={'Video'}
+              defaultPlaybackRate={'1'}
+              controlsList={'nodownload'}
+              playsInline
+              controls>
+              <track
+                kind={'captions'}
+                label={'English'}
+                srclang={'eng'}
+                src={'https://fast.wistia.net/embed/captions/vfxvect60o.vtt?language=eng'}
+              />
+            </video>
+          </div>
           <article className={styles.descriptionExposition}>
             <h1 className={styles.sectionHeader}>How Does Squadhelp Work?</h1>
             <p className={styles.text}>
