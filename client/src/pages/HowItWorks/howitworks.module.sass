@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;700&display=swap')
+
+.text
+    font-family: 'Raleway', sans-serif
+    font-size: 16px
+    font-weight: 400
+    color: #333333
+
+section
+    margin-top: 80px
+
+.sectionHeader
+    font-family: 'Raleway', sans-serif
+    font-size: 36px
+    font-weight: 700
+    color: #515b5f
+    margin: 0 0 20px
+    text-transform: capitalize
+
+.link
+    color: #28d2d0
+    text-decoration: underline
+    outline: none
+    font-family: 'Raleway', sans-serif
+    font-weight: 500
+
+.container
+    display: flex
+    max-width: 1170px
+    margin: auto
+
+.description
+
+    .container > *
+        flex: 1
+        padding: 15px
+
+    .descriptionExposition
+        line-height: 25px
+
+    .sectionHeader
+        line-height: 40px
+        padding-bottom: 25px
+
+.steps
+
+    .sectionHeader
+        padding: 50px 0
+
+    .container
+        flex-direction: column
+        align-items: center
+    
+    .startContestContainer
+        background-color: #28d2d0
+        width: 100%
+        padding: 35px 0
+        margin: 15px 0 45px
+        
+        .startContestBtn
+            margin: 0 auto
+            display: block
+            padding: 18px 0
+            border: 2px solid #ffffff
+            color: #ffffff
+            border-radius: 5px
+            font-size: 20px
+            text-align: center
+            width: 235px
+            text-transform: uppercase
+            outline: none
+            text-decoration: none
+            line-height: 1
+            font-family: 'Raleway', sans-serif
+            font-weight: 700
+            box-sizing: border-box
+
+
+            &:hover
+                background-color: #ffffff
+                color: #28d2d0 !important
+    
+    .stepsContainer
+        display: flex
+        justify-content: space-between
+        padding: 25px 97px
+
+        .step
+            flex: 1
+            padding: 0 15px
+            text-align: center
+
+            &:first-child .stepNumber
+                color: #ffffff
+                background-color: #28d2d0
+
+
+            .stepHeader
+                text-transform: capitalize
+                font-family: 'Raleway', sans-serif
+                font-weight: 700
+                font-size: 16px
+                padding: 20px 0
+                margin: 0
+                color: #515b5f
+
+            .stepNumber
+                font-family: 'Raleway', sans-serif
+                font-weight: 700
+                font-size: 30px
+                line-height: 90px
+                background-color: #ebebeb
+                width: 90px
+                height: 90px
+                margin: 0 auto
+                color: #000000
+                border-radius: 90px
+                text-align: center
+
+                &:hover
+                    color: #ffffff
+                    background-color: #28d2d0
+                    cursor: pointer                    
+
+            .text
+                margin: 20px 0 0
+                font-size: 14px
+                line-height: 18px
+                color: #333333
+
+.faq
+    margin: 0
+    .container
+        flex-direction: column
+
+    .questionsHeaderContainer
+        overflow: hidden
+        border-bottom: 1px solid #e1e1e1
+        padding: 20px 10px
+
+        .questionMark
+            display: inline-block
+            border: 2px solid #28d2d0
+            color: #28d2d0
+            background-color: #ffffff
+            font-size: 36px
+            line-height: 60px
+            text-align: center
+            width: 60px
+            height: 60px
+            border-radius: 60px
+            font-weight: 300
+            box-sizing: border-box
+            float: left
+
+        .sectionHeader
+            display: inline-block
+            font-size: 30px
+            line-height: 60px
+            padding: 0 15px 10px
+
+    .question
+        margin: 10px 0
+        padding: 15px 25px
+
+        .questionHeader
+            font-family: 'Raleway', sans-serif
+            font-size: 18px
+            line-height: 18px
+            font-weight: 700
+            color: #515b5f
+            margin: 0 0 20px
+            padding: 15px 0
+
+        .text
+            margin: 15px 0 0
+            line-height: 20px
+
+        strong
+            font-weight: 700
+
+        &:nth-child(odd)
+            background-color: #fafafa
+
+        ul
+            margin-top: 20px
+            padding: 0 25px
+
+        li
+            margin: 5px 0
+            list-style: none
+            line-height: 1
+
+            &::before
+                content: ' - '
+
+        li .link
+            font-size: 14px
+            font-weight: 400
+
+            
+
+
+.getInTouch
+    color: #ffffff
+    background-color: #455a89
+    font-size: 20px
+    padding: 35px 0
+    margin-top: 50px
+
+    .container
+        justify-content: space-between
+
+    .envelopeContainer
+        flex: 0.12
+        padding-left: 25px
+
+        .envelope
+            background-color: #ffffff
+            border-radius: 100%
+            width: 100px
+            height: 100px
+            text-align: center
+
+            i
+                line-height: 100px
+                font-size: 40px
+                color: #455a89
+
+    .touchArticle
+        flex: 0.63
+
+        .touchHeader
+            font-family: 'Raleway', sans-serif
+            font-size: 25px
+            font-weight: 700
+            margin: 0 0 20px
+            padding: 12px 0 20px
+            text-transform: capitalize
+
+
+        .text
+            font-size: 20px
+            color: inherit
+            margin: 0
+            line-height: 1
+
+            .link
+                color: #f18762
+                text-decoration: none
+                font-weight: 400
+
+    .touchBtnContainer
+        padding: 8px 15px 0
+        flex: 0.25
+
+        .touchBtn
+            font-family: 'Raleway', sans-serif
+            font-weight: 700
+            background-color: transparent
+            float: right
+            padding: 22px 40px
+            border: 2px solid #ffffff
+            color: #ffffff
+            border-radius: 5px
+            font-size: 20px
+            outline: none
+            line-height: 1
+
+
+            &:hover
+                background-color: #ffffff
+                color: #28d2d0 !important
+                cursor: pointer
+
+.scrollup
+    background-color: #f18762
+    height: 33px
+    width: 33px
+    font-size: 19px
+    line-height: 30px
+    text-align: center
+    text-decoration: none
+    position: fixed
+    bottom: 80px
+    right: 10px
+    z-index: 9999
+    opacity: 0.5
+    border-radius: 50%
+    outline: none
+    border: none
+    
+    i
+        color: #ffffff
+        font-size: 16px
+        margin-bottom: -3px
+
+    &:hover
+        opacity: 1 !important
+        cursor: pointer

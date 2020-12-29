@@ -68,7 +68,7 @@ function Header() {
     return null;
   }
   return (
-    <div id={'header'} className={styles.headerContainer}>
+    <div className={styles.headerContainer}>
       <div className={styles.fixedHeader}>
         <span className={styles.info}>Squadhelp recognized as one of the Most Innovative Companies by Inc Magazine.</span>
         <a href="http://www.google.com">Read Announcement</a>

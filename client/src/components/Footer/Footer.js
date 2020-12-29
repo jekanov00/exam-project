@@ -16,7 +16,7 @@ class Footer extends Component {
               </a>
             );
           } else {
-            return <Link to={'/howitworks'}>{i}</Link>;
+            return <Link key={i} to={'/howitworks'}>{i}</Link>;
           }
         })}
       </div>
