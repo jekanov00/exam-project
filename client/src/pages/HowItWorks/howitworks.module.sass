@@ -3,28 +3,28 @@
 .description *, .steps *, .faq *, .getInTouch *
     box-sizing: border-box
 
-.text
+section
     font-family: 'Raleway', sans-serif
+    padding-top: 80px
+
+.text
     font-size: 16px
     font-weight: 400
     color: #333333
 
-section
-    padding-top: 80px
-
 .sectionHeader
-    font-family: 'Raleway', sans-serif
     font-size: 36px
-    font-weight: 700
     color: #515b5f
     margin: 0 0 20px
+
+.sectionHeader, .stepHeader, .touchHeader
     text-transform: capitalize
+    font-weight: 700
 
 .link
     color: #28d2d0
     text-decoration: underline
     outline: none
-    font-family: 'Raleway', sans-serif
     font-weight: 500
 
 .container
@@ -87,10 +87,7 @@ section
             outline: none
             text-decoration: none
             line-height: 1
-            font-family: 'Raleway', sans-serif
             font-weight: 700
-            box-sizing: border-box
-
 
             &:hover
                 background-color: #ffffff
@@ -104,7 +101,6 @@ section
         padding: 25px 97px
 
         .step
-            box-sizing: border-box
             flex: 1
             padding: 0 15px
             margin-bottom: 20px
@@ -118,16 +114,12 @@ section
 
 
             .stepHeader
-                text-transform: capitalize
-                font-family: 'Raleway', sans-serif
-                font-weight: 700
                 font-size: 16px
                 padding: 20px 0
                 margin: 0
                 color: #515b5f
 
             .stepNumber
-                font-family: 'Raleway', sans-serif
                 font-weight: 700
                 font-size: 30px
                 line-height: 90px
@@ -148,7 +140,6 @@ section
                 margin: 20px 0 0
                 font-size: 14px
                 line-height: 18px
-                color: #333333
 
 .faq
     padding: 0
@@ -173,7 +164,6 @@ section
             height: 60px
             border-radius: 60px
             font-weight: 300
-            box-sizing: border-box
             float: left
 
         .sectionHeader
@@ -187,7 +177,6 @@ section
         padding: 15px 25px
 
         .questionHeader
-            font-family: 'Raleway', sans-serif
             font-size: 18px
             line-height: 18px
             font-weight: 700
@@ -257,13 +246,9 @@ section
         padding: 0 15px
 
         .touchHeader
-            font-family: 'Raleway', sans-serif
             font-size: 25px
-            font-weight: 700
             margin: 0 0 20px
             padding: 12px 0 20px
-            text-transform: capitalize
-
 
         .text
             font-size: 20px
@@ -281,7 +266,6 @@ section
         flex: 0.25
 
         .touchBtn
-            font-family: 'Raleway', sans-serif
             font-weight: 700
             background-color: transparent
             float: right

@@ -47,14 +47,14 @@ function HowItWorks() {
               crossOrigin={'anonymous'}
               poster={`${CONSTANTS.STATIC_IMAGES_PATH}howitworks_thumbnail.webp`}
               aria-label={'Video'}
-              defaultPlaybackRate={'1'}
+              defaultplaybackrate={'1'}
               controlsList={'nodownload'}
               playsInline
               controls>
               <track
                 kind={'captions'}
                 label={'English'}
-                srclang={'eng'}
+                srcLang={'eng'}
                 src={'https://fast.wistia.net/embed/captions/vfxvect60o.vtt?language=eng'}
               />
             </video>
