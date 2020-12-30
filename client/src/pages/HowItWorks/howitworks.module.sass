@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;700&display=swap')
 
+.description *, .steps *, .faq *, .getInTouch *
+    box-sizing: border-box
+
 .text
     font-family: 'Raleway', sans-serif
     font-size: 16px
@@ -28,6 +31,7 @@ section
     display: flex
     max-width: 1170px
     margin: auto
+    flex-wrap: wrap
 
 .description
     box-shadow: inset 0 12px 12px -6px rgba(0, 0, 0, 0.1)
@@ -35,6 +39,7 @@ section
     .container > *
         flex: 1
         padding: 15px
+        min-width: 400px
 
     .descriptionExposition
         line-height: 25px
@@ -93,13 +98,19 @@ section
     
     .stepsContainer
         display: flex
-        justify-content: space-between
+        flex-wrap: wrap
+        justify-content: center
+        align-items: flex-start
         padding: 25px 97px
 
         .step
+            box-sizing: border-box
             flex: 1
             padding: 0 15px
+            margin-bottom: 20px
             text-align: center
+            max-width: 195px
+            min-width: 195px
 
             &:first-child .stepNumber
                 color: #ffffff
@@ -221,11 +232,12 @@ section
     margin-top: 50px
 
     .container
-        justify-content: space-between
+        justify-content: stretch
 
     .envelopeContainer
         flex: 0.12
         padding-left: 25px
+        margin-right: 15px
 
         .envelope
             background-color: #ffffff
@@ -241,6 +253,8 @@ section
 
     .touchArticle
         flex: 0.63
+        min-width: 290px
+        padding: 0 15px
 
         .touchHeader
             font-family: 'Raleway', sans-serif
@@ -310,3 +324,44 @@ section
     &:hover
         opacity: 1 !important
         cursor: pointer
+
+@media screen and ( max-width: 768px )
+
+    .description
+        .container > *
+            margin: 0
+    
+    .steps
+        .stepsContainer
+            padding: 25px 15px
+            .step
+                max-width: 290px
+
+    .getInTouch
+        .touchArticle
+            flex: 1
+        .touchBtnContainer
+            flex: 1
+            .touchBtn
+                display: block
+                float: none
+                margin: 15px auto 0
+
+@media screen and ( max-width: 512px )
+
+    .description
+        padding-top: 15px
+        .container > *
+            min-width: 290px
+
+    .faq
+        .questionsHeaderContainer
+            .questionMark
+                display: none
+
+    .getInTouch
+        .container
+            justify-content: flex-start
+
+            .envelopeContainer
+                display: none
