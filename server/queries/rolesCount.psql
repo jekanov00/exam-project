@@ -1,0 +1,8 @@
+SELECT "cu"."customer", "cr"."creator", "mod"."moderator"
+FROM    
+    (SELECT count(*) AS "customer"
+    FROM "Users" WHERE "role" = 'customer') AS "cu",
+    (SELECT count(*) AS "creator"
+    FROM "Users" WHERE "role" = 'creator') AS "cr",
+    (SELECT count(*) AS "moderator"
+    FROM "Users" WHERE "role" = 'moderator') AS "mod";
