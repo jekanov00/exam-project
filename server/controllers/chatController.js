@@ -227,7 +227,6 @@ module.exports.favoriteChat = async (req, res, next) => {
 
 module.exports.createCatalog = async (req, res, next) => {
   const tokenData = decodeToken(req);
-  console.log(req.body);
   const catalog = new Catalog({
     userId: tokenData.userId,
     catalogName: req.body.catalogName,

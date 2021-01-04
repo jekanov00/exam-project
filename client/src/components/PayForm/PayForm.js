@@ -8,7 +8,7 @@ import PayInput from '../InputComponents/PayInput/PayInput';
 import customValidator from '../../validators/validator';
 import Schems from '../../validators/validationSchems';
 
-//import("react-credit-cards/es/styles-compiled.css");
+import("react-credit-cards/es/styles-compiled.css");
 
 let isPayForOrder;
 
@@ -114,7 +114,7 @@ const PayForm = props => {
             <span>* Security Code</span>
             <Field
               isInputMask={true}
-              mask="999"
+              mask="9999"
               name="cvc"
               classes={{
                 container: styles.inputContainer,

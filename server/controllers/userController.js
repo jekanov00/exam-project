@@ -109,7 +109,7 @@ module.exports.changeMark = async (req, res, next) => {
       ],
       transaction,
     });
-    for (let i = 0; i < offersArray.length; i + 1) {
+    for (let i = 0; i < offersArray.length; i += 1) {
       sum += offersArray[i].dataValues.mark;
     }
     avg = sum / offersArray.length;
@@ -151,14 +151,14 @@ module.exports.payment = async (req, res, next) => {
 
     await clientCreditCard.update(
       {
-        balance: Sequelize.literal(`"Banks"."balance" - ${price}`),
+        balance: Sequelize.literal(`balance - ${price}`),
       },
       { transaction },
     );
 
     await squadhelpCreditCard.update(
       {
-        balance: Sequelize.literal(`"Banks"."balance" + ${price}`),
+        balance: Sequelize.literal(`balance + ${price}`),
       },
       { transaction },
     );
@@ -223,16 +223,14 @@ module.exports.cashout = async (req, res, next) => {
     await bankQueries.updateBankBalance(
       {
         balance: sequelize.literal(`CASE 
-                WHEN "cardNumber"='${req.body.number.replace(/ /g, '')}' AND "expiry"='${
-          req.body.expiry
-        }' AND "cvc"='${req.body.cvc}'
-                    THEN "balance"+${req.body.sum}
-                WHEN "cardNumber"='${CONSTANTS.SQUADHELP_BANK_NUMBER}' AND "expiry"='${
-          CONSTANTS.SQUADHELP_BANK_EXPIRY
-        }' AND "cvc"='${CONSTANTS.SQUADHELP_BANK_CVC}'
-                    THEN "balance"-${req.body.sum}
-                 END
-                `),
+                                      WHEN "cardNumber"='${req.body.number.replace(/ /g, '')}' 
+                                      AND "expiry"='${req.body.expiry}' AND "cvc"='${req.body.cvc}' 
+                                      THEN "balance"+${req.body.sum} 
+                                      WHEN "cardNumber"='${CONSTANTS.SQUADHELP_BANK_NUMBER}' 
+                                      AND "expiry"='${CONSTANTS.SQUADHELP_BANK_EXPIRY}' 
+                                      AND "cvc"='${CONSTANTS.SQUADHELP_BANK_CVC}' 
+                                      THEN "balance"-${req.body.sum} 
+                                    END`),
       },
       {
         cardNumber: {
