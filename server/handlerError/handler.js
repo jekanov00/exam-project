@@ -21,7 +21,7 @@ exports.sequelizeErrorHandler = (err, req, res, next) => {
       res.status(409);
     }
     return res.send({
-      errors: errors.map(errorMapper),
+      errors: errors?.map(errorMapper),
     });
   }
   return next(err);

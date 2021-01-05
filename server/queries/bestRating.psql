@@ -1,0 +1,9 @@
+UPDATE "Users" AS "u"
+SET "balance" = "balance" + 10
+FROM (
+    SELECT "id", "role", "rating", rank() OVER (ORDER BY "rating" DESC)
+    FROM "Users"
+    WHERE "role" = 'creator'
+    LIMIT 3
+    ) AS "rank"
+WHERE "u"."id" = "rank"."id";

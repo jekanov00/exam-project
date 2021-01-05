@@ -1,0 +1,10 @@
+UPDATE "Users" AS "u"
+SET "balance" = "u"."balance" + "c"."cashback"
+FROM 
+    (SELECT "userId", sum("prize" * 0.1) AS "cashback"
+        FROM "Contests" 
+        WHERE "createdAt" >= '12-25-2020' AND "createdAt" < '01-14-2021 23:59'
+        GROUP BY "userId"
+    ) AS "c"
+WHERE "u"."id" = "c"."userId"
+AND "u"."role" = 'customer';
