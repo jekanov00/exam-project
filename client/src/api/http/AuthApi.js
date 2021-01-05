@@ -1,3 +1,4 @@
+import history from '../../browserHistory';
 import { REFRESH_TOKEN_KEY } from '../../constants';
 
 class AuthApi {
@@ -52,6 +53,7 @@ class AuthApi {
   logout = () => {
     this.#_token = null;
     localStorage.removeItem(REFRESH_TOKEN_KEY);
+    history.push('/');
   };
 
   interceptRequest = (config) => {

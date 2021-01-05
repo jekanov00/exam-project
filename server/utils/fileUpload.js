@@ -2,34 +2,28 @@ const multer = require('multer');
 const ServerError = require('../errors/ServerError');
 
 const env = process.env.NODE_ENV || 'development';
-const filePath = env === 'production' ? '/var/www/html/images/' : 'public/images/';
+const filePath = env === 'production' ? '/var/www/html/images/' : '/public/staticImages/';
 
 const storageContestFiles = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, filePath);
   },
   filename(req, file, cb) {
-    cb(null, file.originalname);
+    cb(null, Date.now() + file.originalname);
   },
 });
 
 const uploadAvatars = multer({ storage: storageContestFiles }).single('file');
-const uploadContestFiles = multer({ storage: storageContestFiles }).array(
-  'files',
-  3,
-);
-const updateContestFile = multer({ storage: storageContestFiles }).single(
-  'file',
-);
-const uploadLogoFiles = multer({ storage: storageContestFiles }).single(
-  'offerData',
-);
+const uploadContestFiles = multer({ storage: storageContestFiles }).array('files', 3);
+const updateContestFile = multer({ storage: storageContestFiles }).single('file');
+const uploadLogoFiles = multer({ storage: storageContestFiles }).single('offerData');
 
 module.exports.uploadAvatar = (req, res, next) => {
   uploadAvatars(req, res, (err) => {
     if (err instanceof multer.MulterError) {
       next(new ServerError(err));
     } else if (err) {
+      console.log('file:', req.file);
       next(new ServerError(err));
     }
     return next();
