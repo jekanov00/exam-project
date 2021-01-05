@@ -30,11 +30,19 @@ class ContestPage extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props?.contestByIdStore?.contestData?.title) {
+      document.title = this.props.contestByIdStore.contestData.title;
+    }
     this.getData();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    
+    if (
+      prevProps?.contestByIdStore !== this.props?.contestByIdStore &&
+      this.props?.contestByIdStore?.contestData?.title
+    ) {
+      document.title = this.props.contestByIdStore.contestData.title;
+    }
   }
 
   getData = () => {

@@ -10,6 +10,7 @@ function HowItWorks() {
   const scrollBtn = document.getElementsByClassName(styles.scrollup)[0];
 
   useEffect(() => {
+    document.title = 'How Does Squadhelp Work?';
     const onScroll = () => {
       setScrollPosition(window.scrollY);
     };

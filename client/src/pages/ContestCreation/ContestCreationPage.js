@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styles from './ContestCreationPage.module.sass';
@@ -12,6 +12,11 @@ import Header from '../../components/Header/Header';
 
 const ContestCreationPage = (props) => {
   const history = useHistory();
+  useEffect(() => {
+    if (props.title) {
+      document.title = props.title;
+    }
+  });
 
   const submitDataContest = (values) => {
     props.saveContest({ type: props.contestType, info: values });

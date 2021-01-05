@@ -16,7 +16,8 @@ function AuthPage() {
 
   useLayoutEffect(() => {
     setIsLogin(location.pathname === '/login');
-  }, [location.pathname]);
+    document.title = isLogin ? 'Sign In' : 'Sign Up';
+  }, [location.pathname, isLogin]);
 
   const Form = isLogin ? SignInForm : SignUpForm;
 

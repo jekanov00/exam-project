@@ -1,32 +1,25 @@
-import React from "react";
-import Header from "../../components/Header/Header";
-import { connect } from "react-redux";
-import styles from "./UserProfile.module.sass";
-import CONSTANTS from "../../constants";
-import UserInfo from "../../components/UserInfo/UserInfo";
-import PayForm from "../../components/PayForm/PayForm";
-import classNames from "classnames";
-import {
-  cashOut,
-  changeProfileModeView,
-  clearPaymentStore,
-} from "../../actions/actionCreator";
-import Error from "../../components/Error/Error";
+import React, { useEffect } from 'react';
+import Header from '../../components/Header/Header';
+import { connect } from 'react-redux';
+import styles from './UserProfile.module.sass';
+import CONSTANTS from '../../constants';
+import UserInfo from '../../components/UserInfo/UserInfo';
+import PayForm from '../../components/PayForm/PayForm';
+import classNames from 'classnames';
+import { cashOut, changeProfileModeView, clearPaymentStore } from '../../actions/actionCreator';
+import Error from '../../components/Error/Error';
 
 const UserProfile = (props) => {
+  useEffect(() => {
+    document.title = 'Account';
+  });
+
   const pay = (values) => {
     const { number, expiry, cvc, sum } = values;
     props.cashOut({ number, expiry, cvc, sum });
   };
 
-  const {
-    balance,
-    role,
-    profileModeView,
-    changeProfileModeView,
-    error,
-    clearPaymentStore,
-  } = props;
+  const { balance, role, profileModeView, changeProfileModeView, error, clearPaymentStore } = props;
   return (
     <div>
       <Header />
@@ -36,21 +29,17 @@ const UserProfile = (props) => {
           <div className={styles.optionsContainer}>
             <div
               className={classNames(styles.optionContainer, {
-                [styles.currentOption]:
-                  profileModeView === CONSTANTS.USER_INFO_MODE,
+                [styles.currentOption]: profileModeView === CONSTANTS.USER_INFO_MODE,
               })}
-              onClick={() => changeProfileModeView(CONSTANTS.USER_INFO_MODE)}
-            >
+              onClick={() => changeProfileModeView(CONSTANTS.USER_INFO_MODE)}>
               UserInfo
             </div>
             {role === CONSTANTS.CREATOR && (
               <div
                 className={classNames(styles.optionContainer, {
-                  [styles.currentOption]:
-                    profileModeView === CONSTANTS.CASHOUT_MODE,
+                  [styles.currentOption]: profileModeView === CONSTANTS.CASHOUT_MODE,
                 })}
-                onClick={() => changeProfileModeView(CONSTANTS.CASHOUT_MODE)}
-              >
+                onClick={() => changeProfileModeView(CONSTANTS.CASHOUT_MODE)}>
                 Cashout
               </div>
             )}
@@ -61,17 +50,11 @@ const UserProfile = (props) => {
         ) : (
           <div className={styles.container}>
             {parseInt(balance) === 0 ? (
-              <span className={styles.notMoney}>
-                There is no money on your balance
-              </span>
+              <span className={styles.notMoney}>There is no money on your balance</span>
             ) : (
               <div>
                 {error && (
-                  <Error
-                    data={error.data}
-                    status={error.status}
-                    clearError={clearPaymentStore}
-                  />
+                  <Error data={error.data} status={error.status} clearError={clearPaymentStore} />
                 )}
                 <PayForm sendRequest={pay} />
               </div>

@@ -55,25 +55,25 @@ function App() {
           {/* <Route exact path="/login" component={LoginPage} />
         <Route exact path="/signup" component={RegistrationPage} /> */}
           <Route path={'/howitworks'} exact component={HowItWorks} />
-          <PrivateRoute roles={['customer']} exact path="/payment" component={Payment} />
+          <PrivateRoute roles={['customer']} exact path={'/payment'} component={Payment} />
           <PrivateRoute
             roles={['customer']}
             exact
-            path="/startContest"
+            path={'/startContest'}
             component={StartContestPage}
           />
-          <PrivateRoute roles={['customer']} exact path="/startContest/nameContest">
-            <ContestCreationPage contestType={CONSTANTS.NAME_CONTEST} title="Company Name" />
+          <PrivateRoute roles={['customer']} exact path={'/startContest/nameContest'}>
+            <ContestCreationPage contestType={CONSTANTS.NAME_CONTEST} title={'Company Name'} />
           </PrivateRoute>
-          <PrivateRoute roles={['customer']} exact path="/startContest/taglineContest">
-            <ContestCreationPage contestType={CONSTANTS.TAGLINE_CONTEST} title="TAGLINE" />
+          <PrivateRoute roles={['customer']} exact path={'/startContest/taglineContest'}>
+            <ContestCreationPage contestType={CONSTANTS.TAGLINE_CONTEST} title={'TAGLINE'} />
           </PrivateRoute>
-          <PrivateRoute roles={['customer']} exact path="/startContest/logoContest">
-            <ContestCreationPage contestType={CONSTANTS.LOGO_CONTEST} title="LOGO" />
+          <PrivateRoute roles={['customer']} exact path={'/startContest/logoContest'}>
+            <ContestCreationPage contestType={CONSTANTS.LOGO_CONTEST} title={'LOGO'} />
           </PrivateRoute>
-          <PrivateRoute exact path="/dashboard" component={Dashboard} />
-          <PrivateRoute exact path="/contest/:id" component={ContestPage} />
-          <PrivateRoute exact path="/account" component={UserProfile} />
+          <PrivateRoute exact path={'/dashboard'} component={Dashboard} />
+          <PrivateRoute exact path={'/contest/:id'} component={ContestPage} />
+          <PrivateRoute exact path={'/account'} component={UserProfile} />
           <Route component={NotFound} />
         </Switch>
       </Suspense>

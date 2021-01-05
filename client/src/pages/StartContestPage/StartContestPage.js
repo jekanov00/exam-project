@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { selectBundle } from '../../actions/actionCreator';
 import { connect } from 'react-redux';
 import BundleBox from '../../components/BundleBox/BundleBox';
@@ -8,12 +8,16 @@ import Footer from '../../components/Footer/Footer';
 import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import Header from '../../components/Header/Header';
 
-const StartContestPage = props => {
+const StartContestPage = (props) => {
   if (props.user.role !== ROLES.CUSTOMER) {
     props.history.replace('/');
   }
 
-  const setBundle = bundleStr => {
+  useEffect(() => {
+    document.title = 'Start a Contest';
+  });
+
+  const setBundle = (bundleStr) => {
     const array = bundleStr.toLowerCase().split('+');
     const bundleList = {};
     bundleList.first = array[0];
@@ -31,8 +35,9 @@ const StartContestPage = props => {
         <div className={styles.startContestInfo}>
           <h2>START A CONTEST</h2>
           <span>
-            Launching a contest on Squadhelp is very simple. Select the type of contest you would like to launch from the list below. Provide a
-            detailed brief and select a pricing package. Begin receiving submissions instantly!
+            Launching a contest on Squadhelp is very simple. Select the type of contest you would
+            like to launch from the list below. Provide a detailed brief and select a pricing
+            package. Begin receiving submissions instantly!
           </span>
         </div>
         <ProgressBar currentStep={1} />
@@ -42,12 +47,25 @@ const StartContestPage = props => {
           <span className={styles.headerInfo}>
             Our Most Popular <span>Categories</span>
           </span>
-          <span className={styles.info}>Pick from our most popular categories, launch a contest and begin receiving submissions right away</span>
+          <span className={styles.info}>
+            Pick from our most popular categories, launch a contest and begin receiving submissions
+            right away
+          </span>
           <hr />
         </div>
         <div className={styles.baseBundles}>
-          <BundleBox path={['Name.png']} header="Name" describe="Get up and running with the perfect name." setBundle={setBundle} />
-          <BundleBox path={['Logo.png']} header="Logo" describe="Kickstart your venture with a unique, memorable logo." setBundle={setBundle} />
+          <BundleBox
+            path={['Name.png']}
+            header="Name"
+            describe="Get up and running with the perfect name."
+            setBundle={setBundle}
+          />
+          <BundleBox
+            path={['Logo.png']}
+            header="Logo"
+            describe="Kickstart your venture with a unique, memorable logo."
+            setBundle={setBundle}
+          />
           <BundleBox
             path={['Tagline.png']}
             header="Tagline"
@@ -59,7 +77,9 @@ const StartContestPage = props => {
       <div className={styles.combinedBundles}>
         <div className={styles.infoCombinedBundles}>
           <span className={styles.headerInfo}>Save With Our Bundle Packages</span>
-          <span className={styles.info}>Launch multiple contests and pay a discounted bundle price</span>
+          <span className={styles.info}>
+            Launch multiple contests and pay a discounted bundle price
+          </span>
           <hr />
         </div>
         <div className={styles.baseBundles}>
@@ -94,7 +114,7 @@ const StartContestPage = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
     bundleStore,
     auth: { user },
@@ -102,9 +122,9 @@ const mapStateToProps = state => {
   return { bundleStore, user };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    choseBundle: bundle => dispatch(selectBundle(bundle)),
+    choseBundle: (bundle) => dispatch(selectBundle(bundle)),
   };
 };
 

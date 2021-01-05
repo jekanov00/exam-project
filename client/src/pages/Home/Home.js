@@ -12,6 +12,7 @@ const Home = () => {
   const [styleName, setStyle] = useState(styles.headline__static);
 
   useEffect(() => {
+    document.title = 'Squadhelp';
     const timeout = setInterval(() => {
       setIndex(index + 1);
       setStyle(styles.headline__isloading);
