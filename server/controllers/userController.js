@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 const uuid = require('uuid/v1');
+const { Op } = require('sequelize');
 const CONSTANTS = require('../constants');
 const { sequelize, Contest, Sequelize, CreditCard, Offer, Rating } = require('../models');
 const NotFound = require('../errors/UserNotFoundError');
@@ -189,6 +190,7 @@ module.exports.payment = async (req, res, next) => {
 };
 
 module.exports.updateUser = async (req, res, next) => {
+  console.log(req.file?.filename);
   try {
     if (req.file) {
       req.body.avatar = req.file.filename;
@@ -234,7 +236,7 @@ module.exports.cashout = async (req, res, next) => {
       },
       {
         cardNumber: {
-          [sequelize.Op.in]: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')],
+          [Op.in]: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')],
         },
       },
       transaction,
