@@ -69,7 +69,7 @@ class AuthApi {
       data,
     } = response;
 
-    if (url.indexOf(this.url) === 25) {
+    if (url.indexOf(this.url) === 0) {
       const {
         data: {
           tokenPair: { accessToken, refreshToken },
