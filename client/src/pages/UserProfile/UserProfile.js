@@ -8,6 +8,7 @@ import PayForm from '../../components/PayForm/PayForm';
 import classNames from 'classnames';
 import { cashOut, changeProfileModeView, clearPaymentStore } from '../../actions/actionCreator';
 import Error from '../../components/Error/Error';
+import Events from '../../components/Events';
 
 const UserProfile = (props) => {
   useEffect(() => {
@@ -34,6 +35,13 @@ const UserProfile = (props) => {
               onClick={() => changeProfileModeView(CONSTANTS.USER_INFO_MODE)}>
               UserInfo
             </div>
+            <div
+              className={classNames(styles.optionContainer, {
+                [styles.currentOption]: profileModeView === CONSTANTS.EVENTS,
+              })}
+              onClick={() => changeProfileModeView(CONSTANTS.EVENTS)}>
+              Events
+            </div>
             {role === CONSTANTS.CREATOR && (
               <div
                 className={classNames(styles.optionContainer, {
@@ -45,9 +53,9 @@ const UserProfile = (props) => {
             )}
           </div>
         </div>
-        {profileModeView === CONSTANTS.USER_INFO_MODE ? (
-          <UserInfo />
-        ) : (
+        {profileModeView === CONSTANTS.USER_INFO_MODE && <UserInfo />}
+        {profileModeView === CONSTANTS.EVENTS && <Events />}
+        {profileModeView === CONSTANTS.CASHOUT_MODE && (
           <div className={styles.container}>
             {parseInt(balance) === 0 ? (
               <span className={styles.notMoney}>There is no money on your balance</span>

@@ -1,0 +1,97 @@
+.main, .main *
+    box-sizing: border-box
+
+.main
+    display: flex
+    justify-content: center
+    width: 100%
+    border: 1px solid #c0c0c0
+    border-radius: 4px
+    min-height: 300px
+
+.container
+    width: 100%
+    padding: 50px
+
+.header
+    display: flex
+    border-bottom: 1px solid #cccccc
+    justify-content: space-between
+    padding-bottom: 10px
+    line-height: 45px
+
+.heading
+    font-size: 36px
+    font-weight: 500
+    margin: 0
+
+.headingContainer
+    display: flex
+    justify-content: space-between
+
+.addEvent
+    color: white
+    background-color: #455A89
+    width: 47px
+    height: 45px
+    line-height: 36px
+    border: none
+    border-radius: 7px
+    font-size: 36px
+    text-decoration: none
+    outline: none
+    margin: 0 20px
+    
+
+    &:hover
+        color: #455A89
+        background-color: white
+        border: 3px solid #455A89
+        font-weight: bold
+        cursor: pointer
+
+.remainingHeading
+    display: flex
+    justify-content: space-between
+
+.remainingHeading p
+    margin: 0
+    font-size: 18px
+
+.remainingHeading i
+    font-size: 32px
+    margin-left: 15px
+    line-height: 45px
+
+.eventsContainer
+    display: flex
+    align-items: stretch
+    justify-content: flex-start
+    flex-direction: column
+
+.noEvents
+    display: inline-block
+    margin: 15px 0
+    text-align: center
+    font-size: 24px
+    font-weight: bold
+
+.event
+    display: flex
+    justify-content: space-between
+    border-radius: 5px
+    background-color: #eeeeee
+    height: 60px
+    line-height: 60px
+    margin: 15px 0
+
+    .eventName
+        margin: 0 20px
+        font-size: 20px
+
+    .remainingTime
+        color: #999999
+        font-weight: bold
+        margin: 0 20px
+        text-transform: lowercase
+        
