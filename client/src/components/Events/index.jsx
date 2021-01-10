@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { addDays, formatDistanceToNowStrict } from 'date-fns';
+import { format, formatDistanceToNowStrict } from 'date-fns';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as yup from 'yup';
 import styles from './events.module.sass';
 
 function Events() {
+  /**
+   *
+   * @param {Array.<Object>} arr
+   * @returns {Array.<Object>}
+   */
   const addRemainingTime = (arr) => {
     const tempArr = arr;
     if (tempArr) {
@@ -102,6 +109,8 @@ function Events() {
   const [events, setEvents] = useState(
     addRemainingTime(JSON.parse(localStorage.getItem('events'))),
   );
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [formError, setFormError] = useState(null);
 
   useEffect(() => {
     if (!localStorage.getItem('events')) {
@@ -126,6 +135,11 @@ function Events() {
     };
   }, [events]);
 
+  /**
+   *
+   * @param {string} name
+   * @param {Date} date
+   */
   const addEvent = (name, date) => {
     const localEvents = JSON.parse(localStorage.getItem('events'));
     localEvents.push({
@@ -138,8 +152,15 @@ function Events() {
   };
 
   const handleEvent = () => {
-    addEvent(prompt('Name', '123') || 'test', addDays(new Date(), 43));
+    setIsFormOpen(true);
+    // addEvent(prompt('Name', '123') || 'test', addMinutes(new Date(), 2));
   };
+
+  const formSchema = yup.object().shape({
+    title: yup.string().required('Title is required!'),
+    endDate: yup.string().required(),
+    endTime: yup.string().required(),
+  });
 
   return (
     <section className={styles.main}>
@@ -147,9 +168,82 @@ function Events() {
         <div className={styles.header}>
           <div className={styles.headingContainer}>
             <h1 className={styles.heading}>Live upcomming checks</h1>
-            <button className={styles.addEvent} title={'Add event'} onClick={handleEvent}>
-              +
-            </button>
+            <div className={styles.addEventContainer}>
+              <button className={styles.addEvent} title={'Add event'} onClick={handleEvent}>
+                +
+              </button>
+              {isFormOpen ? (
+                <div className={styles.addEventForm}>
+                  <h2 className={styles.formHeader}>Add event</h2>
+                  <Formik
+                    initialValues={{
+                      title: '',
+                      endDate: format(new Date(), 'yyyy-MM-dd'),
+                      endTime: format(new Date(), 'HH:mm'),
+                    }}
+                    validationSchema={formSchema}
+                    onSubmit={async (values) => {
+                      await new Promise((r) => setTimeout(r, 500));
+                      if (new Date(values.endDate + ' ' + values.endTime) >= new Date()) {
+                        addEvent(values.title, new Date(values.endDate + ' ' + values.endTime));
+                        setIsFormOpen(false);
+                      } else {
+                        setFormError('Provided date/time cannot be earlier than the current time!');
+                      }
+                    }}>
+                    {({ isSubmitting }) => (
+                      <Form>
+                        <div className={styles.inputContainer}>
+                          <Field
+                            id={'title'}
+                            name={'title'}
+                            placeholder={'Title'}
+                            className={styles.titleField}
+                          />
+                          <ErrorMessage name={'title'} />
+                        </div>
+                        <div className={styles.inputContainer}>
+                          <label htmlFor={'endDate'}>End Date</label>
+                          <Field
+                            id={'endDate'}
+                            name={'endDate'}
+                            type={'date'}
+                            min={format(new Date(), 'yyyy-MM-dd')}
+                            className={styles.endDate}
+                          />
+                          <ErrorMessage name={'endDate'} />
+                        </div>
+                        <div className={styles.inputContainer}>
+                          <label htmlFor={'endTime'}>End Time</label>
+                          <Field
+                            id={'endTime'}
+                            name={'endTime'}
+                            type={'time'}
+                            className={styles.endDate}
+                          />
+                          <ErrorMessage name={'endTime'} />
+                          {formError ? formError : ''}
+                        </div>
+                        <div className={styles.formButtonContainer}>
+                          <button
+                            className={styles.cancel}
+                            onClick={() => {
+                              setIsFormOpen(false);
+                            }}>
+                            Cancel
+                          </button>
+                          <button type={'submit'} className={styles.submit} disabled={isSubmitting}>
+                            OK
+                          </button>
+                        </div>
+                      </Form>
+                    )}
+                  </Formik>
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
           </div>
           <div className={styles.remainingHeading}>
             <p>Remaining result</p>
@@ -162,7 +256,7 @@ function Events() {
               .sort((a, b) => new Date(a.end).getTime() - new Date(b.end).getTime())
               .map((e, index) => (
                 <div className={styles.event} key={index}>
-                  <p className={styles.eventName} title={'Event name'}>
+                  <p className={styles.eventName} title={'Event title'}>
                     {e.name}
                   </p>
                   <p className={styles.remainingTime} title={'Remaining time'}>
