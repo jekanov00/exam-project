@@ -37,13 +37,34 @@ function Events() {
               'month',
             ) !== -1
           ) {
+            const tempMonths = formatDistanceToNowStrict(new Date(e.end), {
+              unit: 'month',
+              roundingMethod: 'floor',
+            });
             result = `
-              ${formatDistanceToNowStrict(new Date(e.end), {
-                unit: 'month',
-                roundingMethod: 'floor',
-              })} ${
-              Math.abs(+new Date(e.end).getDate() - +new Date().getDate()) !== 0
-                ? Math.abs(+new Date(e.end).getDate() - +new Date().getDate()) + 'd'
+              ${tempMonths} ${
+              Math.abs(+new Date(e.end).getDate() - +new Date().getDate()) !== 0 &&
+              tempMonths[0] + tempMonths[1] !== '12'
+                ? new Date(
+                    new Date(e.end).setFullYear(new Date().getFullYear(), new Date().getMonth()),
+                  ).getDate() < new Date().getDate()
+                  ? formatDistanceToNowStrict(
+                      new Date(e.end).setFullYear(
+                        new Date().getFullYear(),
+                        new Date().getMonth() + 1,
+                      ),
+                      {
+                        unit: 'day',
+                        roundingMethod: 'round',
+                      },
+                    )
+                  : formatDistanceToNowStrict(
+                      new Date(e.end).setFullYear(new Date().getFullYear(), new Date().getMonth()),
+                      {
+                        unit: 'day',
+                        roundingMethod: 'round',
+                      },
+                    )
                 : ''
             }`;
           } else if (
