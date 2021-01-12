@@ -5,6 +5,7 @@ import CONSTANTS, { ROLES } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutRequest } from '../../actions/authActionCreators';
 import { authSelector } from '../../selectors';
+import NotificationBadge from '../NotificationBadge';
 
 function Header() {
   const { isFetching, user } = useSelector(authSelector);
@@ -18,7 +19,14 @@ function Header() {
       return (
         <>
           <div className={styles.userInfo}>
-            <img src={user.avatar === null ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${user.avatar}`} alt="user" />
+            <img
+              src={
+                user.avatar === null
+                  ? CONSTANTS.ANONYM_IMAGE_PATH
+                  : `${CONSTANTS.publicURL}${user.avatar}`
+              }
+              alt="user"
+            />
             <span>{`Hi, ${user.displayName}`}</span>
             <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt="menu" />
             <ul>
@@ -27,10 +35,11 @@ function Header() {
                   <span>View Dashboard</span>
                 </Link>
               </li>
-              <li>
+              <li style={{ position: 'relative' }}>
                 <Link to="/account" style={{ textDecoration: 'none' }}>
                   <span>My Account</span>
                 </Link>
+                <NotificationBadge />
               </li>
               <li>
                 <Link to="https://www.google.com" style={{ textDecoration: 'none' }}>
@@ -47,7 +56,11 @@ function Header() {
               </li>
             </ul>
           </div>
-          <img src={`${CONSTANTS.STATIC_IMAGES_PATH}email.png`} className={styles.emailIcon} alt="email" />
+          <img
+            src={`${CONSTANTS.STATIC_IMAGES_PATH}email.png`}
+            className={styles.emailIcon}
+            alt="email"
+          />
         </>
       );
     } else {
@@ -70,7 +83,9 @@ function Header() {
   return (
     <div className={styles.headerContainer}>
       <div className={styles.fixedHeader}>
-        <span className={styles.info}>Squadhelp recognized as one of the Most Innovative Companies by Inc Magazine.</span>
+        <span className={styles.info}>
+          Squadhelp recognized as one of the Most Innovative Companies by Inc Magazine.
+        </span>
         <a href="http://www.google.com">Read Announcement</a>
       </div>
       <div className={styles.loginSignnUpHeaders}>
@@ -81,7 +96,13 @@ function Header() {
         <div className={styles.userButtonsContainer}>{renderLoginButtons()}</div>
       </div>
       <div className={styles.navContainer}>
-        <Link to="/" style={{ textDecoration: 'none' }}><img src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`} className={styles.logo} alt="blue_logo" /></Link>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <img
+            src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`}
+            className={styles.logo}
+            alt="blue_logo"
+          />
+        </Link>
         <div className={styles.leftNav}>
           <div className={styles.nav}>
             <ul>

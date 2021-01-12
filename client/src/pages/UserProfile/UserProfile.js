@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import { cashOut, changeProfileModeView, clearPaymentStore } from '../../actions/actionCreator';
 import Error from '../../components/Error/Error';
 import Events from '../../components/Events';
+import NotificationBadge from '../../components/NotificationBadge';
 
 const UserProfile = (props) => {
   useEffect(() => {
@@ -41,6 +42,7 @@ const UserProfile = (props) => {
               })}
               onClick={() => changeProfileModeView(CONSTANTS.EVENTS)}>
               Events
+              <NotificationBadge />
             </div>
             {role === CONSTANTS.CREATOR && (
               <div

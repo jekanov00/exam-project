@@ -10,7 +10,7 @@ function Events() {
    * @returns {Array.<Object>}
    */
   const addRemainingTime = (arr) => {
-    const tempArr = arr;
+    const tempArr = [...arr];
     if (tempArr) {
       tempArr.forEach((e) => {
         if (Date.now() < new Date(e.end).getTime()) {
