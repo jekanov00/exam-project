@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './notificationBadge.module.sass';
 
-function NotificationBadge() {
+function NotificationBadge(props) {
   const [count, setCount] = useState(0);
 
   const addFinished = (arr) => {
@@ -42,7 +42,13 @@ function NotificationBadge() {
     };
   }, [events]);
 
-  return count ? <div className={styles.badge}>{count}</div> : null;
+  if (props.simple && count) {
+    return <div className={`${styles.badge} ${styles.simple}`}></div>;
+  } else if (count) {
+    return <div className={styles.badge}>{count}</div>;
+  } else {
+    return null;
+  }
 }
 
 export default NotificationBadge;

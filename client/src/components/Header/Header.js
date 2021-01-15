@@ -18,7 +18,7 @@ function Header() {
     if (user) {
       return (
         <>
-          <div className={styles.userInfo}>
+          <div className={styles.userInfo} style={{position: 'relative'}}>
             <img
               src={
                 user.avatar === null
@@ -29,6 +29,7 @@ function Header() {
             />
             <span>{`Hi, ${user.displayName}`}</span>
             <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt="menu" />
+            <NotificationBadge simple={true} />
             <ul>
               <li>
                 <Link to="/dashboard" style={{ textDecoration: 'none' }}>
