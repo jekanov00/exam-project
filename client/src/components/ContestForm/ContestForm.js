@@ -1,18 +1,19 @@
-import React from "react";
-import CONSTANTS from "../../constants";
-import { connect } from "react-redux";
-import { getDataForContest } from "../../actions/actionCreator";
-import { withRouter } from "react-router-dom";
-import styles from "./ContestForm.module.sass";
-import Spinner from "../Spinner/Spinner";
-import { Field, reduxForm } from "redux-form";
-import FormInput from "../FormInput/FormInput";
-import SelectInput from "../SelectInput/SelectInput";
-import customValidator from "../../validators/validator";
-import Schems from "../../validators/validationSchems";
-import FieldFileInput from "../InputComponents/FieldFileInput/FieldFileInput";
-import FormTextArea from "../InputComponents/FormTextArea/FormTextArea";
-import TryAgain from "../TryAgain/TryAgain";
+import React from 'react';
+import CONSTANTS from '../../constants';
+import { connect } from 'react-redux';
+import { getDataForContest } from '../../actions/actionCreator';
+import { withRouter } from 'react-router-dom';
+import styles from './ContestForm.module.sass';
+import Spinner from '../Spinner/Spinner';
+import { Field, reduxForm } from 'redux-form';
+import FormInput from '../FormInput/FormInput';
+import SelectInput from '../SelectInput/SelectInput';
+import customValidator from '../../validators/validator';
+import Schems from '../../validators/validationSchems';
+import FieldFileInput from '../InputComponents/FieldFileInput/FieldFileInput';
+import FormTextArea from '../InputComponents/FormTextArea/FormTextArea';
+import TryAgain from '../TryAgain/TryAgain';
+import DomainInput from '../DomainInput';
 
 let submitFunc;
 
@@ -27,17 +28,17 @@ class ContestForm extends React.Component {
     switch (contestType) {
       case CONSTANTS.NAME_CONTEST: {
         this.props.getData({
-          characteristic1: "nameStyle",
-          characteristic2: "typeOfName",
+          characteristic1: 'nameStyle',
+          characteristic2: 'typeOfName',
         });
         break;
       }
       case CONSTANTS.TAGLINE_CONTEST: {
-        this.props.getData({ characteristic1: "typeOfTagline" });
+        this.props.getData({ characteristic1: 'typeOfTagline' });
         break;
       }
       case CONSTANTS.LOGO_CONTEST: {
-        this.props.getData({ characteristic1: "brandStyle" });
+        this.props.getData({ characteristic1: 'brandStyle' });
         break;
       }
       default: {
@@ -56,6 +57,59 @@ class ContestForm extends React.Component {
       case CONSTANTS.NAME_CONTEST: {
         return (
           <>
+            <div className={styles.domainContainer}>
+              <h2 className={styles.domainHeader}>
+                Do you want a matching domain (.com URL) with your name?
+              </h2>
+              <p className={styles.domainDescription}>
+                If you want a matching domain, our platform will only accept those name suggestions
+                where the domain is available. (Recommended)
+              </p>
+              <div className={styles.domainRadioContainer}>
+                <Field
+                  name={'domain'}
+                  type={'radio'}
+                  component={DomainInput}
+                  classes={{
+                    radioInput: styles.radioInput,
+                    radioHeader: styles.radioHeader,
+                    radioText: styles.radioText,
+                    radioActive: styles.radioActive,
+                  }}
+                  value={'asname'}
+                  header={'Yes'}
+                  text={'The Domain should exactly match the name'}
+                />
+                <Field
+                  name={'domain'}
+                  type={'radio'}
+                  component={DomainInput}
+                  classes={{
+                    radioInput: styles.radioInput,
+                    radioHeader: styles.radioHeader,
+                    radioText: styles.radioText,
+                    radioActive: styles.radioActive,
+                  }}
+                  value={'yes'}
+                  header={'Yes'}
+                  text={'But minor variations are allowed (Recommended)'}
+                />
+                <Field
+                  name={'domain'}
+                  type={'radio'}
+                  component={DomainInput}
+                  classes={{
+                    radioInput: styles.radioInput,
+                    radioHeader: styles.radioHeader,
+                    radioText: styles.radioText,
+                    radioActive: styles.radioActive,
+                  }}
+                  value={'no'}
+                  header={'No'}
+                  text={'I am only looking for a name, not a Domain'}
+                />
+              </div>
+            </div>
             <Field
               name="styleName"
               component={SelectInput}
@@ -85,9 +139,7 @@ class ContestForm extends React.Component {
         return (
           <>
             <div className={styles.inputContainer}>
-              <span className={styles.inputHeader}>
-                What name of your venture?
-              </span>
+              <span className={styles.inputHeader}>What name of your venture?</span>
               <Field
                 name="nameVenture"
                 component={FormInput}
@@ -118,9 +170,7 @@ class ContestForm extends React.Component {
         return (
           <>
             <div className={styles.inputContainer}>
-              <span className={styles.inputHeader}>
-                What name of your venture?
-              </span>
+              <span className={styles.inputHeader}>What name of your venture?</span>
               <Field
                 name="nameVenture"
                 component={FormInput}
@@ -193,9 +243,7 @@ class ContestForm extends React.Component {
                   />
                 </div>
                 <div className={styles.inputContainer}>
-                  <span className={styles.inputHeader}>
-                    What does your company / business do?
-                  </span>
+                  <span className={styles.inputHeader}>What does your company / business do?</span>
                   <Field
                     name="focusOfWork"
                     component={FormTextArea}
@@ -209,9 +257,7 @@ class ContestForm extends React.Component {
                   />
                 </div>
                 <div className={styles.inputContainer}>
-                  <span className={styles.inputHeader}>
-                    Tell us about your customers
-                  </span>
+                  <span className={styles.inputHeader}>Tell us about your customers</span>
                   <Field
                     name="targetCustomer"
                     component={FormTextArea}
@@ -264,12 +310,12 @@ const mapDispatchToProps = (dispatch) => {
 export default withRouter(
   connect(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
   )(
     reduxForm({
-      form: "contestForm",
+      form: 'contestForm',
       validate: customValidator(Schems.ContestSchem),
       onSubmit: submit,
-    })(ContestForm)
-  )
+    })(ContestForm),
+  ),
 );
