@@ -13,6 +13,7 @@ function createApp() {
   app.use('/api', router);
 
   app.use(
+    errorHandlers.errorLogger,
     errorHandlers.yupErrorHandler,
     errorHandlers.sequelizeErrorHandler,
     errorHandlers.httpErrorHandler,

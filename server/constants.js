@@ -30,4 +30,5 @@ module.exports = {
   DEVICES_PER_USER_LIMIT: 3,
   CUSTOMER: 'customer',
   CREATOR: 'creator',
+  LOG_FILE_PATH: 'public/errorLog.json',
 };

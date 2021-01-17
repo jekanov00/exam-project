@@ -1,8 +1,36 @@
 /* eslint-disable no-unused-vars */
 const { ValidationError } = require('yup');
-const { Sequelize: { BaseError, UniqueConstraintError } } = require('../models');
+const fs = require('fs');
+const {
+  Sequelize: { BaseError, UniqueConstraintError },
+} = require('../models');
+const { LOG_FILE_PATH } = require('../constants');
 
 const errorMapper = (err) => ({ title: err.message ?? 'Bad request' });
+
+exports.errorLogger = (err, req, res, next) => {
+  fs.readFile(LOG_FILE_PATH, 'utf8', (readErr, data) => {
+    if (readErr) {
+      next(readErr);
+    } else {
+      const fileData = JSON.parse(data);
+      fileData.push({
+        message: err.message,
+        time: Date.now(),
+        code: err.code,
+        stackTrace: err.stack,
+      });
+
+      fs.writeFile(LOG_FILE_PATH, JSON.stringify(fileData), 'utf8', (writeErr) => {
+        if (writeErr) {
+          next(writeErr);
+        }
+      });
+    }
+  });
+
+  return next(err);
+};
 
 exports.yupErrorHandler = (err, req, res, next) => {
   if (err instanceof ValidationError) {
