@@ -49,7 +49,11 @@ class ContestForm extends React.Component {
 
   componentDidMount() {
     this.getPreference(this.props.contestType);
-    this.props.initialize(this.props.defaultData);
+    this.props.initialize(
+      this.props.contestType === CONSTANTS.NAME_CONTEST
+        ? { ...this.props.defaultData, domain: 'yes' }
+        : this.props.defaultData,
+    );
   }
 
   renderSpecialInputs = () => {
