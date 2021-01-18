@@ -2,7 +2,7 @@ const multer = require('multer');
 const ServerError = require('../errors/ServerError');
 
 const env = process.env.NODE_ENV || 'development';
-const filePath = env === 'production' ? '/var/www/html/images/' : '/public/staticImages/';
+const filePath = env === 'production' ? '/var/www/html/images/' : 'public/staticImages/';
 
 const storageContestFiles = multer.diskStorage({
   destination(req, file, cb) {
@@ -23,7 +23,6 @@ module.exports.uploadAvatar = (req, res, next) => {
     if (err instanceof multer.MulterError) {
       next(new ServerError(err));
     } else if (err) {
-      console.log('file:', req.file);
       next(new ServerError(err));
     }
     return next();

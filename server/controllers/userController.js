@@ -190,7 +190,6 @@ module.exports.payment = async (req, res, next) => {
 };
 
 module.exports.updateUser = async (req, res, next) => {
-  console.log(req.file?.filename);
   try {
     if (req.file) {
       req.body.avatar = req.file.filename;
