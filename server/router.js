@@ -36,9 +36,18 @@ router.get('/downloadFile/:fileName', contestController.downloadFile);
 
 router.post('/updateContest', upload.updateContestFile, contestController.updateContest);
 
-router.post('/setNewOffer', upload.uploadLogoFiles, basicMiddlewares.canSendOffer, contestController.setNewOffer);
+router.post(
+  '/setNewOffer',
+  upload.uploadLogoFiles,
+  basicMiddlewares.canSendOffer,
+  contestController.setNewOffer,
+);
 
-router.post('/setOfferStatus', basicMiddlewares.onlyForCustomerWhoCreateContest, contestController.setOfferStatus);
+router.post(
+  '/setOfferStatus',
+  basicMiddlewares.onlyForCustomerWhoCreateContest,
+  contestController.setOfferStatus,
+);
 
 router.post('/changeMark', basicMiddlewares.onlyForCustomer, userController.changeMark);
 
@@ -64,11 +73,7 @@ router.post('/addNewChatToCatalog', chatController.addNewChatToCatalog);
 
 router.post('/removeChatFromCatalog', chatController.removeChatFromCatalog);
 
-router.post(
-  '/deleteCatalog',
-
-  chatController.deleteCatalog,
-);
+router.post('/deleteCatalog', chatController.deleteCatalog);
 
 router.post('/getCatalogs', chatController.getCatalogs);
 
