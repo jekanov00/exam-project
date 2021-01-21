@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "message": "hi",
+    "time": 1611242814107,
+    "stackTrace": "Error: hi\n    at /server/app.js:13:36\n    at Layer.handle [as handle_request] (/server/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/server/node_modules/express/lib/router/index.js:317:13)\n    at /server/node_modules/express/lib/router/index.js:284:7\n    at Function.process_params (/server/node_modules/express/lib/router/index.js:335:12)\n    at next (/server/node_modules/express/lib/router/index.js:275:10)\n    at /server/node_modules/body-parser/lib/read.js:130:5\n    at invokeCallback (/server/node_modules/raw-body/index.js:224:16)\n    at done (/server/node_modules/raw-body/index.js:213:7)\n    at IncomingMessage.onEnd (/server/node_modules/raw-body/index.js:273:7)\n    at IncomingMessage.emit (events.js:327:22)\n    at endReadableNT (_stream_readable.js:1327:12)\n    at processTicksAndRejections (internal/process/task_queues.js:80:21)"
+  },
+  { "message": "errrr", "time": 1611243345867 },
+  {
+    "message": "hey",
+    "time": 1611243477386,
+    "stackTrace": "Error: hey\n    at /server/app.js:13:36\n    at Layer.handle [as handle_request] (/server/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/server/node_modules/express/lib/router/index.js:317:13)\n    at /server/node_modules/express/lib/router/index.js:284:7\n    at Function.process_params (/server/node_modules/express/lib/router/index.js:335:12)\n    at next (/server/node_modules/express/lib/router/index.js:275:10)\n    at /server/node_modules/body-parser/lib/read.js:130:5\n    at invokeCallback (/server/node_modules/raw-body/index.js:224:16)\n    at done (/server/node_modules/raw-body/index.js:213:7)\n    at IncomingMessage.onEnd (/server/node_modules/raw-body/index.js:273:7)\n    at IncomingMessage.emit (events.js:327:22)\n    at endReadableNT (_stream_readable.js:1327:12)\n    at processTicksAndRejections (internal/process/task_queues.js:80:21)"
+  },
+  {
+    "message": "hey",
+    "time": 1611243846223,
+    "stackTrace": "Error: hey\n    at /server/app.js:13:36\n    at Layer.handle [as handle_request] (/server/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/server/node_modules/express/lib/router/index.js:317:13)\n    at /server/node_modules/express/lib/router/index.js:284:7\n    at Function.process_params (/server/node_modules/express/lib/router/index.js:335:12)\n    at next (/server/node_modules/express/lib/router/index.js:275:10)\n    at /server/node_modules/body-parser/lib/read.js:130:5\n    at invokeCallback (/server/node_modules/raw-body/index.js:224:16)\n    at done (/server/node_modules/raw-body/index.js:213:7)\n    at IncomingMessage.onEnd (/server/node_modules/raw-body/index.js:273:7)\n    at IncomingMessage.emit (events.js:327:22)\n    at endReadableNT (_stream_readable.js:1327:12)\n    at processTicksAndRejections (internal/process/task_queues.js:80:21)"
+  },
+  {
+    "message": "hey",
+    "time": 1611243907585,
+    "stackTrace": "Error: hey\n    at /server/app.js:13:36\n    at Layer.handle [as handle_request] (/server/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/server/node_modules/express/lib/router/index.js:317:13)\n    at /server/node_modules/express/lib/router/index.js:284:7\n    at Function.process_params (/server/node_modules/express/lib/router/index.js:335:12)\n    at next (/server/node_modules/express/lib/router/index.js:275:10)\n    at /server/node_modules/body-parser/lib/read.js:130:5\n    at invokeCallback (/server/node_modules/raw-body/index.js:224:16)\n    at done (/server/node_modules/raw-body/index.js:213:7)\n    at IncomingMessage.onEnd (/server/node_modules/raw-body/index.js:273:7)\n    at IncomingMessage.emit (events.js:327:22)\n    at endReadableNT (_stream_readable.js:1327:12)\n    at processTicksAndRejections (internal/process/task_queues.js:80:21)"
+  }
+]

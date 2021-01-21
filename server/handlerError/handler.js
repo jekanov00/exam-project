@@ -16,12 +16,20 @@ exports.errorLogger = (err, req, res, next) => {
       next(readErr);
     } else {
       const fileData = JSON.parse(data);
-      fileData.push({
-        message: err.message,
-        time: Date.now(),
-        code: err.code,
-        stackTrace: err.stack,
-      });
+
+      if (err instanceof Error) {
+        fileData.push({
+          message: err.message,
+          time: Date.now(),
+          code: err.code,
+          stackTrace: err.stack,
+        });
+      } else {
+        fileData.push({
+          message: err,
+          time: Date.now(),
+        });
+      }
 
       fs.writeFile(LOG_FILE_PATH, JSON.stringify(fileData), 'utf8', (writeErr) => {
         if (writeErr) {
@@ -67,10 +75,8 @@ exports.httpErrorHandler = (err, req, res, next) => {
 };
 
 exports.errorHandler = (err, req, res, next) => {
-  if (err.status) {
-    return res.status(err.status).send({
-      errors: [err],
-    });
-  }
+  res.status(500).send({
+    errors: [err],
+  });
   return next(err);
 };
