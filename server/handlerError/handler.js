@@ -5,10 +5,12 @@ const {
   Sequelize: { BaseError, UniqueConstraintError },
 } = require('../models');
 const { LOG_FILE_PATH } = require('../constants');
+const { logger } = require('../utils/logger');
 
 const errorMapper = (err) => ({ title: err.message ?? 'Bad request' });
 
 exports.errorLogger = (err, req, res, next) => {
+  logger();
   fs.readFile(LOG_FILE_PATH, 'utf8', (readErr, data) => {
     if (readErr) {
       next(readErr);
