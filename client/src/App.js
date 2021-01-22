@@ -19,6 +19,7 @@ import ChatContainer from './components/Chat/ChatComponents/ChatContainer/ChatCo
 import PrivateRoute from './components/PrivateRoute';
 import Spinner from './components/Spinner/Spinner';
 import { refreshAuthRequest } from './actions/authActionCreators';
+import ForgotPassword from './pages/ForgotPassword';
 
 const AuthPage = lazy(() => import('./pages/AuthPage'));
 
@@ -52,8 +53,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path={['/login', '/signup']} component={AuthPage} />
-          {/* <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/signup" component={RegistrationPage} /> */}
+          <Route path={'/forgot-password'} exact component={ForgotPassword} />
           <Route path={'/howitworks'} exact component={HowItWorks} />
           <PrivateRoute roles={['customer']} exact path={'/payment'} component={Payment} />
           <PrivateRoute
