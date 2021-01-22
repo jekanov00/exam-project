@@ -1,4 +1,4 @@
-import ACTION from "./actionTypes";
+import ACTION from './actionTypes';
 
 export const authActionLogin = (data) => {
   return {
@@ -412,3 +412,17 @@ export const changeModalShow = (data) => {
     data: data,
   };
 };
+
+/**
+ *
+ * @param {object} values
+ * @param {string} values.email
+ * @param {string} values.password
+ * @returns {Action}
+ */
+export const forgotRequest = (values) => ({
+  type: ACTION.FORGOT_PASSWORD_REQUEST,
+  payload: {
+    values,
+  },
+});

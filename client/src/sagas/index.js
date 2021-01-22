@@ -27,6 +27,7 @@ import {
 } from './chatSagas';
 import AUTH_ACTION_TYPES from '../actions/authActionTypes';
 import { updateUserData } from './userSaga';
+import { forgotPassword } from './forgotPasswordSaga';
 
 function* rootSaga() {
   // AUTH
@@ -59,6 +60,7 @@ function* rootSaga() {
   yield takeLatest(ACTION.CHANGE_CATALOG_NAME_REQUEST, changeCatalogName);
   //new
   yield takeLatest(ACTION.UPDATE_USER_DATA, updateUserData);
+  yield takeLatest(ACTION.FORGOT_PASSWORD_REQUEST, forgotPassword);
 }
 
 export default rootSaga;

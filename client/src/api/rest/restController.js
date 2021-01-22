@@ -23,6 +23,7 @@ export const createCatalog = (data) => http.post('createCatalog', data);
 export const deleteCatalog = (data) => http.post('deleteCatalog', data);
 export const removeChatFromCatalog = (data) => http.post('removeChatFromCatalog', data);
 export const changeCatalogName = (data) => http.post('updateNameCatalog', data);
+export const restorePassword = (data) => http.post('restore-password', data);
 export const getCustomersContests = (data) =>
   http.post(
     'getCustomersContests',
@@ -31,10 +32,18 @@ export const getCustomersContests = (data) =>
       headers: {
         status: data.contestStatus,
       },
-    }
+    },
   );
 
-export const getActiveContests = ({ offset, limit, typeIndex, contestId, industry, awardSort, ownEntries }) => {
+export const getActiveContests = ({
+  offset,
+  limit,
+  typeIndex,
+  contestId,
+  industry,
+  awardSort,
+  ownEntries,
+}) => {
   return http.post('getAllContests', {
     offset,
     limit,
