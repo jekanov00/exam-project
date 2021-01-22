@@ -6,12 +6,12 @@ import styles from './ForgotForm.module.sass';
 
 const initialValues = {
   email: '',
-  password: '',
+  newPassword: '',
 };
 
 const validationSchema = Yup.object({
   email: Yup.string().trim().email().required(),
-  password: Yup.string().required(),
+  newPassword: Yup.string().required(),
 });
 
 function ForgotForm(props) {
@@ -45,7 +45,7 @@ function ForgotForm(props) {
             <div className={styles.inputContainer}>
               <Field
                 name="newPassword"
-                type="newPassword"
+                type="password"
                 placeholder="New Password"
                 className={styles.input}
               />
