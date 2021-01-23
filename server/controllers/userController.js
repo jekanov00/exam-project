@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const moment = require('moment');
 const uuid = require('uuid/v1');
 const { Op } = require('sequelize');
@@ -245,5 +244,14 @@ module.exports.cashout = async (req, res, next) => {
   } catch (err) {
     transaction.rollback();
     next(err);
+  }
+};
+
+exports.restorePassword = (req, res, next) => {
+  try {
+    console.log('from middleware', req.body);
+    res.status(200).send(`Sent confirmation email to ${req.body.email}`);
+  } catch (e) {
+    next(e);
   }
 };

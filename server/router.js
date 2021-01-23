@@ -13,6 +13,8 @@ const router = express.Router();
 
 router.use('/auth', authRouter);
 
+router.post('/restore-password', userController.restorePassword);
+
 router.use(checkAuthorization);
 
 router.post('/dataForContest', contestController.dataForContest);
