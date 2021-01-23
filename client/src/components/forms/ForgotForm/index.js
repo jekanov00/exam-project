@@ -5,8 +5,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styles from './ForgotForm.module.sass';
 
 const initialValues = {
-  email: '',
-  newPassword: '',
+  email: 'test123@test.com',
+  newPassword: 'qwe123',
 };
 
 const validationSchema = Yup.object({

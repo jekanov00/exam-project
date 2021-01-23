@@ -1,16 +1,18 @@
 import { put } from 'redux-saga/effects';
-import ACTION from '../actions/actionTypes';
+import * as ACTION_CREATORS from '../actions/actionCreator';
+import history from '../browserHistory';
 import { restorePassword } from '../api/rest/restController';
 
 export function* forgotPassword(action) {
-  yield put({ type: ACTION.FORGOT_PASSWORD_REQUEST });
+  yield put(ACTION_CREATORS.restoreRequest());
   try {
     const {
       payload: { values },
     } = action;
-    const { data } = yield restorePassword(values);
-    yield put({ type: ACTION.FORGOT_PASSWORD_SUCCESS, data: data });
+    yield restorePassword(values);
+    yield put(ACTION_CREATORS.restoreSuccess());
+    history.push('/login');
   } catch (e) {
-    yield put({ type: ACTION.FORGOT_PASSWORD_FAILED, error: e.response });
+    yield put(ACTION_CREATORS.restoreFailed(e));
   }
 }

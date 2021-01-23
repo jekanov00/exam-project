@@ -420,9 +420,32 @@ export const changeModalShow = (data) => {
  * @param {string} values.password
  * @returns {Action}
  */
-export const forgotRequest = (values) => ({
-  type: ACTION.FORGOT_PASSWORD_REQUEST,
-  payload: {
-    values,
-  },
-});
+export const forgotRequest = (values) => {
+  return {
+    type: ACTION.FORGOT_PASSWORD_REQUEST,
+    payload: {
+      values,
+    },
+  };
+};
+
+export const restoreRequest = () => {
+  return {
+    type: ACTION.RESTORE_PASSWORD_REQUEST,
+  };
+};
+
+export const restoreSuccess = () => {
+  return {
+    type: ACTION.RESTORE_PASSWORD_SUCCESS,
+  };
+};
+
+export const restoreFailed = (err) => {
+  return {
+    type: ACTION.RESTORE_PASSWORD_FAILED,
+    payload: {
+      error: err,
+    },
+  };
+};

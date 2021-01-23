@@ -1,20 +1,25 @@
-import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 import styles from './ForgotPassword.module.sass';
 import CONSTANTS from '../../constants';
 import ForgotForm from '../../components/forms/ForgotForm';
+import { userSelector } from '../../selectors';
 import { forgotRequest } from '../../actions/actionCreator';
 
 function ForgotPassword() {
   const dispatch = useDispatch();
+  const user = useSelector(userSelector);
 
-  const handleSubmit = useCallback(
-    (values) => {
-      dispatch(forgotRequest(values));
-    },
-    [dispatch],
-  );
+  useEffect(() => {
+    document.title = 'Restore Password';
+  });
+
+  const handleSubmit = useCallback((values) => dispatch(forgotRequest(values)), [dispatch]);
+
+  if (user) {
+    return <Redirect to={'/'} />;
+  }
 
   return (
     <div className={styles.mainContainer}>
@@ -31,7 +36,7 @@ function ForgotPassword() {
         </div>
         <div className={styles.forgotFormContainer}>
           <ForgotForm onSubmit={handleSubmit} />
-        </div>
+        </div> 
       </div>
     </div>
   );

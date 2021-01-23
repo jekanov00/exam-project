@@ -43,6 +43,16 @@ const handlers = {
     draftState.isFetching = false;
     draftState.error = action.error;
   }),
+  [ACTION_TYPES.RESTORE_PASSWORD_REQUEST]: produce((draftState) => {
+    draftState.isFetching = true;
+  }),
+  [ACTION_TYPES.RESTORE_PASSWORD_SUCCESS]: produce((draftState) => {
+    draftState.isFetching = false;
+  }),
+  [ACTION_TYPES.RESTORE_PASSWORD_FAILED]: produce((draftState, action) => {
+    draftState.isFetching = false;
+    draftState.error = action.error;
+  }),
 };
 
 const authReducer = createReducer(initialState, handlers);
