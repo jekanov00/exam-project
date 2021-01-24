@@ -20,6 +20,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Spinner from './components/Spinner/Spinner';
 import { refreshAuthRequest } from './actions/authActionCreators';
 import ForgotPassword from './pages/ForgotPassword';
+import RestorePasswordSuccess from './pages/RestorePasswordSuccess';
+import EmailSent from './pages/EmailSent';
 
 const AuthPage = lazy(() => import('./pages/AuthPage'));
 
@@ -54,6 +56,8 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path={['/login', '/signup']} component={AuthPage} />
           <Route path={'/forgot-password'} exact component={ForgotPassword} />
+          <Route path={'/restore-email'} exact component={EmailSent} />
+          <Route path={'/restore/:token'} exact component={RestorePasswordSuccess} />
           <Route path={'/howitworks'} exact component={HowItWorks} />
           <PrivateRoute roles={['customer']} exact path={'/payment'} component={Payment} />
           <PrivateRoute

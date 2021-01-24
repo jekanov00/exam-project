@@ -5,8 +5,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styles from './ForgotForm.module.sass';
 
 const initialValues = {
-  email: 'test123@test.com',
-  newPassword: 'qwe123',
+  email: '',
+  newPassword: '',
 };
 
 const validationSchema = Yup.object({
@@ -31,7 +31,7 @@ function ForgotForm(props) {
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}>
-        {() => (
+        {({ submitting }) => (
           <Form>
             <div className={styles.inputContainer}>
               <Field
@@ -52,7 +52,7 @@ function ForgotForm(props) {
               <ErrorMessage name="newPassword" className={styles.error} />
             </div>
 
-            <button type="submit" className={styles.submitContainer}>
+            <button type="submit" className={styles.submitContainer} disabled={submitting}>
               Submit
             </button>
           </Form>

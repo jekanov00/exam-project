@@ -11,7 +11,7 @@ export function* forgotPassword(action) {
     } = action;
     yield restorePassword(values);
     yield put(ACTION_CREATORS.restoreSuccess());
-    history.push('/login');
+    history.push('/restore-email');
   } catch (e) {
     yield put(ACTION_CREATORS.restoreFailed(e));
   }
