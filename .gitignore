@@ -1,3 +1,5 @@
 .idea/
 .vscode/
 .env
+server/public/errorsBackup/
+server/public/errorLog.json
