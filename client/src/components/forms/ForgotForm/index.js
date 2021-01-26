@@ -11,7 +11,12 @@ const initialValues = {
 
 const validationSchema = Yup.object({
   email: Yup.string().trim().email().required(),
-  newPassword: Yup.string().required(),
+  newPassword: Yup.string()
+    .matches(
+      /(?=.*?\d)(?=.*?[A-Z])(?=.*?[a-z])^.{8,255}$/,
+      'Your password must be at least 8 characters, and include at least one lowercase letter, one uppercase letter, and a number.',
+    )
+    .required(),
 });
 
 function ForgotForm(props) {
