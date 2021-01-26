@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const uuid = require('uuid/v1');
 const { Op } = require('sequelize');
+const { hashSync } = require('bcrypt');
+const nodemailer = require('nodemailer');
 const CONSTANTS = require('../constants');
 const { sequelize, Contest, Sequelize, CreditCard, Offer, Rating } = require('../models');
 const NotFound = require('../errors/UserNotFoundError');
@@ -15,6 +17,8 @@ const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
 const BadRequestError = require('../errors/BadRequestError');
 const { decodeToken } = require('../services/tokenService');
+const JwtService = require('../services/jwtService');
+const config = require('../configs/config');
 
 module.exports.login = async (req, res, next) => {
   try {
@@ -247,11 +251,62 @@ module.exports.cashout = async (req, res, next) => {
   }
 };
 
-exports.restorePassword = (req, res, next) => {
+exports.restorePassword = async (req, res, next) => {
   try {
-    console.log('from middleware', req.body);
-    res.status(200).send(`Sent confirmation email to ${req.body.email}`);
-  } catch (e) {
-    next(e);
+    const {
+      jwt: { tokenExpiresIn, tokenSecret },
+    } = config;
+    const { email, newPassword } = req.body;
+
+    const restoreToken = await JwtService.sign(
+      {
+        email,
+        password: hashSync(newPassword, CONSTANTS.SALT_ROUNDS),
+      },
+      tokenSecret,
+      {
+        expiresIn: tokenExpiresIn,
+      },
+    );
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: 'squadhelp.freshcode.exam@gmail.com',
+        pass: 'Freshcode123',
+      },
+    });
+
+    const mailInfo = await transporter.sendMail({
+      from: '"Squadhelp" <noreply@squadhelp.com>',
+      to: email,
+      subject: 'Restore your password',
+      html: `<p>To change your password click on this link:</p><a href="http://localhost:3000/restore/${restoreToken}">Change password</a><br /><p>If you didn't send the restoration request just ignore this email.</p><p>This is an automatic generated email, please don't reply to it.</p><br /><p>Best wishes,<br />Squadhelp!</p>`,
+    });
+
+    res.status(200).send({
+      email,
+      newPassword,
+      restoreToken,
+      messageId: mailInfo.messageId,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.changeEmail = async (req, res, next) => {
+  try {
+    const { restoreToken } = req.body;
+    const { email, password } = jwt.verify(restoreToken, config.jwt.tokenSecret);
+    const userEntity = await userQueries.findUser({ email });
+
+    await userQueries.updateUser({ password }, userEntity.id);
+
+    res.status(200).send({ email, password });
+  } catch (err) {
+    next(err);
   }
 };

@@ -449,3 +449,33 @@ export const restoreFailed = (err) => {
     },
   };
 };
+
+export const restoreTokenRequest = (data) => {
+  return {
+    type: ACTION.RESTORE_TOKEN_REQUEST,
+    payload: {
+      data,
+    },
+  };
+};
+
+export const changeEmailRequest = () => {
+  return {
+    type: ACTION.CHANGE_EMAIL_REQUEST,
+  };
+};
+
+export const changeEmailSuccess = () => {
+  return {
+    type: ACTION.CHANGE_EMAIL_SUCCESS,
+  };
+};
+
+export const changeEmailFailed = (err) => {
+  return {
+    type: ACTION.CHANGE_EMAIL_FAILED,
+    payload: {
+      error: err,
+    },
+  };
+};

@@ -36,7 +36,7 @@ function ForgotPassword() {
         </div>
         <div className={styles.forgotFormContainer}>
           <ForgotForm onSubmit={handleSubmit} />
-        </div> 
+        </div>
       </div>
     </div>
   );

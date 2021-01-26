@@ -51,7 +51,17 @@ const handlers = {
   }),
   [ACTION_TYPES.RESTORE_PASSWORD_FAILED]: produce((draftState, action) => {
     draftState.isFetching = false;
-    draftState.error = action.error;
+    draftState.error = action.payload.error;
+  }),
+  [ACTION_TYPES.CHANGE_EMAIL_REQUEST]: produce((draftState) => {
+    draftState.isFetching = true;
+  }),
+  [ACTION_TYPES.CHANGE_EMAIL_SUCCESS]: produce((draftState) => {
+    draftState.isFetching = false;
+  }),
+  [ACTION_TYPES.CHANGE_EMAIL_FAILED]: produce((draftState, action) => {
+    draftState.isFetching = false;
+    draftState.error = action.payload.error;
   }),
 };
 

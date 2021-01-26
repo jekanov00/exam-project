@@ -15,6 +15,8 @@ router.use('/auth', authRouter);
 
 router.post('/restore-password', userController.restorePassword);
 
+router.post('/changeEmail', userController.changeEmail);
+
 router.use(checkAuthorization);
 
 router.post('/dataForContest', contestController.dataForContest);
