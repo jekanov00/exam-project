@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const uuid = require('uuid/v1');
 const { Op } = require('sequelize');
-const { hashSync } = require('bcrypt');
 const nodemailer = require('nodemailer');
 const CONSTANTS = require('../constants');
 const { sequelize, Contest, Sequelize, CreditCard, Offer, Rating } = require('../models');
@@ -261,7 +260,7 @@ exports.restorePassword = async (req, res, next) => {
     const restoreToken = await JwtService.sign(
       {
         email,
-        password: hashSync(newPassword, CONSTANTS.SALT_ROUNDS),
+        password: newPassword,
       },
       tokenSecret,
       {
