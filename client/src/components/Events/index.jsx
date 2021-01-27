@@ -31,7 +31,7 @@ function Events() {
               ${formatDistanceToNowStrict(new Date(e.end), {
                 unit: 'year',
                 roundingMethod: 'floor',
-              })} ${tempMonth[0] !== 0 ? tempMonth : ''}`;
+              })} ${tempMonth[0] !== '0' ? tempMonth : ''}`;
           } else if (
             formatDistanceToNowStrict(new Date(e.end), { roundingMethod: 'floor' }).search(
               'month',
@@ -72,22 +72,35 @@ function Events() {
               'day',
             ) !== -1
           ) {
-            const tempHour = formatDistanceToNowStrict(
-              new Date(e.end).setFullYear(
-                new Date().getFullYear(),
-                new Date().getMonth(),
-                new Date().getDate() + 1,
-              ),
-              {
-                unit: 'hour',
-                roundingMethod: 'round',
-              },
-            );
+            const tempHour =
+              new Date(e.end).getHours() < new Date().getHours()
+                ? formatDistanceToNowStrict(
+                    new Date(e.end).setFullYear(
+                      new Date().getFullYear(),
+                      new Date().getMonth(),
+                      new Date().getDate() + 1,
+                    ),
+                    {
+                      unit: 'hour',
+                      roundingMethod: 'round',
+                    },
+                  )
+                : formatDistanceToNowStrict(
+                    new Date(e.end).setFullYear(
+                      new Date().getFullYear(),
+                      new Date().getMonth(),
+                      new Date().getDate(),
+                    ),
+                    {
+                      unit: 'hour',
+                      roundingMethod: 'round',
+                    },
+                  );
             result = `
               ${formatDistanceToNowStrict(new Date(e.end), {
                 unit: 'day',
                 roundingMethod: 'floor',
-              })} ${tempHour[0] !== 0 ? tempHour : ''}`;
+              })} ${tempHour[0] !== '0' ? tempHour : ''}`;
           } else if (
             formatDistanceToNowStrict(new Date(e.end), { roundingMethod: 'floor' }).search(
               'hour',
@@ -198,7 +211,7 @@ function Events() {
             </div>
           </div>
           <div className={styles.remainingHeading}>
-            <p>Remaining result</p>
+            <p>Remaining time</p>
             <i className={'far fa-clock'} />
           </div>
         </div>
