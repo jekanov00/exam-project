@@ -25,9 +25,21 @@ export const removeChatFromCatalog = (data) => http.post('removeChatFromCatalog'
 export const changeCatalogName = (data) => http.post('updateNameCatalog', data);
 export const restorePassword = (data) => http.post('restore-password', data);
 export const changeUserEmail = (data) => http.post('changeEmail', data);
+export const activateContest = (data) => http.post('activateContest', data);
 export const getCustomersContests = (data) =>
   http.post(
     'getCustomersContests',
+    { limit: data.limit, offset: data.offset },
+    {
+      headers: {
+        status: data.contestStatus,
+      },
+    },
+  );
+
+export const getModeratorContests = (data) =>
+  http.post(
+    'getModeratorContests',
     { limit: data.limit, offset: data.offset },
     {
       headers: {

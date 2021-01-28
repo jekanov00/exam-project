@@ -32,6 +32,10 @@ router.post(
 
 router.post('/getCustomersContests', contestController.getCustomersContests);
 
+router.post('/getModeratorContests', contestController.getModeratorContests);
+
+router.post('/activateContest', contestController.activateContest);
+
 router.get('/getContestById', basicMiddlewares.canGetContest, contestController.getContestById);
 
 router.post('/getAllContests', basicMiddlewares.onlyForCreative, contestController.getContests);

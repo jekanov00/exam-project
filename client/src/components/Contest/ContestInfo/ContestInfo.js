@@ -5,7 +5,7 @@ import LogoContestSpecialInfo from './LogoContestSpecialInfo';
 import NameContestSpecialInfo from './NameContestSpecialInfo';
 import TaglineContestSpecialInfo from './TaglineContestSpecialInfo';
 
-const ContestInfo = props => {
+const ContestInfo = (props) => {
   const { changeEditContest, userId, contestData, role, goChat } = props;
   const {
     typeOfTagline,
@@ -30,16 +30,21 @@ const ContestInfo = props => {
             <span className={styles.label}>Contest Type</span>
             <span className={styles.data}>{contestType}</span>
           </div>
-          {User.id === userId && status !== CONSTANTS.CONTEST_STATUS_FINISHED && (
-            <div
-              onClick={() => changeEditContest(true)}
-              className={styles.editBtn}
-            >
-              Edit
-            </div>
-          )}
+          {(User.id === userId || role === ROLES.MODERATOR) &&
+            status !== CONSTANTS.CONTEST_STATUS_FINISHED && (
+              <div
+                onClick={() => changeEditContest(true)}
+                className={styles.editBtn}
+                style={role === ROLES.MODERATOR ? { order: '2' } : null}>
+                Edit
+              </div>
+            )}
           {role !== ROLES.CUSTOMER && (
-            <i onClick={goChat} className="fas fa-comments" />
+            <i
+              onClick={goChat}
+              className="fas fa-comments"
+              style={role === ROLES.MODERATOR ? { marginLeft: 'auto', marginRight: '20px' } : null}
+            />
           )}
         </div>
         <div className={styles.dataContainer}>
@@ -47,31 +52,21 @@ const ContestInfo = props => {
           <span className={styles.data}>{title}</span>
         </div>
         {contestType === CONSTANTS.NAME_CONTEST ? (
-          <NameContestSpecialInfo
-            typeOfName={typeOfName}
-            styleName={styleName}
-          />
+          <NameContestSpecialInfo typeOfName={typeOfName} styleName={styleName} />
         ) : contestType === CONSTANTS.TAGLINE_CONTEST ? (
           <TaglineContestSpecialInfo
             typeOfTagline={typeOfTagline}
             nameVenture={contestData.nameVenture}
           />
         ) : (
-          <LogoContestSpecialInfo
-            brandStyle={brandStyle}
-            nameVenture={contestData.nameVenture}
-          />
+          <LogoContestSpecialInfo brandStyle={brandStyle} nameVenture={contestData.nameVenture} />
         )}
         <div className={styles.dataContainer}>
-          <span className={styles.label}>
-            What is your Business/ Brand about?
-          </span>
+          <span className={styles.label}>What is your Business/ Brand about?</span>
           <span className={styles.data}>{focusOfWork}</span>
         </div>
         <div className={styles.dataContainer}>
-          <span className={styles.label}>
-            Description target customers of company{' '}
-          </span>
+          <span className={styles.label}>Description target customers of company </span>
           <span className={styles.data}>{targetCustomer}</span>
         </div>
         <div className={styles.dataContainer}>
@@ -86,8 +81,7 @@ const ContestInfo = props => {
               rel="noreferrer"
               className={styles.file}
               href={`${CONSTANTS.publicURL}${fileName}`}
-              download={originalFileName}
-            >
+              download={originalFileName}>
               {originalFileName}
             </a>
           </div>

@@ -102,10 +102,8 @@ module.exports.updateContest = async (req, res, next) => {
   const { contestId } = req.body;
   delete req.body.contestId;
   try {
-    const tokenData = decodeToken(req);
     const updatedContest = await contestQueries.updateContest(req.body, {
       id: contestId,
-      userId: tokenData.userId,
     });
     res.send(updatedContest);
   } catch (e) {
@@ -254,6 +252,45 @@ module.exports.getCustomersContests = (req, res, next) => {
       return res.send({ contests, haveMore });
     })
     .catch((err) => next(new ServerError(err)));
+};
+
+module.exports.getModeratorContests = (req, res, next) => {
+  Contest.findAll({
+    where: { status: req.headers.status },
+    limit: req.body.limit,
+    offset: req.body.offset ? req.body.offset : 0,
+    order: [['id', 'DESC']],
+    include: [
+      {
+        model: Offer,
+        required: false,
+        attributes: ['id'],
+      },
+    ],
+  })
+    .then((contests) => {
+      contests.forEach((contest) => {
+        contest.dataValues.count = contest.dataValues.Offers.length;
+      });
+      let haveMore = true;
+      if (contests.length === 0) {
+        haveMore = false;
+      }
+      return res.send({ contests, haveMore });
+    })
+    .catch((err) => next(new ServerError(err)));
+};
+
+module.exports.activateContest = async (req, res, next) => {
+  try {
+    const pendingContest = await contestQueries.updateContest(
+      { status: 'active' },
+      { id: req.body.id },
+    );
+    res.status(200).send({ ...req.body, ...pendingContest });
+  } catch (e) {
+    next(e);
+  }
 };
 
 module.exports.getContests = (req, res, next) => {

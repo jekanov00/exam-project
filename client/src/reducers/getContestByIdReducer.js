@@ -1,4 +1,4 @@
-import ACTION from "../actions/actionTypes";
+import ACTION from '../actions/actionTypes';
 
 const initialState = {
   isFetching: true,
@@ -15,7 +15,7 @@ const initialState = {
   isShowModal: false,
 };
 
-export default function getContestByIdReducer (state = initialState, action) {
+export default function getContestByIdReducer(state = initialState, action) {
   switch (action.type) {
     case ACTION.GET_CONTEST_BY_ID_REQUEST: {
       return {
@@ -131,6 +131,26 @@ export default function getContestByIdReducer (state = initialState, action) {
       return {
         ...state,
         isShowModal: action.data,
+      };
+    }
+    case ACTION.ACTIVATE_CONTEST_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+      };
+    }
+    case ACTION.ACTIVATE_CONTEST_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        contestData: action.data,
+      };
+    }
+    case ACTION.ACTIVATE_CONTEST_FAILED: {
+      return {
+        ...state,
+        isFetching: false,
+        error: action.error,
       };
     }
     default:

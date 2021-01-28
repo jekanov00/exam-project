@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styles from './ContestSideBar.module.sass';
-import CONSTANTS from '../../constants';
+import CONSTANTS, { ROLES } from '../../constants';
 import moment from 'moment';
+import { activateContest } from '../../actions/actionCreator';
 
 const ContestSideBar = (props) => {
   const getTimeStr = () => {
@@ -51,13 +52,25 @@ const ContestSideBar = (props) => {
           <div className={styles.infoCustomerContainer}>
             <span className={styles.labelCustomerInfo}>About Contest Holder</span>
             <div className={styles.customerInfo}>
-              <img src={User.avatar === null ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${User.avatar}`} alt="user" />
+              <img
+                src={
+                  User.avatar === null
+                    ? CONSTANTS.ANONYM_IMAGE_PATH
+                    : `${CONSTANTS.publicURL}${User.avatar}`
+                }
+                alt="user"
+              />
               <div className={styles.customerNameContainer}>
                 <span>{User.firstName + ' ' + User.lastName}</span>
                 <span>{User.displayName}</span>
               </div>
             </div>
           </div>
+        )}
+        {props.user.role === ROLES.MODERATOR && props.contestData.status === 'pending' && (
+          <button className={styles.activateBtn} onClick={() => props.activate(props.contestData)}>
+            Activate
+          </button>
         )}
       </div>
     );
@@ -70,4 +83,10 @@ const mapStateToProps = (state) => {
   return state.auth;
 };
 
-export default connect(mapStateToProps, null)(ContestSideBar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    activate: (contest) => dispatch(activateContest(contest)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContestSideBar);

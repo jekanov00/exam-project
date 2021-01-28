@@ -1,6 +1,7 @@
-import { put } from "redux-saga/effects";
-import ACTION from "../actions/actionTypes";
-import * as restController from "../api/rest/restController";
+import { put } from 'redux-saga/effects';
+import ACTION from '../actions/actionTypes';
+import history from '../browserHistory';
+import * as restController from '../api/rest/restController';
 
 export function* activeContestsSaga(action) {
   yield put({ type: ACTION.GET_CONTESTS_ACTION_REQUEST });
@@ -19,6 +20,27 @@ export function* customerContestsSaga(action) {
     yield put({ type: ACTION.GET_CONTESTS_ACTION_SUCCESS, data: data });
   } catch (e) {
     yield put({ type: ACTION.GET_CONTESTS_ACTION_ERROR, error: e.response });
+  }
+}
+
+export function* moderatorContestsSaga(action) {
+  yield put({ type: ACTION.GET_CONTESTS_ACTION_REQUEST });
+  try {
+    const { data } = yield restController.getModeratorContests(action.data);
+    yield put({ type: ACTION.GET_CONTESTS_ACTION_SUCCESS, data: data });
+  } catch (e) {
+    yield put({ type: ACTION.GET_CONTESTS_ACTION_ERROR, error: e.response });
+  }
+}
+
+export function* activateContestSaga(action) {
+  yield put({ type: ACTION.ACTIVATE_CONTEST_REQUEST });
+  try {
+    const { data } = yield restController.activateContest(action.data);
+    yield put({ type: ACTION.ACTIVATE_CONTEST_SUCCESS, data: data });
+    history.replace('/dashboard');
+  } catch (e) {
+    yield put({ type: ACTION.ACTIVATE_CONTEST_FAILED, error: e.response });
   }
 }
 

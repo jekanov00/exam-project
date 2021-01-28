@@ -83,6 +83,20 @@ export const getContestsForCustomer = (data) => {
   };
 };
 
+export const getContestsForModerator = (data) => {
+  return {
+    type: ACTION.GET_CONTESTS_FOR_MODERATOR,
+    data: data,
+  };
+};
+
+export const activateContest = (data) => {
+  return {
+    type: ACTION.ACTIVATE_CONTEST,
+    data: data,
+  };
+};
+
 export const getContestById = (data) => {
   return {
     type: ACTION.GET_CONTEST_BY_ID_ACTION,

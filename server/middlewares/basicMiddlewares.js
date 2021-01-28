@@ -37,6 +37,10 @@ module.exports.canGetContest = async (req, res, next) => {
           },
         },
       });
+    } else if (tokenData.userRole === CONSTANTS.MODERATOR) {
+      result = await db.Contest.findOne({
+        where: { id: req.headers.contestid },
+      });
     }
     result ? next() : next(new RightsError());
   } catch (e) {
