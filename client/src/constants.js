@@ -6,6 +6,7 @@ export const REFRESH_TOKEN_KEY = 'refreshToken';
 export const ROLES = {
   CUSTOMER: 'customer',
   CREATOR: 'creator',
+  MODERATOR: 'moderator',
 };
 
 const constants =  {
