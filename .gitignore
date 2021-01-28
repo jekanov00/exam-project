@@ -3,3 +3,4 @@
 .env
 server/public/errorsBackup/
 server/public/errorLog.json
+server/public/staticImages/
