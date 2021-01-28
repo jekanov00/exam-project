@@ -64,7 +64,7 @@ function* rootSaga() {
   yield takeLatest(ACTION.UPDATE_USER_DATA, updateUserData);
   yield takeLatest(ACTION.FORGOT_PASSWORD_REQUEST, forgotPassword);
   yield takeLatest(ACTION.RESTORE_TOKEN_REQUEST, changeEmail);
-  yield takeLeading(ACTION.GET_CONTESTS_FOR_MODERATOR, moderatorContestsSaga);
+  yield takeLatest(ACTION.GET_CONTESTS_FOR_MODERATOR, moderatorContestsSaga);
   yield takeLatest(ACTION.ACTIVATE_CONTEST, activateContestSaga);
 }
 
