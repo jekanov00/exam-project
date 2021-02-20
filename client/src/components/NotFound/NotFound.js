@@ -3,7 +3,7 @@ import styles from './NotFound.module.sass';
 
 const NotFound = () => {
   useEffect(() => {
-    document.title = 'Not Found';
+    document.title = 'Not Found | Squadhelp';
   });
   return (
     <div className={styles.container}>

@@ -5,7 +5,7 @@ import CONSTANTS from '../../constants';
 
 function EmailSent() {
   useEffect(() => {
-    document.title = 'Restore Password';
+    document.title = 'Restore Password | Squadhelp';
   });
 
   return (

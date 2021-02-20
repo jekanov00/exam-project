@@ -13,7 +13,7 @@ import NotificationBadge from '../../components/NotificationBadge';
 
 const UserProfile = (props) => {
   useEffect(() => {
-    document.title = 'Account';
+    document.title = 'Account | Squadhelp';
   });
 
   const pay = (values) => {

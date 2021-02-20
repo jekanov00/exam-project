@@ -31,7 +31,7 @@ class ContestPage extends React.Component {
 
   componentDidMount() {
     if (this.props?.contestByIdStore?.contestData?.title) {
-      document.title = this.props.contestByIdStore.contestData.title;
+      document.title = `${this.props.contestByIdStore.contestData.title} | Squadhelp`;
     }
     this.getData();
   }
@@ -41,7 +41,7 @@ class ContestPage extends React.Component {
       prevProps?.contestByIdStore !== this.props?.contestByIdStore &&
       this.props?.contestByIdStore?.contestData?.title
     ) {
-      document.title = this.props.contestByIdStore.contestData.title;
+      document.title = `${this.props.contestByIdStore.contestData.title} | Squadhelp`;
     }
   }
 
@@ -78,7 +78,7 @@ class ContestPage extends React.Component {
     return (
       contestCreatorId === userId &&
       contestStatus === CONSTANTS.CONTEST_STATUS_ACTIVE &&
-      offerStatus === CONSTANTS.OFFER_STATUS_PENDING
+      offerStatus === CONSTANTS.OFFER_STATUS_ACTIVE
     );
   };
 

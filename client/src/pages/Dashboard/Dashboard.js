@@ -10,7 +10,7 @@ const Dashboard = (props) => {
   const { role, history } = props;
 
   useEffect(() => {
-    document.title = 'Dashboard';
+    document.title = 'Dashboard | Squadhelp';
   });
 
   return (

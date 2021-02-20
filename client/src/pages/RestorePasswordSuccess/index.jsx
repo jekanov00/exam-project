@@ -11,7 +11,7 @@ function RestorePasswordSuccess() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    document.title = 'Restore Password';
+    document.title = 'Restore Password | Squadhelp';
     if (window.location.pathname.slice(0, 9) === '/restore/') {
       dispatch(restoreTokenRequest(window.location.pathname.slice(9)));
     }

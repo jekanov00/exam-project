@@ -9,7 +9,7 @@ import Error from '../../components/Error/Error';
 
 const Payment = (props) => {
   useEffect(() => {
-    document.title = 'Payment';
+    document.title = 'Payment | Squadhelp';
   });
 
   const pay = (values) => {

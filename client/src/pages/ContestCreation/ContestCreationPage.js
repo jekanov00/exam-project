@@ -14,7 +14,7 @@ const ContestCreationPage = (props) => {
   const history = useHistory();
   useEffect(() => {
     if (props.title) {
-      document.title = props.title;
+      document.title = `${props.title} | Squadhelp`;
     }
   });
 

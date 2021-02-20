@@ -14,7 +14,7 @@ const StartContestPage = (props) => {
   }
 
   useEffect(() => {
-    document.title = 'Start a Contest';
+    document.title = 'Start a Contest | Squadhelp';
   });
 
   const setBundle = (bundleStr) => {

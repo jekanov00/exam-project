@@ -12,7 +12,7 @@ function ForgotPassword() {
   const user = useSelector(userSelector);
 
   useEffect(() => {
-    document.title = 'Restore Password';
+    document.title = 'Restore Password | Squadhelp';
   });
 
   const handleSubmit = useCallback((values) => dispatch(forgotRequest(values)), [dispatch]);
