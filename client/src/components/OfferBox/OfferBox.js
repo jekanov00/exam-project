@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './OfferBox.module.sass';
-import CONSTANTS from '../../constants';
+import CONSTANTS, { ROLES } from '../../constants';
 import { connect } from 'react-redux';
 import Rating from 'react-rating';
 import {
@@ -8,6 +8,8 @@ import {
   clearChangeMarkError,
   goToExpandedDialog,
   changeShowImage,
+  acceptOffer,
+  deleteOffer,
 } from '../../actions/actionCreator';
 import { withRouter } from 'react-router-dom';
 import { isEqual } from 'lodash';
@@ -144,7 +146,7 @@ const OfferBox = (props) => {
           ) : (
             <span className={styles.response}>{data.text}</span>
           )}
-          {data.User.id !== id && (
+          {data.User.id !== id && role !== ROLES.MODERATOR && (
             <Rating
               fractions={2}
               fullSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
@@ -169,6 +171,16 @@ const OfferBox = (props) => {
           </div>
         </div>
       )}
+      {role === ROLES.MODERATOR && data.status === CONSTANTS.OFFER_STATUS_PENDING && (
+        <div className={styles.offerModeration}>
+          <button className={styles.acceptBtn} onClick={() => props.acceptOffer(data)}>
+            Accept
+          </button>
+          <button className={styles.deleteBtn} onClick={() => props.deleteOffer(data)}>
+            <i className={'far fa-trash-alt'} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
@@ -179,6 +191,8 @@ const mapDispatchToProps = (dispatch) => {
     clearError: () => dispatch(clearChangeMarkError()),
     goToExpandedDialog: (data) => dispatch(goToExpandedDialog(data)),
     changeShowImage: (data) => dispatch(changeShowImage(data)),
+    acceptOffer: (data) => dispatch(acceptOffer(data)),
+    deleteOffer: (data) => dispatch(deleteOffer(data)),
   };
 };
 

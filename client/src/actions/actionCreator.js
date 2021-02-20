@@ -493,3 +493,13 @@ export const changeEmailFailed = (err) => {
     },
   };
 };
+
+export const acceptOffer = (data) => ({
+  type: ACTION.ACCEPT_OFFER,
+  data,
+});
+
+export const deleteOffer = (data) => ({
+  type: ACTION.DELETE_OFFER,
+  data,
+});

@@ -153,6 +153,46 @@ export default function getContestByIdReducer(state = initialState, action) {
         error: action.error,
       };
     }
+    case ACTION.ACCEPT_OFFER_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+      };
+    }
+    case ACTION.ACCEPT_OFFER_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        offers: [...action.data],
+      };
+    }
+    case ACTION.ACCEPT_OFFER_FAILED: {
+      return {
+        ...state,
+        isFetching: false,
+        error: action.error,
+      };
+    }
+    case ACTION.DELETE_OFFER_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+      };
+    }
+    case ACTION.DELETE_OFFER_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        offers: [...action.data],
+      };
+    }
+    case ACTION.DELETE_OFFER_FAILED: {
+      return {
+        ...state,
+        isFetching: false,
+        error: action.error,
+      };
+    }
     default:
       return state;
   }

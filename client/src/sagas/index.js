@@ -13,7 +13,13 @@ import {
   downloadContestFileSaga,
   activateContestSaga,
 } from './contestsSagas';
-import { changeMarkSaga, setOfferStatusSaga, addOfferSaga } from './offerSagas';
+import {
+  changeMarkSaga,
+  setOfferStatusSaga,
+  addOfferSaga,
+  acceptOfferSaga,
+  deleteOfferSaga,
+} from './offerSagas';
 import {
   previewSaga,
   getDialog,
@@ -66,6 +72,8 @@ function* rootSaga() {
   yield takeLatest(ACTION.RESTORE_TOKEN_REQUEST, changeEmail);
   yield takeLatest(ACTION.GET_CONTESTS_FOR_MODERATOR, moderatorContestsSaga);
   yield takeLatest(ACTION.ACTIVATE_CONTEST, activateContestSaga);
+  yield takeLatest(ACTION.ACCEPT_OFFER, acceptOfferSaga);
+  yield takeLatest(ACTION.DELETE_OFFER, deleteOfferSaga);
 }
 
 export default rootSaga;

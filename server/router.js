@@ -36,6 +36,10 @@ router.post('/getModeratorContests', contestController.getModeratorContests);
 
 router.post('/activateContest', contestController.activateContest);
 
+router.post('/activateOffer', contestController.activateOffer);
+
+router.post('/deleteOffer', contestController.deleteOffer);
+
 router.get('/getContestById', basicMiddlewares.canGetContest, contestController.getContestById);
 
 router.post('/getAllContests', basicMiddlewares.onlyForCreative, contestController.getContests);
