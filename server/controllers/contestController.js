@@ -44,7 +44,13 @@ module.exports.getContestById = async (req, res, next) => {
     const tokenData = decodeToken(req);
     let contestInfo = await Contest.findOne({
       where: { id: req.headers.contestid },
-      order: [[Offer, 'id', 'asc']],
+      order:
+        tokenData.userRole === CONSTANTS.MODERATOR
+          ? [
+              [Offer, 'status', 'desc'],
+              [Offer, 'id', 'asc'],
+            ]
+          : [[Offer, 'id', 'asc']],
       include: [
         {
           model: User,
@@ -329,4 +335,48 @@ module.exports.getContests = (req, res, next) => {
     .catch((err) => {
       next(new ServerError(err));
     });
+};
+
+module.exports.activateOffer = async (req, res, next) => {
+  try {
+    await Offer.update({ status: 'active' }, { where: { id: req.body.id } });
+    const {
+      dataValues: { contestId },
+    } = await Offer.findOne({
+      where: { id: req.body.id },
+      attributes: ['contestId'],
+    });
+    const offers = await Offer.findAll({
+      where: { contestId },
+      attributes: { exclude: ['userId', 'contestId'] },
+    });
+    offers.forEach((e) => {
+      e.dataValues.User = req.body.User;
+    });
+    res.status(200).send(offers);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports.deleteOffer = async (req, res, next) => {
+  try {
+    const {
+      dataValues: { contestId },
+    } = await Offer.findOne({
+      where: { id: req.body.id },
+      attributes: ['contestId'],
+    });
+    await Offer.destroy({ where: { id: req.body.id } });
+    const offers = await Offer.findAll({
+      where: { contestId },
+      attributes: { exclude: ['userId', 'contestId'] },
+    });
+    offers.forEach((e) => {
+      e.dataValues.User = req.body.User;
+    });
+    res.status(200).send(offers);
+  } catch (err) {
+    next(err);
+  }
 };
