@@ -18,7 +18,7 @@ function Header() {
     if (user) {
       return (
         <>
-          <div className={styles.userInfo} style={{position: 'relative'}}>
+          <div className={styles.userInfo} style={{ position: 'relative' }}>
             <img
               src={
                 user.avatar === null
@@ -42,6 +42,13 @@ function Header() {
                 </Link>
                 <NotificationBadge />
               </li>
+              {user?.role === ROLES.MODERATOR && (
+                <li>
+                  <Link to="/offers-table" style={{ textDecoration: 'none' }}>
+                    <span>Offers</span>
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link to="https://www.google.com" style={{ textDecoration: 'none' }}>
                   <span>Messages</span>

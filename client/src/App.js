@@ -22,6 +22,7 @@ import { refreshAuthRequest } from './actions/authActionCreators';
 import ForgotPassword from './pages/ForgotPassword';
 import RestorePasswordSuccess from './pages/RestorePasswordSuccess';
 import EmailSent from './pages/EmailSent';
+import OffersTable from './pages/OffersTable';
 
 const AuthPage = lazy(() => import('./pages/AuthPage'));
 
@@ -78,6 +79,7 @@ function App() {
           <PrivateRoute exact path={'/dashboard'} component={Dashboard} />
           <PrivateRoute exact path={'/contest/:id'} component={ContestPage} />
           <PrivateRoute exact path={'/account'} component={UserProfile} />
+          <PrivateRoute exact path={'/offers-table'} roles={['moderator']} component={OffersTable} />
           <Route component={NotFound} />
         </Switch>
       </Suspense>
