@@ -9,7 +9,7 @@ export const ROLES = {
   MODERATOR: 'moderator',
 };
 
-const constants =  {
+const constants = {
   CUSTOMER: 'customer',
   CREATOR: 'creator',
   CONTEST_STATUS_ACTIVE: 'active',
@@ -21,6 +21,7 @@ const constants =  {
   OFFER_STATUS_REJECTED: 'rejected',
   OFFER_STATUS_WON: 'won',
   OFFER_STATUS_PENDING: 'pending',
+  OFFER_STATUS_ACTIVE: 'active',
   STATIC_IMAGES_PATH: '/staticImages/',
   ANONYM_IMAGE_PATH: '/staticImages/anonym.png',
   BASE_URL: `http://${serverIP}:5000/api`,
