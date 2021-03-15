@@ -1,0 +1,54 @@
+.offersTable
+  border: 2px solid #38496e
+  border-radius: 7px
+  font-size: 18px
+  max-width: 1200px
+  overflow: hidden
+  margin: 50px auto
+  display: flex
+  flex-direction: column
+
+  thead
+    background-color: #455A89
+    color: #ffffff
+    width: 100%
+    border-bottom: 2px solid #38496e
+
+  tbody
+    width: 100%
+    text-align: center
+    
+    tr:hover
+      background-color: rgba(0, 0, 0, 0.05)
+
+  tr
+    display: flex
+    justify-content: stretch
+    width: 100%
+
+  tr + tr
+    border-top: 2px solid #38496e
+
+
+  th, td
+    padding: 20px 15px
+    flex: 1
+
+    &:nth-child(3n+1)
+      flex-grow: 0
+      flex-basis: 70px
+      padding: 20px 10px
+      overflow: hidden
+      text-overflow: ellipsis
+
+  th:nth-child(4)
+    padding: 10px 10px
+
+  td:nth-child(3n+2)
+    text-align: left
+
+  th + th
+    border-left: 2px solid #ffffff
+
+  td + td
+    border-left: 2px solid #38496e
