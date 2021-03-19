@@ -41,6 +41,12 @@
       overflow: hidden
       text-overflow: ellipsis
 
+  td:nth-child(3n+1)
+    color: #999
+
+  td:nth-child(3)
+    color: #4e8ec2
+
   th:nth-child(4)
     padding: 10px 10px
 
@@ -52,3 +58,7 @@
 
   td + td
     border-left: 2px solid #38496e
+
+  .error
+    color: darkred
+    flex-grow: 1 !important

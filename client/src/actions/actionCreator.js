@@ -503,3 +503,8 @@ export const deleteOffer = (data) => ({
   type: ACTION.DELETE_OFFER,
   data,
 });
+
+export const getModeratorOffers = (data) => ({
+  type: ACTION.GET_OFFERS_FOR_MODERATOR_REQUEST,
+  data,
+});

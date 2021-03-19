@@ -3,16 +3,24 @@ import { connect } from 'react-redux';
 import history from '../../browserHistory';
 import Header from '../../components/Header/Header';
 import { ROLES } from '../../constants';
+import { getModeratorOffers } from '../../actions/actionCreator';
+import Spinner from '../../components/Spinner/Spinner';
 import styles from './OffersTable.module.sass';
 
 function OffersTable(props) {
+  const { user, getModeratorOffers: getOffers } = props;
+
   useEffect(() => {
     document.title = 'Offers | Squadhelp';
 
-    if (props.user.role !== ROLES.MODERATOR) {
+    if (user.role !== ROLES.MODERATOR) {
       history.push('/');
     }
-  });
+
+    getOffers(user);
+  }, [user, getOffers]);
+
+  const { error, isFetching, bundle } = props.bundleStore;
 
   return (
     <div>
@@ -29,14 +37,42 @@ function OffersTable(props) {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>0</td>
-            <td>Test</td>
-            <td>pending</td>
-            <td>5</td>
-            <td>test testovich</td>
-            <td>test</td>
-          </tr>
+          {error && (
+            <tr>
+              <td className={styles.error}>{error.message}</td>
+            </tr>
+          )}
+          {isFetching ? (
+            <tr>
+              <td style={{ flexGrow: 1 }}>
+                <Spinner />
+              </td>
+            </tr>
+          ) : (
+            bundle?.offers.map((e, index) => {
+              return (
+                <tr key={index}>
+                  <td>{e.id}</td>
+                  <td>{e.text}</td>
+                  <td
+                    style={
+                      e.status === 'active'
+                        ? { color: '#777777' }
+                        : e.status === 'won'
+                        ? { color: 'green' }
+                        : e.status === 'rejected'
+                        ? { color: 'red' }
+                        : {}
+                    }>
+                    {e.status}
+                  </td>
+                  <td>{e.contestId}</td>
+                  <td>{`${e.User.firstName} ${e.User.lastName}`}</td>
+                  <td>test</td>
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </table>
     </div>
@@ -45,11 +81,14 @@ function OffersTable(props) {
 
 const mapStateToProps = (state) => {
   const { user } = state.auth;
-  return { user };
+  const bundleStore = state.bundleStore;
+  return { user, bundleStore };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    getModeratorOffers: (data) => dispatch(getModeratorOffers(data)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OffersTable);

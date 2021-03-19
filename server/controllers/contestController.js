@@ -380,3 +380,51 @@ module.exports.deleteOffer = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.getModeratorOffers = async (req, res, next) => {
+  try {
+    if (req.body.role !== CONSTANTS.MODERATOR) {
+      next('Not enough rights');
+    }
+
+    const offers = await Offer.findAll({
+      include: {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName'],
+      },
+      order: [
+        ['status', 'DESC'],
+        ['contestId', 'ASC'],
+        ['id', 'ASC'],
+      ],
+    });
+
+    const compareFunc = (a, b) => {
+      const {
+        dataValues: { status: status1 },
+      } = a;
+      const {
+        dataValues: { status: status2 },
+      } = b;
+      if (
+        status1 !== status2 &&
+        (status1 === 'pending' || (status1 === 'active' && status2 !== 'pending'))
+      ) {
+        return -1;
+      }
+      if (
+        status1 !== status2 &&
+        (status2 === 'pending' || (status2 === 'active' && status1 !== 'pending'))
+      ) {
+        return 1;
+      }
+      return 0;
+    };
+
+    offers.sort(compareFunc);
+
+    res.status(200).send(offers);
+  } catch (err) {
+    next(err);
+  }
+};

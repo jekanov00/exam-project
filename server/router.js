@@ -89,4 +89,6 @@ router.post('/deleteCatalog', chatController.deleteCatalog);
 
 router.post('/getCatalogs', chatController.getCatalogs);
 
+router.post('/getModeratorOffers', contestController.getModeratorOffers);
+
 module.exports = router;

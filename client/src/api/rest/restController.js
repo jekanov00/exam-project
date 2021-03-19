@@ -28,6 +28,7 @@ export const changeUserEmail = (data) => http.post('changeEmail', data);
 export const activateContest = (data) => http.post('activateContest', data);
 export const activateOffer = (data) => http.post('activateOffer', data);
 export const deleteOffer = (data) => http.post('deleteOffer', data);
+export const getModeratorOffers = (data) => http.post('getModeratorOffers', data);
 export const getCustomersContests = (data) =>
   http.post(
     'getCustomersContests',
