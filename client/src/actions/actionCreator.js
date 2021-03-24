@@ -508,3 +508,13 @@ export const getModeratorOffers = (data) => ({
   type: ACTION.GET_OFFERS_FOR_MODERATOR_REQUEST,
   data,
 });
+
+export const acceptOfferBundle = (data) => ({
+  type: ACTION.ACCEPT_OFFER_BUNDLE,
+  data,
+});
+
+export const deleteOfferBundle = (data) => ({
+  type: ACTION.DELETE_OFFER_BUNDLE,
+  data,
+});

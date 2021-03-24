@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import history from '../../browserHistory';
 import Header from '../../components/Header/Header';
 import { ROLES } from '../../constants';
-import { getModeratorOffers } from '../../actions/actionCreator';
+import { getModeratorOffers, acceptOfferBundle, deleteOfferBundle } from '../../actions/actionCreator';
 import Spinner from '../../components/Spinner/Spinner';
 import styles from './OffersTable.module.sass';
 
@@ -68,7 +68,16 @@ function OffersTable(props) {
                   </td>
                   <td>{e.contestId}</td>
                   <td>{`${e.User.firstName} ${e.User.lastName}`}</td>
-                  <td>test</td>
+                  <td>
+                    {e.status === 'pending' && (
+                      <button className={styles.acceptBtn} onClick={() => props.acceptOfferBundle(e)}>
+                        Accept
+                      </button>
+                    )}
+                    <button className={styles.deleteBtn} onClick={() => props.deleteOfferBundle(e)}>
+                      <i className={'far fa-trash-alt'} />
+                    </button>
+                  </td>
                 </tr>
               );
             })
@@ -88,6 +97,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getModeratorOffers: (data) => dispatch(getModeratorOffers(data)),
+    acceptOfferBundle: (data) => dispatch(acceptOfferBundle(data)),
+    deleteOfferBundle: (data) => dispatch(deleteOfferBundle(data)),
   };
 };
 

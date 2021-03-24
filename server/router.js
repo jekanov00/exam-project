@@ -40,6 +40,10 @@ router.post('/activateOffer', contestController.activateOffer);
 
 router.post('/deleteOffer', contestController.deleteOffer);
 
+router.post('/activateOfferBundle', contestController.activateOfferBundle);
+
+router.post('/deleteOfferBundle', contestController.deleteOfferBundle);
+
 router.get('/getContestById', basicMiddlewares.canGetContest, contestController.getContestById);
 
 router.post('/getAllContests', basicMiddlewares.onlyForCreative, contestController.getContests);

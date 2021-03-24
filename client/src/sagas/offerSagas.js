@@ -82,3 +82,25 @@ export function* getOffersForModerator(action) {
     yield put({ type: ACTION.RECEIVE_ALL_OFFERS_FAILED, error: e });
   }
 }
+
+export function* acceptOfferBundleSaga(action) {
+  yield put({ type: ACTION.ACCEPT_OFFER_BUNDLE_REQUEST });
+  try {
+    const { data } = action;
+    const { data: newOffers } = yield restController.activateOfferBundle(data);
+    yield put({ type: ACTION.ACCEPT_OFFER_BUNDLE_SUCCESS, data: newOffers });
+  } catch (e) {
+    yield put({ type: ACTION.ACCEPT_OFFER_BUNDLE_FAILED, error: e });
+  }
+}
+
+export function* deleteOfferBundleSaga(action) {
+  yield put({ type: ACTION.DELETE_OFFER_BUNDLE_REQUEST });
+  try {
+    const { data } = action;
+    const { data: newOffers } = yield restController.deleteOfferBundle(data);
+    yield put({ type: ACTION.DELETE_OFFER_BUNDLE_SUCCESS, data: newOffers });
+  } catch (e) {
+    yield put({ type: ACTION.DELETE_OFFER_BUNDLE_FAILED, error: e });
+  }
+}

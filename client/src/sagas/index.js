@@ -20,6 +20,8 @@ import {
   acceptOfferSaga,
   deleteOfferSaga,
   getOffersForModerator,
+  acceptOfferBundleSaga,
+  deleteOfferBundleSaga,
 } from './offerSagas';
 import {
   previewSaga,
@@ -76,6 +78,8 @@ function* rootSaga() {
   yield takeLatest(ACTION.ACCEPT_OFFER, acceptOfferSaga);
   yield takeLatest(ACTION.DELETE_OFFER, deleteOfferSaga);
   yield takeLatest(ACTION.GET_OFFERS_FOR_MODERATOR_REQUEST, getOffersForModerator);
+  yield takeLatest(ACTION.ACCEPT_OFFER_BUNDLE, acceptOfferBundleSaga);
+  yield takeLatest(ACTION.DELETE_OFFER_BUNDLE, deleteOfferBundleSaga);
 }
 
 export default rootSaga;
