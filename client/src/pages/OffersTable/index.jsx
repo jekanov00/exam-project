@@ -32,7 +32,7 @@ function OffersTable(props) {
             <th>Content</th>
             <th>Status</th>
             <th>Contest id</th>
-            <th>Contest creator</th>
+            <th>Offer creator</th>
             <th>Action</th>
           </tr>
         </thead>
