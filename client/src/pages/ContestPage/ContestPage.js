@@ -53,16 +53,21 @@ class ContestPage extends React.Component {
   setOffersList = () => {
     const array = [];
     for (let i = 0; i < this.props.contestByIdStore.offers.length; i++) {
-      array.push(
-        <OfferBox
-          data={this.props.contestByIdStore.offers[i]}
-          key={this.props.contestByIdStore.offers[i].id}
-          needButtons={this.needButtons}
-          setOfferStatus={this.setOfferStatus}
-          contestType={this.props.contestByIdStore.contestData.contestType}
-          date={new Date()}
-        />,
-      );
+      if (
+        this.props.user.role === CONSTANTS.CUSTOMER &&
+        this.props.contestByIdStore.offers[i].status !== CONSTANTS.OFFER_STATUS_PENDING
+      ) {
+        array.push(
+          <OfferBox
+            data={this.props.contestByIdStore.offers[i]}
+            key={this.props.contestByIdStore.offers[i].id}
+            needButtons={this.needButtons}
+            setOfferStatus={this.setOfferStatus}
+            contestType={this.props.contestByIdStore.contestData.contestType}
+            date={new Date()}
+          />,
+        );
+      }
     }
     return array.length !== 0 ? (
       array
