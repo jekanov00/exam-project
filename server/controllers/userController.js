@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const uuid = require('uuid/v1');
 const { Op } = require('sequelize');
-const nodemailer = require('nodemailer');
 const CONSTANTS = require('../constants');
 const { sequelize, Contest, Sequelize, CreditCard, Offer, Rating } = require('../models');
 const NotFound = require('../errors/UserNotFoundError');
@@ -18,6 +17,7 @@ const BadRequestError = require('../errors/BadRequestError');
 const { decodeToken } = require('../services/tokenService');
 const JwtService = require('../services/jwtService');
 const config = require('../configs/config');
+const transporter = require('../transporter');
 
 module.exports.login = async (req, res, next) => {
   try {
@@ -267,16 +267,6 @@ exports.restorePassword = async (req, res, next) => {
         expiresIn: tokenExpiresIn,
       },
     );
-
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: 'squadhelp.freshcode.exam@gmail.com',
-        pass: 'Freshcode123',
-      },
-    });
 
     const mailInfo = await transporter.sendMail({
       from: '"Squadhelp" <noreply@squadhelp.com>',

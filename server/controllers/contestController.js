@@ -7,6 +7,7 @@ const controller = require('../socketInit');
 const UtilFunctions = require('../utils/functions');
 const CONSTANTS = require('../constants');
 const { decodeToken } = require('../services/tokenService');
+const { transporter } = require('../transporter');
 
 module.exports.dataForContest = async (req, res, next) => {
   const response = {};
@@ -349,10 +350,46 @@ module.exports.activateOffer = async (req, res, next) => {
     const offers = await Offer.findAll({
       where: { contestId },
       attributes: { exclude: ['userId', 'contestId'] },
+      include: {
+        model: User,
+        attributes: { exclude: ['password'] },
+      },
     });
-    offers.forEach((e) => {
-      e.dataValues.User = req.body.User;
+
+    const contest = await Contest.findOne({
+      where: { id: contestId },
+      include: {
+        model: User,
+        attributes: ['id', 'email'],
+      },
     });
+
+    const {
+      dataValues: {
+        User: { email: offerCreatorEmail },
+      },
+    } = await Offer.findOne({
+      where: { id: req.body.id },
+      include: {
+        model: User,
+        attributes: ['id', 'email'],
+      },
+    });
+
+    await transporter.sendMail({
+      from: '"Squadhelp" <noreply@squadhelp.com>',
+      to: contest.dataValues.User.email,
+      subject: 'New offer',
+      html: `<p>You have new offer on your contest.</p><p>You can check it by the following link:</p><p><a href="http://localhost:3000/contest/${contestId}">http://localhost:3000/contest/${contestId}</a></p><p>This is an automatic generated email, please don't reply to it.</p><br /><p>Best wishes,<br />Squadhelp!</p>`,
+    });
+
+    await transporter.sendMail({
+      from: '"Squadhelp" <noreply@squadhelp.com>',
+      to: offerCreatorEmail,
+      subject: 'Offer approved',
+      html: `<p>One of your offers has been approved by moderator.</p><p>You can check it by the following link:</p><p><a href="http://localhost:3000/contest/${contestId}">http://localhost:3000/contest/${contestId}</a></p><p>This is an automatic generated email, please don't reply to it.</p><br /><p>Best wishes,<br />Squadhelp!</p>`,
+    });
+
     res.status(200).send(offers);
   } catch (err) {
     next(err);
@@ -371,10 +408,31 @@ module.exports.deleteOffer = async (req, res, next) => {
     const offers = await Offer.findAll({
       where: { contestId },
       attributes: { exclude: ['userId', 'contestId'] },
+      include: {
+        model: User,
+        attributes: { exclude: ['password'] },
+      },
     });
-    offers.forEach((e) => {
-      e.dataValues.User = req.body.User;
+
+    const {
+      dataValues: {
+        User: { email: offerCreatorEmail },
+      },
+    } = await Offer.findOne({
+      where: { id: req.body.id },
+      include: {
+        model: User,
+        attributes: ['id', 'email'],
+      },
     });
+
+    await transporter.sendMail({
+      from: '"Squadhelp" <noreply@squadhelp.com>',
+      to: offerCreatorEmail,
+      subject: 'Offer deleted',
+      html: `<p>One of your offers has been deleted by moderator.</p><p>You can check it by the following link:</p><p><a href="http://localhost:3000/contest/${contestId}">http://localhost:3000/contest/${contestId}</a></p><p>This is an automatic generated email, please don't reply to it.</p><br /><p>Best wishes,<br />Squadhelp!</p>`,
+    });
+
     res.status(200).send(offers);
   } catch (err) {
     next(err);
@@ -390,7 +448,7 @@ module.exports.getModeratorOffers = async (req, res, next) => {
     const offers = await Offer.findAll({
       include: {
         model: User,
-        attributes: ['id', 'firstName', 'lastName'],
+        attributes: ['id', 'firstName', 'lastName', 'email'],
       },
       order: [
         ['status', 'DESC'],
@@ -435,7 +493,7 @@ module.exports.activateOfferBundle = async (req, res, next) => {
     const offers = await Offer.findAll({
       include: {
         model: User,
-        attributes: ['id', 'firstName', 'lastName'],
+        attributes: ['id', 'firstName', 'lastName', 'email'],
       },
       order: [
         ['status', 'DESC'],
@@ -467,6 +525,32 @@ module.exports.activateOfferBundle = async (req, res, next) => {
     };
 
     offers.sort(compareFunc);
+
+    const { contestId } = req.body;
+
+    const contest = await Contest.findOne({
+      where: { id: contestId },
+      include: {
+        model: User,
+        attributes: ['id', 'email'],
+      },
+    });
+
+    const offerCreatorEmail = req.body.User.email;
+
+    await transporter.sendMail({
+      from: '"Squadhelp" <noreply@squadhelp.com>',
+      to: contest.dataValues.User.email,
+      subject: 'New offer',
+      html: `<p>You have new offer on your contest.</p><p>You can check it by the following link:</p><p><a href="http://localhost:3000/contest/${contestId}">http://localhost:3000/contest/${contestId}</a></p><p>This is an automatic generated email, please don't reply to it.</p><br /><p>Best wishes,<br />Squadhelp!</p>`,
+    });
+
+    await transporter.sendMail({
+      from: '"Squadhelp" <noreply@squadhelp.com>',
+      to: offerCreatorEmail,
+      subject: 'Offer approved',
+      html: `<p>One of your offers has been approved by moderator.</p><p>You can check it by the following link:</p><p><a href="http://localhost:3000/contest/${contestId}">http://localhost:3000/contest/${contestId}</a></p><p>This is an automatic generated email, please don't reply to it.</p><br /><p>Best wishes,<br />Squadhelp!</p>`,
+    });
 
     res.status(200).send(offers);
   } catch (err) {
@@ -480,7 +564,7 @@ module.exports.deleteOfferBundle = async (req, res, next) => {
     const offers = await Offer.findAll({
       include: {
         model: User,
-        attributes: ['id', 'firstName', 'lastName'],
+        attributes: ['id', 'firstName', 'lastName', 'email'],
       },
       order: [
         ['status', 'DESC'],
@@ -512,6 +596,17 @@ module.exports.deleteOfferBundle = async (req, res, next) => {
     };
 
     offers.sort(compareFunc);
+
+    const { contestId } = req.body;
+
+    const offerCreatorEmail = req.body.User.email;
+
+    await transporter.sendMail({
+      from: '"Squadhelp" <noreply@squadhelp.com>',
+      to: offerCreatorEmail,
+      subject: 'Offer deleted',
+      html: `<p>One of your offers has been deleted by moderator.</p><p>You can check it by the following link:</p><p><a href="http://localhost:3000/contest/${contestId}">http://localhost:3000/contest/${contestId}</a></p><p>This is an automatic generated email, please don't reply to it.</p><br /><p>Best wishes,<br />Squadhelp!</p>`,
+    });
 
     res.status(200).send(offers);
   } catch (err) {
