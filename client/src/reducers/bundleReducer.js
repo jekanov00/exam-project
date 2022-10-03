@@ -30,7 +30,7 @@ export default function bundleReducer(state = initialState, action) {
     case ACTION.RECEIVE_ALL_OFFERS_SUCCESS: {
       return {
         ...state,
-        bundle: { offers: action.data },
+        bundle: action.data,
         isFetching: false,
       };
     }

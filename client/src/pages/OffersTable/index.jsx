@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import history from '../../browserHistory';
 import Header from '../../components/Header/Header';
 import { ROLES } from '../../constants';
-import { getModeratorOffers, acceptOfferBundle, deleteOfferBundle } from '../../actions/actionCreator';
+import {
+  getModeratorOffers,
+  acceptOfferBundle,
+  deleteOfferBundle,
+} from '../../actions/actionCreator';
 import Spinner from '../../components/Spinner/Spinner';
 import styles from './OffersTable.module.sass';
 
@@ -17,7 +21,7 @@ function OffersTable(props) {
       history.push('/');
     }
 
-    getOffers(user);
+    getOffers({ user, page: 1 });
   }, [user, getOffers]);
 
   const { error, isFetching, bundle } = props.bundleStore;
@@ -70,7 +74,9 @@ function OffersTable(props) {
                   <td>{`${e.User.firstName} ${e.User.lastName}`}</td>
                   <td>
                     {e.status === 'pending' && (
-                      <button className={styles.acceptBtn} onClick={() => props.acceptOfferBundle(e)}>
+                      <button
+                        className={styles.acceptBtn}
+                        onClick={() => props.acceptOfferBundle(e)}>
                         Accept
                       </button>
                     )}
@@ -83,7 +89,23 @@ function OffersTable(props) {
             })
           )}
         </tbody>
+        {!isFetching && (
+          <div className={styles.pageInfo}>
+            {!isFetching && (
+              <p>{`${bundle?.pageStart + 1} - ${bundle?.pageEnd + 1}, from ${
+                bundle?.overallCount
+              }`}</p>
+            )}
+          </div>
+        )}
       </table>
+      <div className={styles.pageContainer}>
+        <button>{'<<'}</button>
+        <button>{'<'}</button>
+        <div className={styles.pageNumber}>{bundle?.page ? bundle.page : 1}</div>
+        <button>{'>'}</button>
+        <button>{'>>'}</button>
+      </div>
     </div>
   );
 }

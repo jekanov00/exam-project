@@ -441,8 +441,8 @@ module.exports.deleteOffer = async (req, res, next) => {
 
 module.exports.getModeratorOffers = async (req, res, next) => {
   try {
-    if (req.body.role !== CONSTANTS.MODERATOR) {
-      next('Not enough rights');
+    if (req.body.user.role !== CONSTANTS.MODERATOR) {
+      next('Not enough rights!');
     }
 
     const offers = await Offer.findAll({
@@ -481,7 +481,14 @@ module.exports.getModeratorOffers = async (req, res, next) => {
 
     offers.sort(compareFunc);
 
-    res.status(200).send(offers);
+    const { page } = req.body;
+    const overallCount = offers.length;
+    const pageStart = page * 10 - 10;
+    const pageEnd = page * 10 - 1;
+
+    const offersPaged = offers.slice(pageStart, pageEnd + 1);
+
+    res.status(200).send({ offers: offersPaged, page, pageStart, pageEnd, overallCount });
   } catch (err) {
     next(err);
   }

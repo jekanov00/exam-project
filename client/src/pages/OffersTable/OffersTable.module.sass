@@ -3,10 +3,10 @@
   border-radius: 7px
   font-size: 18px
   max-width: 1200px
-  overflow: hidden
   margin: 50px auto
   display: flex
   flex-direction: column
+  position: relative
 
   thead
     background-color: #455A89
@@ -59,7 +59,7 @@
   td + td
     border-left: 2px solid #38496e
 
-  .error
+  td.error
     color: darkred
     flex-grow: 1 !important
 
@@ -98,3 +98,46 @@
       
   .acceptBtn + .deleteBtn
     margin-left: 20px
+
+  .pageInfo
+    position: absolute
+    bottom: -65px
+    left: 20px
+    color: #999999
+
+.pageContainer
+  display: flex
+  justify-content: center
+  font-size: 22px
+  margin-top: -30px
+  margin-bottom: 30px
+
+  button
+    margin: 5px
+    height: 40px
+    width: 40px
+    border-radius: 7px
+    text-decoration: none
+    box-sizing: border-box
+    border: 2px solid #4e618d
+    background-color: #4e618d
+    color: #ffffff
+    font-size: 18px
+    font-weight: bold
+    text-align: center
+    transition: background-color 0.2s
+    cursor: pointer
+
+    &:hover
+      background-color: transparent
+      color: #4e618d
+
+  .pageNumber
+    border: 2px solid #4e618d
+    height: 40px
+    width: 40px
+    text-align: center
+    line-height: 36px
+    margin: 5px
+    border-radius: 7px
+    box-sizing: border-box

@@ -76,8 +76,8 @@ export function* getOffersForModerator(action) {
   yield put({ type: ACTION.RECEIVE_ALL_OFFERS_REQUEST });
   try {
     const { data } = action;
-    const { data: offers } = yield restController.getModeratorOffers(data);
-    yield put({ type: ACTION.RECEIVE_ALL_OFFERS_SUCCESS, data: offers });
+    const {data: offersData} = yield restController.getModeratorOffers(data);
+    yield put({ type: ACTION.RECEIVE_ALL_OFFERS_SUCCESS, data: offersData });
   } catch (e) {
     yield put({ type: ACTION.RECEIVE_ALL_OFFERS_FAILED, error: e });
   }
