@@ -404,15 +404,6 @@ module.exports.deleteOffer = async (req, res, next) => {
       where: { id: req.body.id },
       attributes: ['contestId'],
     });
-    await Offer.destroy({ where: { id: req.body.id } });
-    const offers = await Offer.findAll({
-      where: { contestId },
-      attributes: { exclude: ['userId', 'contestId'] },
-      include: {
-        model: User,
-        attributes: { exclude: ['password'] },
-      },
-    });
 
     const {
       dataValues: {
@@ -423,6 +414,16 @@ module.exports.deleteOffer = async (req, res, next) => {
       include: {
         model: User,
         attributes: ['id', 'email'],
+      },
+    });
+
+    await Offer.destroy({ where: { id: req.body.id } });
+    const offers = await Offer.findAll({
+      where: { contestId },
+      attributes: { exclude: ['userId', 'contestId'] },
+      include: {
+        model: User,
+        attributes: { exclude: ['password'] },
       },
     });
 
