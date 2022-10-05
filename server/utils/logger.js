@@ -30,7 +30,7 @@ exports.logger = () => {
         { flag: 'wx' },
       );
 
-      fs.writeFileSync(LOG_FILE_PATH, JSON.stringify([]));
+      fs.writeFileSync(LOG_FILE_PATH, JSON.stringify('[]'));
     }
   } catch (err) {
     throw new Error(err);
