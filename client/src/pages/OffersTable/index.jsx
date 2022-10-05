@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import history from '../../browserHistory';
 import Header from '../../components/Header/Header';
@@ -13,6 +13,7 @@ import styles from './OffersTable.module.sass';
 
 function OffersTable(props) {
   const { user, getModeratorOffers: getOffers } = props;
+  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     document.title = 'Offers | Squadhelp';
@@ -21,8 +22,8 @@ function OffersTable(props) {
       history.push('/');
     }
 
-    getOffers({ user, page: 1 });
-  }, [user, getOffers]);
+    getOffers({ user, page: pageNumber });
+  }, [user, getOffers, pageNumber]);
 
   const { error, isFetching, bundle } = props.bundleStore;
 
@@ -90,21 +91,47 @@ function OffersTable(props) {
           )}
         </tbody>
         {!isFetching && (
-          <div className={styles.pageInfo}>
-            {!isFetching && (
-              <p>{`${bundle?.pageStart + 1} - ${bundle?.pageEnd + 1}, from ${
-                bundle?.overallCount
-              }`}</p>
-            )}
-          </div>
+          <tfoot className={styles.pageInfo}>
+            <tr>
+              {!isFetching && (
+                <td className={styles.pageInfo_td}>{`${bundle?.pageStart + 1} - ${bundle?.pageEnd + 1}, from ${
+                  bundle?.overallCount
+                }`}</td>
+              )}
+            </tr>
+          </tfoot>
         )}
       </table>
       <div className={styles.pageContainer}>
-        <button>{'<<'}</button>
-        <button>{'<'}</button>
-        <div className={styles.pageNumber}>{bundle?.page ? bundle.page : 1}</div>
-        <button>{'>'}</button>
-        <button>{'>>'}</button>
+        <button
+          onClick={() => {
+            setPageNumber(1);
+            return getOffers({ user, page: 1 });
+          }}>
+          {'<<'}
+        </button>
+        <button
+          onClick={() => {
+            setPageNumber(pageNumber - 1);
+            return getOffers({ user, page: pageNumber - 1 });
+          }}>
+          {'<'}
+        </button>
+        <div className={styles.pageNumber}>{pageNumber}</div>
+        <button
+          onClick={() => {
+            setPageNumber(pageNumber + 1);
+            return getOffers({ user, page: pageNumber + 1 });
+          }}>
+          {'>'}
+        </button>
+        <button
+          onClick={() => {
+            setPageNumber(pageNumber + 1);
+            return getOffers({ user, page: pageNumber + 1 });
+          }}>
+          {'>>'}
+        </button>
       </div>
     </div>
   );
