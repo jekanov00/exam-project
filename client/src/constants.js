@@ -12,6 +12,7 @@ export const ROLES = {
 const constants = {
   CUSTOMER: 'customer',
   CREATOR: 'creator',
+  MODERATOR: 'moderator',
   CONTEST_STATUS_ACTIVE: 'active',
   CONTEST_STATUS_FINISHED: 'finished',
   CONTEST_STATUS_PENDING: 'pending',
