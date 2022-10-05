@@ -481,10 +481,25 @@ module.exports.getModeratorOffers = async (req, res, next) => {
 
     offers.sort(compareFunc);
 
-    const { page } = req.body;
+    let { page } = req.body;
     const overallCount = offers.length;
+
+    if (page < 1) {
+      page = 1;
+      next('Wrong page!');
+    }
+
+    if (page * 10 - 10 >= offers.length) {
+      page = Math.ceil(offers.length / 10);
+      next('Wrong page!');
+    }
+
+    let pageEnd = page * 10 - 1;
     const pageStart = page * 10 - 10;
-    const pageEnd = page * 10 - 1;
+
+    if (page * 10 > offers.length) {
+      pageEnd = offers.length - 1;
+    }
 
     const offersPaged = offers.slice(pageStart, pageEnd + 1);
 

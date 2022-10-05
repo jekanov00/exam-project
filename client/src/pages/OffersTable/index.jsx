@@ -94,9 +94,9 @@ function OffersTable(props) {
           <tfoot className={styles.pageInfo}>
             <tr>
               {!isFetching && (
-                <td className={styles.pageInfo_td}>{`${bundle?.pageStart + 1} - ${bundle?.pageEnd + 1}, from ${
-                  bundle?.overallCount
-                }`}</td>
+                <td className={styles.pageInfo_td}>{`${bundle?.pageStart + 1} - ${
+                  bundle?.pageEnd + 1
+                }, from ${bundle?.overallCount}`}</td>
               )}
             </tr>
           </tfoot>
@@ -104,6 +104,7 @@ function OffersTable(props) {
       </table>
       <div className={styles.pageContainer}>
         <button
+          disabled={pageNumber === 1}
           onClick={() => {
             setPageNumber(1);
             return getOffers({ user, page: 1 });
@@ -111,6 +112,7 @@ function OffersTable(props) {
           {'<<'}
         </button>
         <button
+          disabled={pageNumber === 1}
           onClick={() => {
             setPageNumber(pageNumber - 1);
             return getOffers({ user, page: pageNumber - 1 });
@@ -119,6 +121,7 @@ function OffersTable(props) {
         </button>
         <div className={styles.pageNumber}>{pageNumber}</div>
         <button
+          disabled={pageNumber === Math.ceil(bundle?.overallCount / 10)}
           onClick={() => {
             setPageNumber(pageNumber + 1);
             return getOffers({ user, page: pageNumber + 1 });
@@ -126,9 +129,10 @@ function OffersTable(props) {
           {'>'}
         </button>
         <button
+          disabled={pageNumber === Math.ceil(bundle?.overallCount / 10)}
           onClick={() => {
-            setPageNumber(pageNumber + 1);
-            return getOffers({ user, page: pageNumber + 1 });
+            setPageNumber(Math.ceil(bundle.overallCount / 10));
+            return getOffers({ user, page: Math.ceil(bundle.overallCount / 10) });
           }}>
           {'>>'}
         </button>
