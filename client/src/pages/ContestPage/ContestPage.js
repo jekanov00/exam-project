@@ -142,6 +142,20 @@ class ContestPage extends React.Component {
     });
   };
 
+  totalEntries = (offers) => {
+    if (this.props.user.role === CONSTANTS.MODERATOR) {
+      return offers.length;
+    } else {
+      let counter = 0;
+      offers.forEach((offer) => {
+        if (offer.status !== 'pending') {
+          counter += 1;
+        }
+      });
+      return counter;
+    }
+  };
+
   render() {
     const { role } = this.props.user;
     const {
@@ -221,7 +235,7 @@ class ContestPage extends React.Component {
                 </div>
               )}
             </div>
-            <ContestSideBar contestData={contestData} totalEntries={offers.length} />
+            <ContestSideBar contestData={contestData} totalEntries={this.totalEntries(offers)} />
           </div>
         )}
       </div>

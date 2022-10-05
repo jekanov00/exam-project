@@ -244,13 +244,19 @@ module.exports.getCustomersContests = (req, res, next) => {
       {
         model: Offer,
         required: false,
-        attributes: ['id'],
+        attributes: ['id', 'status'],
       },
     ],
   })
     .then((contests) => {
       contests.forEach((contest) => {
-        contest.dataValues.count = contest.dataValues.Offers.length;
+        let counter = 0;
+        contest.dataValues.Offers.forEach((offer) => {
+          if (offer.dataValues.status !== 'pending') {
+            counter += 1;
+          }
+        });
+        contest.dataValues.count = counter;
       });
       let haveMore = true;
       if (contests.length === 0) {
