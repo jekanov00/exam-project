@@ -21,7 +21,13 @@ const UserProfile = (props) => {
     props.cashOut({ number, expiry, cvc, sum });
   };
 
-  const { balance, role, profileModeView, changeProfileModeView, error, clearPaymentStore } = props;
+  const {
+    user: { balance, role },
+    profileModeView,
+    changeProfileModeView,
+    error,
+    clearPaymentStore,
+  } = props;
   return (
     <div>
       <Header />
@@ -77,10 +83,10 @@ const UserProfile = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const { balance, role } = state.auth.user;
+  const user = state.auth.user;
   const { profileModeView } = state.userProfile;
   const { error } = state.payment;
-  return { balance, role, profileModeView, error };
+  return { profileModeView, error, user };
 };
 
 const mapDispatchToProps = (dispatch) => {

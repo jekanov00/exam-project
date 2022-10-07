@@ -90,7 +90,11 @@ class AuthApi {
       throw error;
     }
 
-    if (status === 401 && url !== `${this.url}/refresh` && localStorage.getItem(REFRESH_TOKEN_KEY)) {
+    if (
+      status === 401 &&
+      url !== `${this.url}/refresh` &&
+      localStorage.getItem(REFRESH_TOKEN_KEY)
+    ) {
       try {
         await this.refresh({
           refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),
