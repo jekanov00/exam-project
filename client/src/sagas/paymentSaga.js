@@ -8,7 +8,7 @@ export function* paymentSaga(action) {
   yield put({ type: ACTION.PAYMENT_ACTION_REQUEST });
   try {
     yield restController.payMent(action.data);
-    history.replace("dashboard");
+    history.replace("/dashboard");
     yield put({ type: ACTION.CLEAR_CONTEST_STORE });
     yield put({ type: ACTION.CLEAR_PAYMENT_STORE });
   } catch (err) {
