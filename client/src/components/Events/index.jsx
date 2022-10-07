@@ -134,6 +134,17 @@ function Events() {
           }
           e.remaining = result;
         }
+        const progressRemaining =
+          new Date(e.end).getTime() - new Date().getTime() < 0
+            ? 0
+            : new Date(e.end).getTime() - new Date().getTime();
+        const progressPast =
+          new Date(e.end).getTime() - new Date(e.start).getTime() - progressRemaining;
+        const progressPercent = +parseFloat(
+          progressPast / (new Date(e.end).getTime() - new Date(e.start).getTime()),
+        ).toFixed(2) * 100;
+        
+        e.progress = progressPercent;
       });
     }
     return tempArr;
@@ -178,6 +189,7 @@ function Events() {
       name,
       start: new Date(),
       end: date,
+      progress: 0,
     });
     setEvents(addRemainingTime(localEvents));
     localStorage.setItem('events', JSON.stringify(localEvents));
@@ -248,7 +260,7 @@ function Events() {
                       </>
                     )}
                   </p>
-                  {/* <div className={styles.progress} /> */}
+                  <div className={styles.progress} style={{width: `${e.progress}%`}} />
                 </div>
               ))
           ) : (
