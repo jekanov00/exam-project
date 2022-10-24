@@ -30,8 +30,19 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          firstName: 'Moderator',
+          lastName: 'Moderatorovich',
+          displayName: 'Moderator',
+          paspasswordHash: await bcrypt.hash('Test1234', CONSTANTS.SALT_ROUNDS),
+          email: 'moderator@gmail.com',
+          role: 'moderator',
+          balance: 0,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
-      {}
+      {},
     );
   },
 

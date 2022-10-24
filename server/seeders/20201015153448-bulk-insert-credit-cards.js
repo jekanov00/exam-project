@@ -6,9 +6,9 @@ module.exports = {
       'CreditCards',
       [
         {
-          cardNumber: '4564654564564564',
+          cardNumber: '4929821037980777',
           name: 'SquadHelp',
-          expiry: '11/20',
+          expiry: '07/28',
           cvc: '453',
           balance: 0,
           createdAt: new Date(),
