@@ -15,7 +15,7 @@ exports.errorLogger = (err, req, res, next) => {
     if (readErr) {
       next(readErr);
     } else {
-      const fileData = JSON.parse(data);
+      const fileData = [...JSON.parse(data)];
 
       if (err instanceof Error) {
         fileData.push({

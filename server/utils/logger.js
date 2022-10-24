@@ -4,7 +4,7 @@ const { LOG_FILE_PATH, FILES_PATH } = require('../constants');
 
 exports.logger = () => {
   try {
-    const fileData = JSON.parse(fs.readFileSync(LOG_FILE_PATH, { encoding: 'utf8' }));
+    const fileData = [...JSON.parse(fs.readFileSync(LOG_FILE_PATH, { encoding: 'utf8' }))];
 
     if (
       fileData.length > 0 &&
@@ -30,7 +30,7 @@ exports.logger = () => {
         { flag: 'wx' },
       );
 
-      fs.writeFileSync(LOG_FILE_PATH, JSON.stringify('[]'));
+      fs.writeFileSync(LOG_FILE_PATH, JSON.stringify([]));
     }
   } catch (err) {
     throw new Error(err);
