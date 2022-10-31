@@ -4,10 +4,10 @@ module.exports = (sequelize, dataTypes) => {
   class Message extends Model {
     static associate({ Conversation, User }) {
       Message.belongsTo(Conversation, {
-        foreignKey: 'conversationId',
+        foreignKey: 'conversation',
       });
       Message.belongsTo(User, {
-        foreignKey: 'userId',
+        foreignKey: 'sender',
       });
     }
   }

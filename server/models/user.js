@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       return compare(value, this.getDataValue('password'));
     }
 
-    static associate({ Contest, Offer, Rating, RefreshToken, Message, Catalog, Conversation }) {
+    static associate({ Contest, Offer, Rating, RefreshToken, Message, Catalog }) {
       // User*(role: customer) 1:n Contest
       User.hasMany(Contest, {
         foreignKey: 'userId',
@@ -26,14 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       User.hasMany(Message, {
-        foreignKey: 'userId',
+        foreignKey: 'sender',
       });
 
       User.hasMany(Catalog, {
-        foreignKey: 'userId',
-      });
-
-      User.hasMany(Conversation, {
         foreignKey: 'userId',
       });
 
