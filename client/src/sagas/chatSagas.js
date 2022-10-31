@@ -28,7 +28,7 @@ export function* sendMessage(action) {
     const { messagesPreview } = yield select(state => state.chatStore);
     let isNew = true;
     messagesPreview.forEach(preview => {
-      if (isEqual(preview.participants, data.message.participants)) {
+      if (isEqual(preview.participants, data.preview.participants)) {
         preview.text = data.message.body;
         preview.sender = data.message.sender;
         preview.createAt = data.message.createdAt;

@@ -6,6 +6,7 @@ const { User, Conversation, Message, Catalog } = require('../models/index');
 const userQueries = require('./queries/userQueries');
 const controller = require('../socketInit');
 const { decodeToken } = require('../services/tokenService');
+const { Op } = require('sequelize');
 
 module.exports.addMessage = async (req, res, next) => {
   const tokenUserId = decodeToken(req).userId;
@@ -69,7 +70,13 @@ module.exports.addMessage = async (req, res, next) => {
     controller.getChatController().emitNewMessage(interlocutorId, {
       message,
       preview: {
-        ...preview,
+        id: newConversation.id,
+        sender: userInstance.id,
+        text: req.body.messageBody,
+        createAt: message.createdAt,
+        participants,
+        blackList: newConversation.blackList,
+        favoriteList: newConversation.favoriteList,
         interlocutor: {
           id: userInstance.id,
           firstName: userInstance.firstName,
@@ -123,7 +130,7 @@ module.exports.getChat = async (req, res, next) => {
         model: Conversation,
         required: true,
       },
-      order: [[Message, 'createdAt', 'ASC']],
+      order: [['createdAt', 'ASC']],
     });
 
     const interlocutor = await userQueries.findUser({
@@ -147,40 +154,54 @@ module.exports.getChat = async (req, res, next) => {
 module.exports.getPreview = async (req, res, next) => {
   try {
     const tokenData = decodeToken(req);
-    const conversations = await Message_mongo.aggregate([
-      {
-        $lookup: {
-          from: 'conversations',
-          localField: 'conversation',
-          foreignField: '_id',
-          as: 'conversationData',
-        },
+    // const conversations = await Message_mongo.aggregate([
+    //   {
+    //     $lookup: {
+    //       from: 'conversations',
+    //       localField: 'conversation',
+    //       foreignField: '_id',
+    //       as: 'conversationData',
+    //     },
+    //   },
+    //   {
+    //     $unwind: '$conversationData',
+    //   },
+    //   {
+    //     $match: {
+    //       'conversationData.participants': tokenData.userId,
+    //     },
+    //   },
+    //   {
+    //     $sort: {
+    //       createdAt: -1,
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: '$conversationData._id',
+    //       sender: { $first: '$sender' },
+    //       text: { $first: '$body' },
+    //       createAt: { $first: '$createdAt' },
+    //       participants: { $first: '$conversationData.participants' },
+    //       blackList: { $first: '$conversationData.blackList' },
+    //       favoriteList: { $first: '$conversationData.favoriteList' },
+    //     },
+    //   },
+    // ]);
+
+    const conversations = await Conversation.findAll({
+      where: {
+        participants: { [Op.contains]: [tokenData.userId] },
       },
-      {
-        $unwind: '$conversationData',
+      include: {
+        model: Message,
+        required: true,
+        attributes: ['id', 'sender', ['body', 'text'], ['createdAt', 'createAt']],
+        order: [[Message, 'createdAt', 'DESC']],
       },
-      {
-        $match: {
-          'conversationData.participants': tokenData.userId,
-        },
-      },
-      {
-        $sort: {
-          createdAt: -1,
-        },
-      },
-      {
-        $group: {
-          _id: '$conversationData._id',
-          sender: { $first: '$sender' },
-          text: { $first: '$body' },
-          createAt: { $first: '$createdAt' },
-          participants: { $first: '$conversationData.participants' },
-          blackList: { $first: '$conversationData.blackList' },
-          favoriteList: { $first: '$conversationData.favoriteList' },
-        },
-      },
-    ]);
+      group: ['Conversation.id', 'Messages.id'],
+    });
+
     const interlocutors = [];
     conversations.forEach((conversation) => {
       interlocutors.push(
@@ -196,7 +217,7 @@ module.exports.getPreview = async (req, res, next) => {
     conversations.forEach((conversation) => {
       senders.forEach((sender) => {
         if (conversation.participants.includes(sender.dataValues.id)) {
-          conversation.interlocutor = {
+          conversation.dataValues.interlocutor = {
             id: sender.dataValues.id,
             firstName: sender.dataValues.firstName,
             lastName: sender.dataValues.lastName,
@@ -205,8 +226,13 @@ module.exports.getPreview = async (req, res, next) => {
           };
         }
       });
+      const lastMessage = conversation.Messages.slice(-1)[0].dataValues;
+      conversation.dataValues.text = lastMessage.text;
+      conversation.dataValues.sender = lastMessage.sender;
+      conversation.dataValues.createAt = lastMessage.createAt;
     });
-    res.send(conversations);
+
+    res.status(200).send(conversations);
   } catch (err) {
     next(err);
   }
