@@ -240,18 +240,31 @@ module.exports.getPreview = async (req, res, next) => {
 
 module.exports.blackList = async (req, res, next) => {
   const tokenData = decodeToken(req);
-  const predicate = `blackList.${req.body.participants.indexOf(tokenData.userId)}`;
+  const predicate = req.body.participants.indexOf(tokenData.userId);
   try {
-    const chat = await Conversation_mongo.findOneAndUpdate(
-      { participants: req.body.participants },
-      { $set: { [predicate]: req.body.blackListFlag } },
-      { new: true },
-    );
-    res.send(chat);
+    // const chat = await Conversation_mongo.findOneAndUpdate(
+    //   { participants: req.body.participants },
+    //   { $set: { [predicate]: req.body.blackListFlag } },
+    //   { new: true },
+    // );
+
+    const chatToUpdate = await Conversation.findOne({
+      where: {
+        participants: { [Op.contains]: [tokenData.userId] },
+      },
+    });
+    const newBlackList = chatToUpdate.dataValues.blackList;
+    newBlackList[predicate] = req.body.blackListFlag;
+
+    await chatToUpdate.update({
+      blackList: newBlackList,
+    });
+
+    res.send(chatToUpdate);
     const interlocutorId = req.body.participants.filter(
       (participant) => participant !== tokenData.userId,
     )[0];
-    controller.getChatController().emitChangeBlockStatus(interlocutorId, chat);
+    controller.getChatController().emitChangeBlockStatus(interlocutorId, chatToUpdate);
   } catch (err) {
     res.send(err);
   }
