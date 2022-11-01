@@ -19,8 +19,8 @@ const validate = (values) => {
 
 const CatalogListHeader = (props) => {
   const changeCatalogName = (values) => {
-    const { changeCatalogName, _id } = props;
-    changeCatalogName({ catalogName: values.catalogName, catalogId: _id });
+    const { changeCatalogName, id } = props;
+    changeCatalogName({ catalogName: values.catalogName, catalogId: id });
   };
   const {
     handleSubmit,
@@ -70,9 +70,9 @@ const CatalogListHeader = (props) => {
 
 const mapStateToProps = (state) => {
   const { isRenameCatalog } = state.chatStore;
-  const { catalogName, _id } = state.chatStore.currentCatalog;
+  const { catalogName, id } = state.chatStore.currentCatalog;
   return {
-    _id,
+    id,
     catalogName,
     isRenameCatalog,
     initialValues: {
