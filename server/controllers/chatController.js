@@ -129,6 +129,9 @@ module.exports.getChat = async (req, res, next) => {
       include: {
         model: Conversation,
         required: true,
+        where: {
+          participants,
+        },
       },
       order: [['createdAt', 'ASC']],
     });
@@ -250,7 +253,7 @@ module.exports.blackList = async (req, res, next) => {
 
     const chatToUpdate = await Conversation.findOne({
       where: {
-        participants: { [Op.contains]: [tokenData.userId] },
+        participants: req.body.participants,
       },
     });
     const newBlackList = chatToUpdate.dataValues.blackList;
@@ -272,14 +275,26 @@ module.exports.blackList = async (req, res, next) => {
 
 module.exports.favoriteChat = async (req, res, next) => {
   const tokenData = decodeToken(req);
-  const predicate = `favoriteList.${req.body.participants.indexOf(tokenData.userId)}`;
+  const predicate = req.body.participants.indexOf(tokenData.userId);
   try {
-    const chat = await Conversation_mongo.findOneAndUpdate(
-      { participants: req.body.participants },
-      { $set: { [predicate]: req.body.favoriteFlag } },
-      { new: true },
-    );
-    res.send(chat);
+    // const chat = await Conversation_mongo.findOneAndUpdate(
+    //   { participants: req.body.participants },
+    //   { $set: { [predicate]: req.body.favoriteFlag } },
+    //   { new: true },
+    // );
+
+    const chatToUpdate = await Conversation.findOne({
+      where: {
+        participants: req.body.participants,
+      },
+    });
+    const newFavoriteList = chatToUpdate.dataValues.favoriteList;
+    newFavoriteList[predicate] = req.body.favoriteFlag;
+    await chatToUpdate.update({
+      favoriteList: newFavoriteList,
+    });
+
+    res.send(chatToUpdate);
   } catch (err) {
     res.send(err);
   }
@@ -287,13 +302,19 @@ module.exports.favoriteChat = async (req, res, next) => {
 
 module.exports.createCatalog = async (req, res, next) => {
   const tokenData = decodeToken(req);
-  const catalog = new Catalog_mongo({
-    userId: tokenData.userId,
-    catalogName: req.body.catalogName,
-    chats: [req.body.chatId],
-  });
+  // const catalog = new Catalog_mongo({
+  //   userId: tokenData.userId,
+  //   catalogName: req.body.catalogName,
+  //   chats: [req.body.chatId],
+  // });
+
   try {
-    await catalog.save();
+    const catalog = await Catalog.create({
+      userId: tokenData.userId,
+      catalogName: req.body.catalogName,
+      chats: [req.body.chatId],
+    });
+
     res.send(catalog);
   } catch (err) {
     next(err);
@@ -354,10 +375,18 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
 module.exports.deleteCatalog = async (req, res, next) => {
   try {
     const tokenData = decodeToken(req);
-    await Catalog_mongo.remove({
-      _id: req.body.catalogId,
-      userId: tokenData.userId,
+    // await Catalog_mongo.remove({
+    //   _id: req.body.catalogId,
+    //   userId: tokenData.userId,
+    // });
+
+    await Catalog.destroy({
+      where: {
+        id: req.body.catalogId,
+        userId: tokenData.userId,
+      },
     });
+
     res.end();
   } catch (err) {
     next(err);
@@ -367,16 +396,24 @@ module.exports.deleteCatalog = async (req, res, next) => {
 module.exports.getCatalogs = async (req, res, next) => {
   try {
     const tokenData = decodeToken(req);
-    const catalogs = await Catalog_mongo.aggregate([
-      { $match: { userId: tokenData.userId } },
-      {
-        $project: {
-          _id: 1,
-          catalogName: 1,
-          chats: 1,
-        },
+    // const catalogs = await Catalog_mongo.aggregate([
+    //   { $match: { userId: tokenData.userId } },
+    //   {
+    //     $project: {
+    //       _id: 1,
+    //       catalogName: 1,
+    //       chats: 1,
+    //     },
+    //   },
+    // ]);
+
+    const catalogs = await Catalog.findAll({
+      where: {
+        userId: tokenData.userId,
       },
-    ]);
+      attributes: ['id', 'catalogName', 'chats'],
+    });
+
     res.send(catalogs);
   } catch (err) {
     next(err);
