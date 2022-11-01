@@ -1,12 +1,8 @@
-const Conversation_mongo = require('../models/mongoModels/conversation');
-const Message_mongo = require('../models/mongoModels/Message');
-const Catalog_mongo = require('../models/mongoModels/Catalog');
-
+const { Op } = require('sequelize');
 const { User, Conversation, Message, Catalog } = require('../models/index');
 const userQueries = require('./queries/userQueries');
 const controller = require('../socketInit');
 const { decodeToken } = require('../services/tokenService');
-const { Op } = require('sequelize');
 
 module.exports.addMessage = async (req, res, next) => {
   const tokenUserId = decodeToken(req).userId;
