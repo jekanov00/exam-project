@@ -28,7 +28,7 @@ module.exports = (sequelize, dataTypes) => {
         type: dataTypes.ARRAY(dataTypes.INTEGER),
       },
     },
-    { sequelize, modelName: 'Catalog' },
+    { sequelize, modelName: 'Catalog', timestamps: false },
   );
   return Catalog;
 };
