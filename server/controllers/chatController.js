@@ -259,9 +259,16 @@ module.exports.blackList = async (req, res, next) => {
     const newBlackList = chatToUpdate.dataValues.blackList;
     newBlackList[predicate] = req.body.blackListFlag;
 
-    await chatToUpdate.update({
-      blackList: newBlackList,
-    });
+    await Conversation.update(
+      {
+        blackList: newBlackList,
+      },
+      {
+        where: {
+          participants: req.body.participants,
+        },
+      },
+    );
 
     res.send(chatToUpdate);
     const interlocutorId = req.body.participants.filter(
@@ -290,9 +297,16 @@ module.exports.favoriteChat = async (req, res, next) => {
     });
     const newFavoriteList = chatToUpdate.dataValues.favoriteList;
     newFavoriteList[predicate] = req.body.favoriteFlag;
-    await chatToUpdate.update({
-      favoriteList: newFavoriteList,
-    });
+    await Conversation.update(
+      {
+        favoriteList: newFavoriteList,
+      },
+      {
+        where: {
+          participants: req.body.participants,
+        },
+      },
+    );
 
     res.send(chatToUpdate);
   } catch (err) {
@@ -324,14 +338,25 @@ module.exports.createCatalog = async (req, res, next) => {
 module.exports.updateNameCatalog = async (req, res, next) => {
   try {
     const tokenData = decodeToken(req);
-    const catalog = await Catalog_mongo.findOneAndUpdate(
-      {
-        _id: req.body.catalogId,
-        userId: tokenData.userId,
-      },
+    // const catalog = await Catalog_mongo.findOneAndUpdate(
+    //   {
+    //     _id: req.body.catalogId,
+    //     userId: tokenData.userId,
+    //   },
+    //   { catalogName: req.body.catalogName },
+    //   { new: true },
+    // );
+
+    const catalog = await Catalog.update(
       { catalogName: req.body.catalogName },
-      { new: true },
+      {
+        where: {
+          id: req.body.catalogId,
+          userId: tokenData.userId,
+        },
+      },
     );
+
     res.send(catalog);
   } catch (err) {
     next(err);
@@ -341,14 +366,35 @@ module.exports.updateNameCatalog = async (req, res, next) => {
 module.exports.addNewChatToCatalog = async (req, res, next) => {
   try {
     const tokenData = decodeToken(req);
-    const catalog = await Catalog_mongo.findOneAndUpdate(
-      {
-        _id: req.body.catalogId,
+    // const catalog = await Catalog_mongo.findOneAndUpdate(
+    //   {
+    //     _id: req.body.catalogId,
+    //     userId: tokenData.userId,
+    //   },
+    //   { $addToSet: { chats: req.body.chatId } },
+    //   { new: true },
+    // );
+
+    const catalog = await Catalog.findOne({
+      where: {
+        id: req.body.catalogId,
         userId: tokenData.userId,
       },
-      { $addToSet: { chats: req.body.chatId } },
-      { new: true },
-    );
+    });
+    const { chats: chatIds } = catalog.dataValues;
+    if (!chatIds.includes(req.body.chatId)) {
+      chatIds.push(req.body.chatId);
+
+      await Catalog.update(
+        { chats: chatIds },
+        {
+          where: {
+            id: req.body.catalogId,
+            userId: tokenData.userId,
+          },
+        },
+      );
+    }
     res.send(catalog);
   } catch (err) {
     next(err);
@@ -358,13 +404,35 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
 module.exports.removeChatFromCatalog = async (req, res, next) => {
   try {
     const tokenData = decodeToken(req);
-    const catalog = await Catalog_mongo.findOneAndUpdate(
-      {
-        _id: req.body.catalogId,
+    // const catalog = await Catalog_mongo.findOneAndUpdate(
+    //   {
+    //     _id: req.body.catalogId,
+    //     userId: tokenData.userId,
+    //   },
+    //   { $pull: { chats: req.body.chatId } },
+    //   { new: true },
+    // );
+    const catalog = await Catalog.findOne({
+      where: {
+        id: req.body.catalogId,
         userId: tokenData.userId,
       },
-      { $pull: { chats: req.body.chatId } },
-      { new: true },
+    });
+    const { chats: chatIds } = catalog.dataValues;
+    const chatIdIndex = chatIds.indexOf(req.body.chatId);
+    if (chatIdIndex === -1) {
+      throw new Error('Wrong chat id!');
+    }
+    chatIds.splice(chatIdIndex, 1);
+
+    await Catalog.update(
+      { chats: chatIds },
+      {
+        where: {
+          id: req.body.catalogId,
+          userId: tokenData.userId,
+        },
+      },
     );
     res.send(catalog);
   } catch (err) {
