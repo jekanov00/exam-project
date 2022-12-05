@@ -5,7 +5,7 @@ import { getDataForContest } from '../../actions/actionCreator';
 import { withRouter } from 'react-router-dom';
 import styles from './ContestForm.module.sass';
 import Spinner from '../Spinner/Spinner';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, reset } from 'redux-form';
 import FormInput from '../FormInput/FormInput';
 import SelectInput from '../SelectInput/SelectInput';
 import customValidator from '../../validators/validator';
@@ -54,6 +54,21 @@ class ContestForm extends React.Component {
         ? { ...this.props.defaultData, domain: 'yes' }
         : this.props.defaultData,
     );
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.contestType !== prevProps.contestType) {
+      this.getPreference(this.props.contestType);
+      this.props.initialize(
+        this.props.contestType === CONSTANTS.NAME_CONTEST
+          ? { ...this.props.defaultData, domain: 'yes' }
+          : this.props.defaultData,
+      );
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(reset('contestForm'));
   }
 
   renderSpecialInputs = () => {

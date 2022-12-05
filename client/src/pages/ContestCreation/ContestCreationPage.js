@@ -10,20 +10,23 @@ import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
 
+let contestType;
+
 const ContestCreationPage = (props) => {
   const history = useHistory();
   useEffect(() => {
     if (props.title) {
       document.title = `${props.title} | Squadhelp`;
     }
-  });
+    contestType = props.contestType;
+  }, [props.contestType, props.title]);
 
   const submitDataContest = (values) => {
-    props.saveContest({ type: props.contestType, info: values });
+    props.saveContest({ type: contestType, info: values });
     history.push(
-      props.bundleStore.bundle[props.contestType] === 'payment'
+      props.bundleStore.bundle[contestType] === 'payment'
         ? '/payment'
-        : props.bundleStore.bundle[props.contestType] + 'Contest',
+        : props.bundleStore.bundle[contestType] + 'Contest',
     );
   };
 
